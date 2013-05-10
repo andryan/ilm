@@ -6,3 +6,14 @@
 *.csproj
 *.unityproj
 *.sln
+
+# Unity .gitignore file.
+.DS_Store
+Library
+Library/*
+*.csproj
+*.sln
+*.userprefs
+Temp
+*.pidb
+Build
