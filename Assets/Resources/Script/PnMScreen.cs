@@ -258,6 +258,11 @@ public class PnMScreen : MonoBehaviour
 				{
 					MListenerList.Add (HelperGOList[a].name);	
 				}
+				Hashtable MyHashs = Main.MyReqCheck.GetHelperLevelReqByLevel(Main.MyPlayerAtr.GetHelperLevel(a));
+				if(MyHashs.Count > 0)
+				{
+					MListenerList.Add(HelperGOList[a].name);
+				}
 			}
 		}
 	}
@@ -1167,23 +1172,41 @@ public class PnMScreen : MonoBehaviour
 	}
 	private void BuildIconForHelper()
 	{
-		List<int> MyHelperLevelList = Main.MyPlayerAtr.ReturnHelperFull();
-		for(int a = 0;a<MyHelperLevelList.Count;a++)
-		{
-			if(MyHelperLevelList[a] == 0)
+		List<int> MyHelperList = Main.MyPlayerAtr.ReturnHelperFull();
+		List<int> MyHelperLevelList = Main.MyPlayerAtr.ReturnHelperLevel();
+		
+		for(int a = 0;a<MyHelperList.Count;a++)
+		{	
+			Hashtable MyHash = Main.MyReqCheck.GetHelperLevelReqByLevel(Main.MyPlayerAtr.GetHelperLevel(a));
+			if(MyHelperList[a] == 0)
 			{
 				GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
 				MySprite.name = HelperGOList[a].name;
 				MySprite.transform.position = new Vector3(HelperGOList[a].transform.position.x, HelperGOList[a].transform.position.y +35,-40);
 				MySprite.transform.Rotate (0,0,-180);
 				Material MyBmp = null;
-				MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/PurchaseIcon");
+				MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/PurchaseIcon");					
 				MySprite.renderer.material = MyBmp;
 				MySprite.AddComponent("IconVFX");
 				IconGOList.Add (MySprite);
 				IconBmpList.Add (MyBmp);
 				MySprite = null;
-				MyBmp = null;		
+				MyBmp = null;
+			}			
+			else if(MyHelperList[a] > 0 && MyHelperLevelList[a] < 5)
+			{
+				GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+				MySprite.name = HelperGOList[a].name;
+				MySprite.transform.position = new Vector3(HelperGOList[a].transform.position.x, HelperGOList[a].transform.position.y +35,-40);
+				MySprite.transform.Rotate (0,0,-180);
+				Material MyBmp = null;
+				MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/UpgradeIcon");					
+				MySprite.renderer.material = MyBmp;
+				MySprite.AddComponent("IconVFX");
+				IconGOList.Add (MySprite);
+				IconBmpList.Add (MyBmp);
+				MySprite = null;
+				MyBmp = null;
 			}
 		}
 	}

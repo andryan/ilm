@@ -17,6 +17,9 @@ public class ReqCheck : MonoBehaviour
 	private List<Hashtable> BarLevel = null;
 	private List<Hashtable> CashierLevel = null;
 	private List<Hashtable> HelperList = null;
+	private List<Hashtable> HelperLevel = null;
+	private List<Hashtable> HelperMSPDList = null; 
+	private List<Hashtable> HelperASPDList = null;
 	private List<Hashtable> DecoList = null;
 	private List<Hashtable> ThemeList = null;
 	
@@ -39,6 +42,13 @@ public class ReqCheck : MonoBehaviour
 		ASPDList.Add (HashObject.Hash ("Coin", 23000, "Like", 50 , "Description", "SPD+"));
 		ASPDList.Add (HashObject.Hash ("Coin", 59000, "Like", 200, "Description", "SPD+"));
 		ASPDList.Add (HashObject.Hash ("Coin", 167000, "Like", 1500, "Description", "SPD+"));
+		
+		HelperLevel = new List<Hashtable>();
+		HelperLevel.Add (HashObject.Hash ("Coin", 0, "Like", 0, "Description", "SPD+, MOV+"));
+		HelperLevel.Add (HashObject.Hash ("Coin", 3000, "Like", 50, "Description", "SPD+, MOV+"));
+		HelperLevel.Add (HashObject.Hash ("Coin", 30000, "Like", 500, "Description", "SPD+, MOV+"));
+		HelperLevel.Add (HashObject.Hash ("Coin", 75000, "Like", 1000, "Description", "SPD+, MOV+"));
+		HelperLevel.Add (HashObject.Hash ("Coin", 200000, "Like", 2000, "Description", "SPD+, MOV+"));
 		
 		QueueUpUnlock = new List<Hashtable>();
 		QueueUpUnlock.Add (HashObject.Hash ("Coin", 0, "Like", 0, "Description", "Slot increase"));
@@ -209,6 +219,15 @@ public class ReqCheck : MonoBehaviour
 				MyHash = (Hashtable)HelperList[a].Clone ();
 				break;
 			}
+		}
+		return MyHash;
+	}
+	public Hashtable GetHelperLevelReqByLevel (int Level)
+	{
+		Hashtable MyHash = new Hashtable();
+		if(Level < HelperLevel.Count && Level > 0)
+		{
+			MyHash = (Hashtable)HelperLevel[Level].Clone();
 		}
 		return MyHash;
 	}

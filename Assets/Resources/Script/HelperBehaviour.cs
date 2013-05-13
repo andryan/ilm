@@ -8,7 +8,7 @@ public class HelperBehaviour : MonoBehaviour {
 	// Use this for initialization
 	public int ID = 0;
 	public float HelperWalkingSpeed = 0.0f;
-	private float HelperActionSpeed = 0.0f;
+	public float HelperActionSpeed = 0.0f;
 	
 	public bool OnComplete = true;
 	private float CurrentHelperWaitingTime = 0.0f;
@@ -37,8 +37,10 @@ public class HelperBehaviour : MonoBehaviour {
 	public void SetValue(Hashtable Hash = null)
 	{
 		ID = (int)Hash["ID"];
-		HelperWalkingSpeed = (float)Hash["MovementSpeed"];
-		HelperActionSpeed = (float)Hash["ActionSpeed"];	
+		List<float> moveSpeed = (List<float>) Hash["MovementSpeed"];
+		List<float> actionSpeed = (List<float>) Hash["ActionSpeed"];
+		HelperWalkingSpeed = moveSpeed[Main.MyPlayerAtr.GetHelperLevel(ID-1)-1];
+		HelperActionSpeed = actionSpeed[Main.MyPlayerAtr.GetHelperLevel(ID-1)-1];	
 	}
 	private void Init()
 	{

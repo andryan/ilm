@@ -16,7 +16,7 @@ public class ResultCal : MonoBehaviour
 	private int CountOf5Star = 0;
 	private int CountOf6Star = 0;
 	
-	private int RunawayCount = 0;
+	public int RunawayCount = 0;
 	private int TDisplayCount = 0;
 	private int BarCount = 0;
 	private int FoodCount = 0;

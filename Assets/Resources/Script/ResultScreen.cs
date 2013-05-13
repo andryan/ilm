@@ -246,7 +246,7 @@ public class ResultScreen : MonoBehaviour
 			MyInfoPanelNextGO.renderer.material = MyInfoPanelNextBmp;	
 		}
 	}
-	private void BuildAllText()
+	public void BuildAllText()
 	{
 		if(EarningText == null)
 		{

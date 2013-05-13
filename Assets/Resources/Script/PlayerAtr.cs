@@ -40,6 +40,7 @@ public class PlayerAtr : MonoBehaviour
 	private int CashierLevel = 0;
 	private List<int> Helper = null;
 	private List<int> HelperDura = null;
+	private List<int> HelperLevel = null;
 	
 	private int SpentCoin = 0;
 	private int SpentDiamond = 0;
@@ -86,23 +87,24 @@ public class PlayerAtr : MonoBehaviour
 			LiftCount = 0;
 			CashierCount = 0;
 			
-			QueueUpLevel = new List<int>(new int[]{3,3,3,3,3});
-			FoodLevel = new List<int>(new int[]{3,3,3,3});
-			TDisplayLevel = new List<int>(new int[]{3,3,3,3});
-			BarLevel = new List<int>(new int[]{3,3,3,3});
-			ExtraDeco = 5;
+			QueueUpLevel = new List<int>(new int[]{1,1,1,0,0});
+			FoodLevel = new List<int>(new int[]{1,1,0,0});
+			TDisplayLevel = new List<int>(new int[]{1,1,0,0});
+			BarLevel = new List<int>(new int[]{1,1,0,0});
+			ExtraDeco = 1;
 			DecoList = new List<int>();
 			Theme = 1;
 			ThemeList = new List<int>();
-			CashierLevel = 5;
-			Helper = new List<int>(new int[]{1,2,3,4,5,6,7});
+			CashierLevel = 1;
+			Helper = new List<int>(new int[]{0,0,0,0,0,0,0});
 			HelperDura = new List<int>(new int[]{0,0,0,0,0,0,0});
+			HelperLevel = new List<int>(new int[]{0,0,0,0,0,0,0});
 			
 			SpentCoin = 0;
 			SpentDiamond = 0;
 			UpgradeCount = 0;
-			MovementSpeedLevel = 5;
-			ActionSpeedLevel = 5;
+			MovementSpeedLevel = 1;
+			ActionSpeedLevel = 1;
 			
 			EquipExtraDeco(ExtraDeco);
 			EquipTheme(Theme);
@@ -147,6 +149,7 @@ public class PlayerAtr : MonoBehaviour
 			ThemeList = new List<int>(PlayerPrefsX.GetIntArray("ThemeList"));
 			Helper = new List<int>(PlayerPrefsX.GetIntArray ("Helper"));
 			HelperDura = new List<int>(PlayerPrefsX.GetIntArray ("HelperDura"));
+			HelperLevel = new List<int>(PlayerPrefsX.GetIntArray ("HelperLevel"));
 			
 			Theme = PlayerPrefs.GetInt ("Theme");
 			ExtraDeco = PlayerPrefs.GetInt ("ExtraDeco");
@@ -163,6 +166,15 @@ public class PlayerAtr : MonoBehaviour
 			
 			Debug.Log ("Load game");
 		}
+	}
+	public void HelperLevelUp(int ID)
+	{
+		HelperLevel[ID]++;
+	}
+	
+	public int GetHelperLevel(int ID)
+	{
+		return HelperLevel[ID];
 	}
 	//@Kaizer: Modify Methods
 	public void AddLike(int Add = 1)
@@ -634,6 +646,11 @@ public class PlayerAtr : MonoBehaviour
 		List<int> TemList = new List<int>(Helper.ToArray ());
 		return TemList;	
 	}
+	public List<int> ReturnHelperLevel()
+	{
+		List<int> TemList = new List<int>(HelperLevel.ToArray());
+		return TemList;
+	}
 	public int ReturnHelper(int TargetSlot = 0)
 	{
 		int TemInt = Helper[TargetSlot];
@@ -721,5 +738,13 @@ public class PlayerAtr : MonoBehaviour
 			Flag = true;	
 		}
 		return Flag;
+	}
+	
+	private void Update()
+	{
+		if(HotelRank > 6)
+			HotelRank = 6;
+		if(HotelRank < 1)
+			HotelRank = 1;	
 	}
 }

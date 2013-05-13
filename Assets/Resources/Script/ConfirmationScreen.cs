@@ -254,7 +254,15 @@ public class ConfirmationScreen : MonoBehaviour
 			}break;
 			case "Helper":
 			{
-				Main.MyPlayerAtr.AddHelperSlot(Slot);
+				if(Level == 0)
+				{
+					Main.MyPlayerAtr.AddHelperSlot(Slot);
+					Main.MyPlayerAtr.HelperLevelUp(Slot);
+				}
+				else
+				{
+					Main.MyPlayerAtr.HelperLevelUp(Slot);
+				}
 			}break;
 			case "QueueUp":
 			{
@@ -384,21 +392,28 @@ public class ConfirmationScreen : MonoBehaviour
 			}break;
 			case "Helper":
 			{
-				Level = Main.MyPlayerAtr.ReturnHelper (Slot);
-				Req = Main.MyReqCheck.GetHelperReqByID (Slot+1);
-				
+				Level = Main.MyPlayerAtr.GetHelperLevel(Slot);
+			
+				if(Level == 0)
+				{			
+					Req = Main.MyReqCheck.GetHelperReqByID(Slot +1);
+				}
+				else
+				{	
+					Req = Main.MyReqCheck.GetHelperLevelReqByLevel(Level);
+				}
 			}break;
 			
 			case "QueueUp":
 			{
 				Level = Main.MyPlayerAtr.ReturnQueueUpLevel(Slot);
 				if(Level == 0)
-				{
-					Req = Main.MyReqCheck.GetQueueUpUnlockReqBySlot(Slot);
+				{			
+					Req = Main.MyReqCheck.GetHelperReqByID(Slot +1);
 				}
 				else
-				{
-					Req = Main.MyReqCheck.GetQueueUpLevelReqByLevel(Level+1);	
+				{	
+					Req = Main.MyReqCheck.GetHelperLevelReqByLevel(Level);
 				}
 			}break;
 			case "Food":

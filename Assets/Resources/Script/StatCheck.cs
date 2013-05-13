@@ -7,6 +7,8 @@ public class StatCheck : MonoBehaviour
 {
 	private List<float> MSPDList = null;
 	private List<float> ASPDList = null;
+	private List<float> HelperMSPDList = null;
+	private List<float> HelperASPDList = null;
 	private List<Hashtable> QueueUpList = null;
 	private List<Hashtable> FoodList = null;
 	private List<Hashtable> TDisplayList = null;
@@ -15,6 +17,7 @@ public class StatCheck : MonoBehaviour
 	private List<Hashtable> HelperList = null;
 	private List<Hashtable> DecoList = null;
 	private List<Hashtable> ThemeList = null;
+	private List<Hashtable> HelperLevelList = null;
 	
 	private void Start()
 	{
@@ -25,6 +28,10 @@ public class StatCheck : MonoBehaviour
 		MSPDList = new List<float>(new float[]{0.3f,0.25f,0.2f,0.15f,0.1f});
 		
 		ASPDList = new List<float>(new float[]{2f,1.8f,1.5f,1.2f,1f});
+		
+		HelperMSPDList = new List<float>(new float[]{0.3f,0.25f,0.2f,0.15f,0.1f});
+		
+		HelperASPDList = new List<float>(new float[]{2f,1.8f,1.5f,1.2f,1f});
 		
 		QueueUpList = new List<Hashtable>();
 		QueueUpList.Add(HashObject.Hash ("WaitingTime", 0f));
@@ -54,13 +61,13 @@ public class StatCheck : MonoBehaviour
 		CashierList.Add (HashObject.Hash ("WaitingTime", 0.3f, "LikeRate", 0.1f));
 		
 		HelperList = new List<Hashtable>();
-		HelperList.Add (HashObject.Hash ("ID", 1, "Name", "Helper1", "MovementSpeed", 0.3f, "ActionSpeed", 2.0f));
-		HelperList.Add (HashObject.Hash ("ID", 2, "Name", "Helper2", "MovementSpeed", 0.3f, "ActionSpeed", 2.0f));
-		HelperList.Add (HashObject.Hash ("ID", 3, "Name", "Helper3", "MovementSpeed", 0.25f, "ActionSpeed", 1.8f));
-		HelperList.Add (HashObject.Hash ("ID", 4, "Name", "Helper4", "MovementSpeed", 0.2f, "ActionSpeed", 1.5f));
-		HelperList.Add (HashObject.Hash ("ID", 5, "Name", "Helper5", "MovementSpeed", 0.2f, "ActionSpeed", 1.5f));
-		HelperList.Add (HashObject.Hash ("ID", 6, "Name", "Helper6", "MovementSpeed", 0.2f, "ActionSpeed", 1.5f));
-		HelperList.Add (HashObject.Hash ("ID", 7, "Name", "Helper7", "MovementSpeed", 0.15f, "ActionSpeed", 1.2f));
+		HelperList.Add (HashObject.Hash ("ID", 1, "Name", "Helper1", "MovementSpeed", HelperMSPDList, "ActionSpeed", HelperASPDList));
+		HelperList.Add (HashObject.Hash ("ID", 2, "Name", "Helper2", "MovementSpeed", HelperMSPDList, "ActionSpeed", HelperASPDList));
+		HelperList.Add (HashObject.Hash ("ID", 3, "Name", "Helper3", "MovementSpeed", HelperMSPDList, "ActionSpeed", HelperASPDList));
+		HelperList.Add (HashObject.Hash ("ID", 4, "Name", "Helper4", "MovementSpeed", HelperMSPDList, "ActionSpeed", HelperASPDList));
+		HelperList.Add (HashObject.Hash ("ID", 5, "Name", "Helper5", "MovementSpeed", HelperMSPDList, "ActionSpeed", HelperASPDList));
+		HelperList.Add (HashObject.Hash ("ID", 6, "Name", "Helper6", "MovementSpeed", HelperMSPDList, "ActionSpeed", HelperASPDList));
+		HelperList.Add (HashObject.Hash ("ID", 7, "Name", "Helper7", "MovementSpeed", HelperMSPDList, "ActionSpeed", HelperASPDList));
 		//HelperList.Add (HashObject.Hash ("ID", 8, "Name", "Helper8", "MovementSpeed", 0.1f, "ActionSpeed", 1.0f));
 		
 		DecoList = new List<Hashtable>();

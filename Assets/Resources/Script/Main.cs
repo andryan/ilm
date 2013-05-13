@@ -33,6 +33,7 @@ public class Main : MonoBehaviour
 	public static Achievement MyAchievement = null;
 	public StartScreen MyStartScreen = null;
 	private PnMScreen MyPnMScreen = null;
+	private CustomerMetre myCustomerMetre = null;
 	
 	private void Start()
 	{
@@ -50,7 +51,7 @@ public class Main : MonoBehaviour
 		MyReqCheck = (ReqCheck)this.gameObject.AddComponent ("ReqCheck");
 		MyPlayerAtr = (PlayerAtr)this.gameObject.AddComponent("PlayerAtr");
 		MyAchievement = (Achievement)this.gameObject.AddComponent("Achievement");
-		
+		myCustomerMetre = (CustomerMetre)this.gameObject.AddComponent("CustomerMetre");
 		Show ();
 		
 	}
