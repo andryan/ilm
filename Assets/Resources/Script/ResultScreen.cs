@@ -27,6 +27,9 @@ public class ResultScreen : MonoBehaviour
 	private GameObject MyInfoPanelNextGO = null;
 	private Material MyInfoPanelNextBmp = null;
 	
+	private GameObject MyInfoPanelBackGO = null;
+	private Material MyInfoPanelBackBmp = null;
+	
 	private GameObject EarningText = null;
 	private GameObject STText = null;
 	
@@ -49,10 +52,22 @@ public class ResultScreen : MonoBehaviour
 		VFX_1 ();
 	}
 	
+	/*
+	public void InitLose(Main PassParent)
+	{
+		Main.MySE.StopBGM();
+		Main.MySE.PlaySFX("Clear");
+		Parent = PassParent;
+		MListenerList = new List<string>();
+		BuildLoseScreen();
+		VFX_1 ();
+	}
+	*/
 	
 	//@ Kaizer: VFX List
 	private void Update()
 	{
+		Debug.Log("VFX timer : " + VFXTimer);
 		if (Input.GetMouseButtonDown(0))
 		{
         	RaycastHit hit;
@@ -108,8 +123,10 @@ public class ResultScreen : MonoBehaviour
 			MyInfoPanelPictureBar2GO.renderer.enabled = true;
 			iTween.FadeTo (MyInfoPanelNextGO,iTween.Hash("alpha",1f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
 			MyInfoPanelNextGO.renderer.enabled = true;
+			
 			BuildAllText();
 		}
+		
 		if(VFXTimer == 50)
 		{
 			//MUpOnButtons();
@@ -178,6 +195,17 @@ public class ResultScreen : MonoBehaviour
 		BuildInfoPanelPictureBar();
 		BuildInfoPanelNext();
 	}
+	
+	/*
+	private void BuildLoseScreen()
+	{
+		BuildBG ();
+		BuildInfoPanel();
+		BuildInfoPanelPictureBar();
+		BuildInfoPanelBack();
+	}
+	*/
+	
 	private void BuildBG()
 	{
 		if(MyInfoPanelBG == null)
@@ -246,6 +274,26 @@ public class ResultScreen : MonoBehaviour
 			MyInfoPanelNextGO.renderer.material = MyInfoPanelNextBmp;	
 		}
 	}
+	
+	
+	/*
+	private void BuildInfoPanelBack()
+	{
+		if(MyInfoPanelBackGO == null)
+		{
+			MyInfoPanelBackGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+			MyInfoPanelBackGO.name = "BackGO";
+			MyInfoPanelBackGO.transform.position = new Vector3((400-(0/2))/Main.PostFactor, ((0/2) - 352)/Main.PostFactor,-60);
+			MyInfoPanelBackGO.transform.localScale = new Vector3((166/Main.SizeFactor), 1, (38/Main.SizeFactor));
+			MyInfoPanelBackGO.transform.Rotate(90, -180, 0);
+			MyInfoPanelBackGO.renderer.enabled = false;
+			iTween.FadeTo(MyInfoPanelBackGO, iTween.Hash("alpha", 0f, "time",0f, "easetype", iTween.EaseType.linear));
+			MyInfoPanelBackBmp = (Material)Resources.Load("PlanAndManage/Materials/MainMenuIcon");
+			MyInfoPanelBackGO.renderer.material = MyInfoPanelBackBmp;
+		}
+	}
+	*/
+	
 	public void BuildAllText()
 	{
 		if(EarningText == null)

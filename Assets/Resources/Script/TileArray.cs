@@ -8,6 +8,13 @@ using System.Collections.Generic;
 public class TileArray : MonoBehaviour {
 	
 	public Main Parent = null;
+	
+	private float timer = 2f;
+	
+	public bool isLose;
+	
+	public int maxCustOut = 2;
+	
 	private List<List<int>> tileArr = null; 
 	
 	public int TotalPath = 0;
@@ -55,6 +62,7 @@ public class TileArray : MonoBehaviour {
 	/// </summary>//
 	void Start () {
 		
+		isLose = false;
 		//Init();
 		
 	}
@@ -141,6 +149,14 @@ public class TileArray : MonoBehaviour {
 
 	void Update() {
 		//UpdateUIText();
+		if(Main.MyResultCal.RunawayCount >= maxCustOut)
+		{
+			timer -= Time.deltaTime;
+			if(timer <= 0)
+			{
+				isLose = true;
+			}
+		}
 	}
 	void tileArrInfo() {
 		/*tile array info
@@ -322,6 +338,18 @@ public class TileArray : MonoBehaviour {
 				CancelInvoke ("UpdateTimeText");
 			}
 		}
+		
+		
+				if(isLose == true)
+				{
+						// -- error --
+						//ResultScreen MyRS = (ResultScreen)this.gameObject.AddComponent("ResultScreen");
+						//MyRS.InitLose(Parent);
+						//CancelInvoke("UpdateUIText");
+						//CancelInvoke("UpdateTimeText");
+						Time.timeScale = 0;
+					
+				}
 	}
 	private void UpdateUIText()
 	{
