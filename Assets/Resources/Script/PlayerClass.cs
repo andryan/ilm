@@ -62,7 +62,7 @@ public class PlayerClass : MonoBehaviour {
 		SpawnPlayer();
 		SpawnInGameObj();
 		SpriteAnim = Player.transform.Find("SpriteAnim");
-		prevPlayerPost = Player.transform.position;
+		prevPlayerPost = Player.transform.localPosition;
 		
 		sAnim = (SpriteAnimator)SpriteAnim.GetComponent("SpriteAnimator");
 		
@@ -75,15 +75,18 @@ public class PlayerClass : MonoBehaviour {
 	
 	private void SpawnPlayer()
 	{
-		Player = new GameObject();
+		//Player = new GameObject();
 		Player = (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/PlayerPrefab"));
-		Player.transform.position = new Vector3(140, -460, -26);
+		Main.AddParent(Player);
+		Player.transform.localPosition = new Vector3(140 - Res.DefaultWidth()/2, -460 + Res.DefaultHeight()/2, -30);
+		Player.transform.localScale = new Vector3(50,64,1);
 		objList.Add (Player);
 	}
 	
 	//temporary function for in-game obj
 	private void SpawnInGameObj()
 	{
+		/*
 		MapObj = new GameObject();
 		BarObj = new GameObject();
 		Cashier = new GameObject();
@@ -91,6 +94,7 @@ public class PlayerClass : MonoBehaviour {
 		DoorObj = new GameObject();
 		PianoObj = new GameObject();
 		RoadObj = new GameObject();
+		*/
 		
 		MapObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/MapObj"));
 		BarObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/BarObj"));
@@ -100,14 +104,49 @@ public class PlayerClass : MonoBehaviour {
 		PianoObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/PianoObj"));
 		RoadObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/RoadObj"));
 		
-		MapObj.transform.position = new Vector3(400, -240, -2);
+		Main.AddParent(MapObj);
+		Main.AddParent(BarObj);
+		Main.AddParent(CashierObj);
+		Main.AddParent(DoorObj);
+		Main.AddParent(PianoObj);
+		Main.AddParent(RoadObj);
+		
+		/*
+		MapObj.transform.position = new Vector3(512, -384, -2);
 		BarObj.transform.position = new Vector3(380f, -465.2831f, -22f);
 		Cashier.transform.position = new Vector3(76.10322f, -388.27f, -23f);
 		CashierObj.transform.position = new Vector3(120f, -431.5496f, -22f);
 		DoorObj.transform.position = new Vector3(137.7853f, -98.47987f, 50f);
 		PianoObj.transform.position = new Vector3(380f, -254.4137f, -16f);
 		RoadObj.transform.position = new Vector3(395.477f, -67.66052f, 50f);
+		*/
 		
+		//New Resolution
+		MapObj.transform.localPosition = new Vector3(0, 0, -2);
+		MapObj.transform.localScale = new Vector3(1024,768, 0.1f);
+		
+		Material MyMapBmp = (Material)Resources.Load ("PlanAndManage/Materials/FloorBG");// + Main.randomTheme);
+		MapObj.renderer.material = MyMapBmp;
+			
+		
+		//BarObj.transform.localPosition = new Vector3(485 - Res.DefaultWidth()/2, -765 + Res.DefaultHeight()/2, -22f);
+		//BarObj.transform.localScale = new Vector3(320, 90 , 0.1f);
+		BarObj.transform.localPosition = new Vector3(-27, -385, -22f);
+		BarObj.transform.localScale = new Vector3(320,90, 0.1f);
+		
+		Cashier.transform.localPosition = new Vector3(97.4121216f, -621.232f, -23f);
+		//CashierObj.transform.localPosition = new Vector3(153.6f, -690.47936f, -22f);
+		CashierObj.transform.localPosition =  new Vector3(-362, -306f, -22f);
+		CashierObj.transform.localScale = new Vector3(200,140,0.1f);
+			
+		DoorObj.transform.localPosition = new Vector3(-335, 227, 50f);
+		DoorObj.transform.localScale = new Vector3(65, 130, 0.1f);
+		//PianoObj.transform.localPosition = new Vector3(480f, -400f, -16f);
+		PianoObj.transform.localPosition = new Vector3(-32f, -16f, -10f);
+		PianoObj.transform.localScale = new Vector3(250, 210, 0.1f);
+
+		RoadObj.transform.localPosition = new Vector3(0, 275, 50f);
+		RoadObj.transform.localScale = new Vector3(400,80,0.1f);
 		
 		objList.Add(MapObj);
 		objList.Add(BarObj);
@@ -128,26 +167,26 @@ public class PlayerClass : MonoBehaviour {
 				
 			int tempZ = (int)-currPlayerPos.y*2;
 			//Player.transform.position = new Vector3(Player.transform.position.x, Player.transform.position.y, tempZ-1);
-			int totalZ = tempZ - (int)Player.transform.position.z;
+			int totalZ = tempZ - (int)Player.transform.localPosition.z;
 			//print ("totalZ "+(totalZ-1));
 			//print ("tempZ "+ tempZ);
 			sAnim.transform.localPosition = new Vector3(0, 0, totalZ-1);
 			//prin
 			
 			
-			if(prevPlayerPost.y > Player.transform.position.y)
+			if(prevPlayerPost.y > Player.transform.localPosition.y)
 			{
 				sAnim.Play ("charac_walk_front");
 			}
-			else if(prevPlayerPost.y < Player.transform.position.y)
+			else if(prevPlayerPost.y < Player.transform.localPosition.y)
 			{
 				sAnim.Play ("charac_walk_behind");
 			}
-			else if(prevPlayerPost.x < Player.transform.position.x)
+			else if(prevPlayerPost.x < Player.transform.localPosition.x)
 			{
 				sAnim.Play ("charac_walk_right");
 			}
-			else if(prevPlayerPost.x > Player.transform.position.x)
+			else if(prevPlayerPost.x > Player.transform.localPosition.x)
 			{
 				sAnim.Play ("charac_walk_left");
 			}
@@ -155,11 +194,11 @@ public class PlayerClass : MonoBehaviour {
 			{
 				sAnim.Play ("charac_serving");
 			}
-			else if(prevPlayerPost.y == Player.transform.position.y && prevPlayerPost.x == Player.transform.position.x)
+			else if(prevPlayerPost.y == Player.transform.localPosition.y && prevPlayerPost.x == Player.transform.localPosition.x)
 			{
 				sAnim.Play ("charac_idle");
 			}
-			prevPlayerPost = Player.transform.position;
+			prevPlayerPost = Player.transform.localPosition;
 		}
 	}
 	
@@ -181,8 +220,8 @@ public class PlayerClass : MonoBehaviour {
 	
 	private Vector3 convertPosToTile(GameObject currentObj)
 	{		
-		float tempY = currentObj.transform.position.y/TileArray.tileHeight;
-		float tempX = currentObj.transform.position.x/TileArray.tileWidth;
+		float tempY = (currentObj.transform.localPosition.y - Res.DefaultHeight()/2)/TileArray.tileHeight;
+		float tempX = (currentObj.transform.localPosition.x + Res.DefaultWidth()/2)/TileArray.tileWidth;
 				
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);

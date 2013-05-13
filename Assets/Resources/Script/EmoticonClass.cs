@@ -15,14 +15,14 @@ public class EmoticonClass : MonoBehaviour {
 	public void SpawnEmoticon(GameObject MyObj)
 	{
 		GameObject EmoticonObj;
-		
 		EmoticonObj =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+		Main.AddParent(EmoticonObj);
 		
 		
-		Vector3 emmoticonPos = new Vector3(MyObj.transform.position.x + offsetX, MyObj.transform.position.y + offsetY, 0);
+		Vector3 emmoticonPos = new Vector3(MyObj.transform.localPosition.x + offsetX, MyObj.transform.localPosition.y + offsetY, 0);
 		//MyPos = Vector3((MyPos.gameIbject.x + offsetX), (MyPos.y + offsetY), 0);
 		
-		EmoticonObj.transform.position = emmoticonPos;
+		EmoticonObj.transform.localPosition = emmoticonPos;
 	}
 	
 	

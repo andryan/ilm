@@ -21,7 +21,7 @@ public class IconVFX : MonoBehaviour
 		}
 		if(Timer % 2 == 0)
 		{
-			this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y + Factor, this.gameObject.transform.position.z);	
+			this.gameObject.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x, this.gameObject.transform.localPosition.y + Factor, this.gameObject.transform.localPosition.z);	
 		}
 		
 		Timer++;

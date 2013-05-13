@@ -36,7 +36,7 @@ public class CustomerBehaviour : MonoBehaviour {
 	}
 	public void Init()
 	{
-		prevCustPost = this.gameObject.transform.position;
+		prevCustPost = this.gameObject.transform.localPosition;
 		SpriteAnimObj = this.gameObject.transform.Find("SpriteAnim");
 		sAnim = (SpriteAnimator)SpriteAnimObj.GetComponent("SpriteAnimator");
 		InvokeRepeating ("sAnimEnterFrame",0f,0.06f);
@@ -55,42 +55,43 @@ public class CustomerBehaviour : MonoBehaviour {
 	{
 		Vector3 currCustomerPos = convertPosToTile(this.gameObject);
 		
-		if(this.gameObject.transform.position.y<=0 && this.gameObject.transform.position.y >= -80)
+		//if(this.gameObject.transform.localPosition.y<= 0 + Res.DefaultHeight()/2 && this.gameObject.transform.localPosition.y >= -80 + Res.DefaultHeight()/2)
+		if(this.gameObject.transform.localPosition.y > 200)
 		{
 			//this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y, 0);
 			sAnim.transform.localPosition = new Vector3(0, 0, 20);
 		
 		} else {
 			tempZ = (int)-currCustomerPos.y*2;
-			int totalZ = tempZ - (int)this.gameObject.transform.position.z;
+			int totalZ = tempZ - (int)this.gameObject.transform.localPosition.z;
 			//print ("totalZ "+(totalZ-1));
 			//print ("tempZ "+ tempZ);
 			sAnim.transform.localPosition = new Vector3(0, 0, totalZ-1);
 		}
 		
 		//prin
-		if(prevCustPost.y > this.gameObject.transform.position.y)
+		if(prevCustPost.y > this.gameObject.transform.localPosition.y)
 		{
 			sAnim.Play ("charac_walk_front");
 		}
-		else if(prevCustPost.y < this.gameObject.transform.position.y)
+		else if(prevCustPost.y < this.gameObject.transform.localPosition.y)
 		{
 			sAnim.Play ("charac_walk_behind");
 		}
-		else if(prevCustPost.x < this.gameObject.transform.position.x)
+		else if(prevCustPost.x < this.gameObject.transform.localPosition.x)
 		{
 			sAnim.Play ("charac_walk_right");
 		}
-		else if(prevCustPost.x > this.gameObject.transform.position.x)
+		else if(prevCustPost.x > this.gameObject.transform.localPosition.x)
 		{
 			sAnim.Play ("charac_walk_left");
 		}
 		
-		else if(prevCustPost.y == this.gameObject.transform.position.y && prevCustPost.x == this.gameObject.transform.position.x)
+		else if(prevCustPost.y == this.gameObject.transform.localPosition.y && prevCustPost.x == this.gameObject.transform.localPosition.x)
 		{
 			sAnim.Play ("charac_idle");
 		}
-		prevCustPost = this.gameObject.transform.position;
+		prevCustPost = this.gameObject.transform.localPosition;
 	}
 	
 	private void EnterFrame()
@@ -161,8 +162,8 @@ public class CustomerBehaviour : MonoBehaviour {
 	
 	private Vector3 convertPosToTile(GameObject currentObj)
 	{		
-		float tempY = currentObj.transform.position.y/TileArray.tileHeight;
-		float tempX = currentObj.transform.position.x/TileArray.tileWidth;
+		float tempY = (currentObj.transform.localPosition.y - Res.DefaultHeight()/2) /TileArray.tileHeight;
+		float tempX = (currentObj.transform.localPosition.x + Res.DefaultWidth()/2 ) /TileArray.tileWidth;
 				
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);

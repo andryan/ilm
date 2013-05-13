@@ -100,8 +100,11 @@ public class CustomerClass : MonoBehaviour {
 		CustomerObject.AddComponent("CustomerAtr");
 		CustomerObject.AddComponent("CustomerBehaviour");
 		
+		Main.AddParent(CustomerObject);
+		
 		//CustomerObject.transform.Rotate(0,0,180);
-		CustomerObject.transform.position = new Vector3(680, -60 ,0);
+		CustomerObject.transform.localPosition = new Vector3(680 - Res.DefaultWidth()/2, -60 + Res.DefaultHeight()/2 ,0);
+		CustomerObject.transform.localScale = new Vector3(50,64,1);
 		customerList.Add (CustomerObject);
 		customerReferenceID.Add (customerReferenceID.Count);
 		customerStatus.Add (0);
@@ -164,7 +167,7 @@ public class CustomerClass : MonoBehaviour {
 		
 		for(int i=0;i<customerList.Count;i++)
 		{
-			if(customerList[i].transform.position.x == customerPost.x && customerList[i].transform.position.y == customerPost.y)
+			if(customerList[i].transform.localPosition.x == customerPost.x && customerList[i].transform.localPosition.y == customerPost.y)
 			{
 				tempCustomerObj = customerList[i];
 				break;
@@ -256,7 +259,7 @@ public class CustomerClass : MonoBehaviour {
 		switch(MyCB.ActionType)
 		{
 			case "Queue":
-				customerList[customerId].transform.position = new Vector3(customerObjReference[customerId].transform.position.x, customerObjReference[customerId].transform.position.y, customerObjReference[customerId].transform.position.z - 1);
+				customerList[customerId].transform.localPosition = new Vector3(customerObjReference[customerId].transform.localPosition.x, customerObjReference[customerId].transform.localPosition.y, customerObjReference[customerId].transform.localPosition.z - 1);
 				refreshCustomerCashierQueue();
 				MyCA.StartQueueUp(Main.MyStatCheck.GetQueueUpStatByLevel(Main.MyPlayerAtr.ReturnQueueUpLevel(customerObjReferenceID[customerId])));
 			break;
@@ -317,8 +320,8 @@ public class CustomerClass : MonoBehaviour {
 	
 	private Vector3 convertPosToTile(GameObject currentObj)
 	{		
-		float tempY = currentObj.transform.position.y/TileArray.tileHeight;
-		float tempX = currentObj.transform.position.x/TileArray.tileWidth;
+		float tempY = (currentObj.transform.localPosition.y - Res.DefaultHeight() / 2)/TileArray.tileHeight;
+		float tempX = (currentObj.transform.localPosition.x + Res.DefaultWidth() / 2 )/TileArray.tileWidth;
 				
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);

@@ -18,8 +18,8 @@ public class TileArray : MonoBehaviour {
 	private List<List<int>> tileArr = null; 
 	
 	public int TotalPath = 0;
-	public static int tileWidth = 40;
-	public static int tileHeight = 40;
+	public static int tileWidth = 50;
+	public static int tileHeight = 64;
 	
 	private GameObject TopUIGO = null;
 	private Material TopUIBmp = null;
@@ -89,7 +89,7 @@ public class TileArray : MonoBehaviour {
 			GameObject tweenObject = (GameObject)ht["tweenObject"];
 			float AISpeed = (float)ht ["AISpeed"];
 			
-			int tempPosition = -(tileHeight/2) - (tileHeight * FPath[1][0]);
+			int tempPosition = -(tileHeight/2) - (tileHeight * FPath[1][0]) + (int) Res.DefaultHeight()/2;
 			
 			//itween's oncompleteparams requires hashtag to support multiple variable passing
 			Hashtable completeParams = new Hashtable();
@@ -97,7 +97,7 @@ public class TileArray : MonoBehaviour {
 			completeParams.Add ("FPath", FPath);
 			completeParams.Add ("AISpeed", AISpeed);
 			
-			if(tempPosition == tweenObject.transform.position.y)
+			if(tempPosition == tweenObject.transform.localPosition.y)
 			{
 				tweenX(completeParams);
 			} else {
@@ -122,7 +122,7 @@ public class TileArray : MonoBehaviour {
 			float AISpeed = (float)ht["AISpeed"];
 			
 			int tempPosition;
-			tempPosition = (tileWidth/2) + (tileWidth * FPath[1][1]);
+			tempPosition = (tileWidth/2) + (tileWidth * FPath[1][1]) - (int)Res.DefaultWidth()/2;
 			
 			Hashtable completeParams = new Hashtable();
 			completeParams.Add ("tweenObject", tweenObject);
@@ -130,7 +130,7 @@ public class TileArray : MonoBehaviour {
 			completeParams.Add ("AISpeed", AISpeed);
 			
 			FPath.RemoveAt(1);//<<<this is temporary here(before this is in loopTween but was put here when need to create FPath for multiple AI)
-			if(tempPosition == tweenObject.transform.position.x)
+			if(tempPosition == tweenObject.transform.localPosition.x)
 			{
 				loopTween(completeParams);
 			} else {
@@ -194,8 +194,8 @@ public class TileArray : MonoBehaviour {
 		if(tweenObject != null && Main.MyPlayer.MapObj != null)
 		{
 			//convert current position to current tile
-			int startY = Math.Abs((int)tweenObject.transform.position.y/tileHeight);
-			int startX = Math.Abs((int)tweenObject.transform.position.x/tileWidth);
+			int startY = Math.Abs((int)(tweenObject.transform.localPosition.y - Res.DefaultHeight() /2) /tileHeight);
+			int startX = Math.Abs((int)(tweenObject.transform.localPosition.x + Res.DefaultWidth() / 2) /tileWidth);
 			
 			List<List<int>> FPath = AStar.FindPath(tileArr, startY, startX, endY, endX);
 			FPath.Reverse();
@@ -215,80 +215,90 @@ public class TileArray : MonoBehaviour {
 	{
 	
 		TopUIGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		Main.AddParent(TopUIGO);
 		TopUIGO.name = "TopUI";
-		TopUIGO.transform.position = new Vector3(400,((0/2) - 17.5f)/Main.PostFactor,-40);
-		TopUIGO.transform.localScale = new Vector3(800/Main.SizeFactor,1, 45/Main.SizeFactor);
+		TopUIGO.transform.localPosition = new Vector3(0,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-40);
+		TopUIGO.transform.localScale = new Vector3(Res.DefaultWidth()/Main.SizeFactor,1, 45/Main.SizeFactor);
 		TopUIGO.transform.Rotate (90, -180, 0);
 		TopUIBmp = (Material)Resources.Load ("PlanAndManage/Materials/TopUIBar");
 		TopUIGO.renderer.material = TopUIBmp;
 		
 		TopCoinGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		Main.AddParent(TopCoinGO);
 		TopCoinGO.name = "TopCoin";
-		TopCoinGO.transform.position = new Vector3(280+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+		TopCoinGO.transform.localPosition = new Vector3(280,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 		TopCoinGO.transform.localScale = new Vector3(235/Main.SizeFactor,1, 37/Main.SizeFactor);
 		TopCoinGO.transform.Rotate (90, -180, 0);
 		TopCoinBmp = (Material)Resources.Load ("PlanAndManage/Materials/TopCoinBar");
 		TopCoinGO.renderer.material = TopCoinBmp;
 					
 		HotelStarGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		Main.AddParent(HotelStarGO);
 		HotelStarGO.name = "TopCoin";
-		HotelStarGO.transform.position = new Vector3(-270+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+		HotelStarGO.transform.localPosition = new Vector3(-270,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 		HotelStarGO.transform.localScale = new Vector3(248/Main.SizeFactor,1, 36/Main.SizeFactor);
 		HotelStarGO.transform.Rotate (90, -180, 0);
 		HotelStarBmp = (Material)Resources.Load ("PlanAndManage/Materials/HotelStar");
 		HotelStarGO.renderer.material = HotelStarBmp;
 					
 		DayPanelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		Main.AddParent(DayPanelGO);
 		DayPanelGO.name = "DayPanel";
-		DayPanelGO.transform.position = new Vector3(-90+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+		DayPanelGO.transform.localPosition = new Vector3(-90,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 		DayPanelGO.transform.localScale = new Vector3(97/Main.SizeFactor,1, 31/Main.SizeFactor);
 		DayPanelGO.transform.Rotate (90, -180, 0);
 		DayPanelBmp = (Material)Resources.Load ("PlanAndManage/Materials/DayPanel");
 		DayPanelGO.renderer.material = DayPanelBmp;
 					
 		TimePanelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		Main.AddParent(TimePanelGO);
 		TimePanelGO.name = "TimePanel";
-		TimePanelGO.transform.position = new Vector3(10+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+		TimePanelGO.transform.localPosition = new Vector3(10,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 		TimePanelGO.transform.localScale = new Vector3(97/Main.SizeFactor,1, 31/Main.SizeFactor);
 		TimePanelGO.transform.Rotate (90, -180, 0);
 		TimePanelBmp = (Material)Resources.Load ("PlanAndManage/Materials/TimePanel");
 		TimePanelGO.renderer.material = TimePanelBmp;
 					
 		LikePanelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+		Main.AddParent(LikePanelGO);
 		LikePanelGO.name = "LikePanel";
-		LikePanelGO.transform.position = new Vector3(110+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+		LikePanelGO.transform.localPosition = new Vector3(110,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 		LikePanelGO.transform.localScale = new Vector3(97/Main.SizeFactor,1, 31/Main.SizeFactor);
 		LikePanelGO.transform.Rotate (90, -180, 0);
 		LikePanelBmp = (Material)Resources.Load ("PlanAndManage/Materials/LikePanel");
 		LikePanelGO.renderer.material = LikePanelBmp;
 					
 		DayText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
+		Main.AddParent(DayText);
 		DayText.name = "DayText";
-		DayText.transform.position = new Vector3(-100+400, ((0/2) - 17.5f)/Main.PostFactor, -44);
+		DayText.transform.localPosition = new Vector3(-100, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 		DayText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 		DayText.transform.Rotate (0,-180,0);
 		DayText.renderer.material.color = Color.black;
 					
 					
 		TimeText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
+		Main.AddParent(TimeText);
 		TimeText.name = "TimeText";
-		TimeText.transform.position = new Vector3(-5+400, ((0/2) - 17.5f)/Main.PostFactor, -44);
+		TimeText.transform.localPosition = new Vector3(-5, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 		TimeText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 		TimeText.transform.Rotate (0,-180,0);
 		TimeText.renderer.material.color = Color.black;
 					
 					
 		LikeText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
+		Main.AddParent(LikeText);
 		LikeText.name = "LikeText";
-		LikeText.transform.position = new Vector3(100+400, ((0/2) - 17.5f)/Main.PostFactor, -44);
+		LikeText.transform.localPosition = new Vector3(100, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 		LikeText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 		LikeText.transform.Rotate (0,-180,0);
 		LikeText.renderer.material.color = Color.black;
 					
 					
 		CoinText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
+		Main.AddParent(CoinText);
 		CoinText.name = "CoinText";
-		CoinText.transform.position = new Vector3(210+400, ((0/2) - 17.5f)/Main.PostFactor, -44);
+		CoinText.transform.localPosition = new Vector3(210, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 		CoinText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 		CoinText.transform.Rotate (0,-180,0);
 		CoinText.renderer.material.color = Color.black;
@@ -299,8 +309,9 @@ public class TileArray : MonoBehaviour {
 		for(int a = 0;a<Main.MyPlayerAtr.ReturnHotelRank();a++)
 		{
 			GameObject MySprite = GameObject.CreatePrimitive(PrimitiveType.Plane);
+			Main.AddParent(MySprite);
 			MySprite.name = "StarIcon"+a;
-			MySprite.transform.position = new Vector3((103+(a*26) - (0/2))/Main.PostFactor, ((0/2) - 17.5f)/Main.PostFactor, -44);
+			MySprite.transform.localPosition = new Vector3((103+(a*26) - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 			MySprite.transform.localScale = new Vector3(24/Main.SizeFactor,1, 24/Main.SizeFactor);
 			MySprite.transform.Rotate (90, -180, 0);
 			Material MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/StarIcon");
