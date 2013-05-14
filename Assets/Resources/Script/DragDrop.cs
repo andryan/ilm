@@ -21,8 +21,8 @@ public class DragDrop : MonoBehaviour {
 	}
 	private Hashtable getReferenceHash()
 	{
-		float tempY = (dragObject.transform.localPosition.y - Res.DefaultHeight()/2)/TileArray.tileHeight;
-		float tempX = (dragObject.transform.localPosition.x + Res.DefaultWidth()/2)/TileArray.tileWidth;
+		float tempY = dragObject.transform.position.y/TileArray.tileHeight;
+		float tempX = dragObject.transform.position.x/TileArray.tileWidth;
 				
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);
@@ -32,22 +32,6 @@ public class DragDrop : MonoBehaviour {
 		return moduleDataHash;
 	}
 	
-	private Hashtable getAreaReferenceHash()
-	{
-		float tempY = (dragObject.transform.localPosition.y - Res.DefaultHeight()/2)/TileArray.tileHeight;
-		float tempX = (dragObject.transform.localPosition.x + Res.DefaultWidth()/2)/TileArray.tileWidth;
-				
-		int tileY = Mathf.Abs((int)tempY);
-		int tileX = Mathf.Abs((int)tempX);
-		
-		Hashtable moduleDataHash = Main.MyModule.GetDataByCoverageArea(tileY, tileX);
-		
-		return moduleDataHash;
-		
-	}
-	
-	
-	
 	private void OnMouseDown()
 	{
 		if(dragObject != null)
@@ -55,7 +39,7 @@ public class DragDrop : MonoBehaviour {
 			CustomerAtr MyCA = (CustomerAtr)dragObject.GetComponent("CustomerAtr");
 				
 			
-			Hashtable referenceHash = getAreaReferenceHash();
+			Hashtable referenceHash = getReferenceHash();
 			//testing
 			CustomerBehaviour MyCB = (CustomerBehaviour)dragObject.GetComponent("CustomerBehaviour");
 			MyCB.CustomerPrevData = referenceHash;
@@ -63,12 +47,12 @@ public class DragDrop : MonoBehaviour {
 			GameObject referenceObject = GameObject.Find ((string)referenceHash["Name"]);
 			
 			Hashtable ModuleClassHash = Main.MyModuleClass.GetDataByName((string)referenceHash["Name"]);
-				
+			
 			//check existance of current ref obj
 			if((string)referenceHash["Type"] == MyCA.ReturnRequest() && (int)ModuleClassHash["Occupy"] == 0)
 			{
 				CancelInvoke("OnMouseDown");
-				dragObject.transform.localPosition = referenceObject.transform.localPosition;
+				dragObject.transform.position = referenceObject.transform.position;
 				Main.MySE.PlaySFX("ReadToPay");
 				Main.MyModuleClass.SetOccupy((string)prevReferenceHash["Type"], (int)prevReferenceHash["ID"], "-"); //set previous occupied module back to empty
 				Main.MyModuleClass.SetOccupy((string)referenceHash["Type"], (int)referenceHash["ID"], "+"); //set current occupied module to occupied
@@ -117,7 +101,7 @@ public class DragDrop : MonoBehaviour {
 								if(MyCA.ReturnRequest() != "nC")
 								{
 									dragObject = Main.MyCustomer.customerList[i];        // If we hit an object then hold on to the object.
-									prevPos = dragObject.transform.localPosition;
+									prevPos = dragObject.transform.position;
 									Main.MySE.PlaySFX("Select");
 									prevReferenceHash = getReferenceHash();
 									
@@ -138,7 +122,7 @@ public class DragDrop : MonoBehaviour {
 			if(dragObject != null)
 			{
 				Main.MyCustomer.SetCustomerStatus(dragObject, true); //reset customer status when customer obj is let go without valid object reference
-				dragObject.transform.localPosition = prevPos;
+				dragObject.transform.position = prevPos;
 				Main.MySE.PlaySFX("Cancel");
 				dragObject = null;  
 				Main.MyHelper.InitHelper();

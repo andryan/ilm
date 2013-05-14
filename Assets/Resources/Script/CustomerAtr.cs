@@ -237,7 +237,7 @@ public class CustomerAtr : MonoBehaviour
 				if(CurrentStation == "nC")
 				{
 					//SpawnIcon ("nC");	
-					SpawnIcon ("nC",HashObject.Hash ("Post", new Vector3(140,-345,this.gameObject.transform.localPosition.z)));
+					SpawnIcon ("nC",HashObject.Hash ("Post", new Vector3(140,-345,this.gameObject.transform.position.z)));
 				}
 				else
 				{
@@ -405,7 +405,7 @@ public class CustomerAtr : MonoBehaviour
 				}
 			}
 		}
-		SpawnText (TemString, new Vector3(this.gameObject.transform.localPosition.x, this.gameObject.transform.localPosition.y-10, - 60));
+		SpawnText (TemString, new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y-10, - 60));
 	}
 	
 	private void CalTotalCoin()
@@ -478,7 +478,7 @@ public class CustomerAtr : MonoBehaviour
 	{
 		GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite"));
 		MySprite.name = "SpawnText";
-		MySprite.transform.localPosition = Post;
+		MySprite.transform.position = Post;
 		MySprite.transform.localScale = new Vector3(1.5f*Main.FontFactor, 1.5f*Main.FontFactor, 1.5f*Main.FontFactor);
 		MySprite.transform.Rotate(0,-180,0);
 		MySprite.renderer.material.color = Color.black;
@@ -498,8 +498,8 @@ public class CustomerAtr : MonoBehaviour
 	
 	private void CheckIconPost()
 	{
-		Emoticon.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x,this.gameObject.transform.localPosition.y+35,this.gameObject.transform.localPosition.z-20);
-		if(Mathf.Abs(Emoticon.transform.localPosition.x - StoredPost.x) > 0 || Mathf.Abs (Emoticon.transform.localPosition.y - StoredPost.y) >0)
+		Emoticon.transform.position = new Vector3(this.gameObject.transform.position.x,this.gameObject.transform.position.y+35,this.gameObject.transform.position.z-10);
+		if(Mathf.Abs(Emoticon.transform.position.x - StoredPost.x) > 0 || Mathf.Abs (Emoticon.transform.position.y - StoredPost.y) >0)
 		{
 			//Emoticon.renderer.enabled = false;	
 		}
@@ -530,16 +530,14 @@ public class CustomerAtr : MonoBehaviour
 		DestroyIcon ();
 		EmoticonImg = (Material)Resources.Load ("Materials/"+Request+"Icon");
 		Emoticon = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
-		Main.AddParent(Emoticon);
 		Emoticon.name = this.gameObject.name;
 		Emoticon.renderer.material = EmoticonImg;
-		Emoticon.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x,this.gameObject.transform.localPosition.y+35,this.gameObject.transform.localPosition.z-20);
-		Emoticon.transform.localScale = new Vector3(40,40,0.1f);
+		Emoticon.transform.position = new Vector3(this.gameObject.transform.position.x,this.gameObject.transform.position.y+35,this.gameObject.transform.position.z-10);
 		Emoticon.transform.Rotate (0,0,-180);
 		StoredScale = Emoticon.transform.localScale;
 		if(SpecificPost == null)
 		{
-			StoredPost = Emoticon.transform.localPosition;	
+			StoredPost = Emoticon.transform.position;	
 		}
 		else
 		{

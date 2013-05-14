@@ -1320,7 +1320,7 @@ public class iTween : MonoBehaviour{
 		if(args.Contains("looktarget")){
 			if (args["looktarget"].GetType() == typeof(Transform)) {
 				Transform transform = (Transform)args["looktarget"];
-				args["localPosition"]=new Vector3(transform.localPosition.x,transform.localPosition.y,transform.localPosition.z);
+				args["position"]=new Vector3(transform.position.x,transform.position.y,transform.position.z);
 				args["rotation"]=new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,transform.eulerAngles.z);
 			}
 		}
@@ -1332,32 +1332,32 @@ public class iTween : MonoBehaviour{
 	}		
 	
 	/// <summary>
-	/// Changes a GameObject's localPosition over time to a supplied destination with MINIMUM customization options.
+	/// Changes a GameObject's position over time to a supplied destination with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
 	/// A <see cref="GameObject"/> to be the target of the animation.
 	/// </param>
-	/// <param name="localPosition">
+	/// <param name="position">
 	/// A <see cref="Vector3"/> for the destination Vector3.
 	/// </param>
 	/// <param name="time">
 	/// A <see cref="System.Single"/> for the time in seconds the animation will take to complete.
 	/// </param>
-	public static void MoveTo(GameObject target, Vector3 localPosition, float time){
-		MoveTo(target,Hash("localPosition",localPosition,"time",time));
+	public static void MoveTo(GameObject target, Vector3 position, float time){
+		MoveTo(target,Hash("position",position,"time",time));
 	}	
 		
 	/// <summary>
-	/// Changes a GameObject's localPosition over time to a supplied destination with FULL customization options.
+	/// Changes a GameObject's position over time to a supplied destination with FULL customization options.
 	/// </summary>
-	/// <param name="localPosition">
+	/// <param name="position">
 	/// A <see cref="Transform"/> or <see cref="Vector3"/> for a point in space the GameObject will animate to.
 	/// </param>
 	/// <param name="path">
 	/// A <see cref="Transform[]"/> or <see cref="Vector3[]"/> for a list of points to draw a Catmull-Rom through for a curved animation path.
 	/// </param>
 	/// <param name="movetopath">
-	/// A <see cref="System.Boolean"/> for whether to automatically generate a curve from the GameObject's current localPosition to the beginning of the path. True by default.
+	/// A <see cref="System.Boolean"/> for whether to automatically generate a curve from the GameObject's current position to the beginning of the path. True by default.
 	/// </param>
 	/// <param name="x">
 	/// A <see cref="System.Single"/> or <see cref="System.Double"/> for the individual setting of the x axis.
@@ -1433,10 +1433,10 @@ public class iTween : MonoBehaviour{
 		args = iTween.CleanArgs(args);
 		
 		//additional property to ensure ConflictCheck can work correctly since Transforms are refrences:		
-		if(args.Contains("localPosition")){
-			if (args["localPosition"].GetType() == typeof(Transform)) {
-				Transform transform = (Transform)args["localPosition"];
-				args["localPosition"]=new Vector3(transform.localPosition.x,transform.localPosition.y,transform.localPosition.z);
+		if(args.Contains("position")){
+			if (args["position"].GetType() == typeof(Transform)) {
+				Transform transform = (Transform)args["position"];
+				args["position"]=new Vector3(transform.position.x,transform.position.y,transform.position.z);
 				args["rotation"]=new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,transform.eulerAngles.z);
 				args["scale"]=new Vector3(transform.localScale.x,transform.localScale.y,transform.localScale.z);
 			}
@@ -1449,32 +1449,32 @@ public class iTween : MonoBehaviour{
 	}
 		
 	/// <summary>
-	/// Instantly changes a GameObject's localPosition to a supplied destination then returns it to it's starting localPosition over time with MINIMUM customization options.
+	/// Instantly changes a GameObject's position to a supplied destination then returns it to it's starting position over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
 	/// A <see cref="GameObject"/> to be the target of the animation.
 	/// </param>
-	/// <param name="localPosition">
+	/// <param name="position">
 	/// A <see cref="Vector3"/> for the destination Vector3.
 	/// </param>
 	/// <param name="time">
 	/// A <see cref="System.Single"/> for the time in seconds the animation will take to complete.
 	/// </param>
-	public static void MoveFrom(GameObject target, Vector3 localPosition, float time){
-		MoveFrom(target,Hash("localPosition",localPosition,"time",time));
+	public static void MoveFrom(GameObject target, Vector3 position, float time){
+		MoveFrom(target,Hash("position",position,"time",time));
 	}		
 	
 	/// <summary>
-	/// Instantly changes a GameObject's localPosition to a supplied destination then returns it to it's starting localPosition over time with FULL customization options.
+	/// Instantly changes a GameObject's position to a supplied destination then returns it to it's starting position over time with FULL customization options.
 	/// </summary>
-	/// <param name="localPosition">
+	/// <param name="position">
 	/// A <see cref="Transform"/> or <see cref="Vector3"/> for a point in space the GameObject will animate to.
 	/// </param>
 	/// <param name="path">
 	/// A <see cref="Transform[]"/> or <see cref="Vector3[]"/> for a list of points to draw a Catmull-Rom through for a curved animation path.
 	/// </param>
 	/// <param name="movetopath">
-	/// A <see cref="System.Boolean"/> for whether to automatically generate a curve from the GameObject's current localPosition to the beginning of the path. True by default.
+	/// A <see cref="System.Boolean"/> for whether to automatically generate a curve from the GameObject's current position to the beginning of the path. True by default.
 	/// </param>
 	/// <param name="x">
 	/// A <see cref="System.Single"/> or <see cref="System.Double"/> for the individual setting of the x axis.
@@ -1566,68 +1566,68 @@ public class iTween : MonoBehaviour{
 				Transform[] temp = (Transform[])args["path"];
 				suppliedPath = new Vector3[temp.Length];
 				for (int i = 0; i < temp.Length; i++) {
-					suppliedPath[i]=temp[i].localPosition;
+					suppliedPath[i]=temp[i].position;
 				}
 			}
-			if(suppliedPath[suppliedPath.Length-1] != target.transform.localPosition){
+			if(suppliedPath[suppliedPath.Length-1] != target.transform.position){
 				fromPath= new Vector3[suppliedPath.Length+1];
 				Array.Copy(suppliedPath,fromPath,suppliedPath.Length);
 				if(tempIsLocal){
 					fromPath[fromPath.Length-1] = target.transform.localPosition;
 					target.transform.localPosition=fromPath[0];
 				}else{
-					fromPath[fromPath.Length-1] = target.transform.localPosition;
-					target.transform.localPosition=fromPath[0];
+					fromPath[fromPath.Length-1] = target.transform.position;
+					target.transform.position=fromPath[0];
 				}
 				args["path"]=fromPath;
 			}else{
 				if(tempIsLocal){
 					target.transform.localPosition=suppliedPath[0];
 				}else{
-					target.transform.localPosition=suppliedPath[0];
+					target.transform.position=suppliedPath[0];
 				}
 				args["path"]=suppliedPath;
 			}
 		}else{
-			Vector3 templocalPosition;
-			Vector3 fromlocalPosition;
+			Vector3 tempPosition;
+			Vector3 fromPosition;
 			
-			//set templocalPosition and base fromlocalPosition:
+			//set tempPosition and base fromPosition:
 			if(tempIsLocal){
-				templocalPosition=fromlocalPosition=target.transform.localPosition;
+				tempPosition=fromPosition=target.transform.localPosition;
 			}else{
-				templocalPosition=fromlocalPosition=target.transform.localPosition;	
+				tempPosition=fromPosition=target.transform.position;	
 			}
 			
-			//set augmented fromlocalPosition:
-			if(args.Contains("localPosition")){
-				if (args["localPosition"].GetType() == typeof(Transform)){
-					Transform trans = (Transform)args["localPosition"];
-					fromlocalPosition=trans.localPosition;
-				}else if(args["localPosition"].GetType() == typeof(Vector3)){
-					fromlocalPosition=(Vector3)args["localPosition"];
+			//set augmented fromPosition:
+			if(args.Contains("position")){
+				if (args["position"].GetType() == typeof(Transform)){
+					Transform trans = (Transform)args["position"];
+					fromPosition=trans.position;
+				}else if(args["position"].GetType() == typeof(Vector3)){
+					fromPosition=(Vector3)args["position"];
 				}			
 			}else{
 				if (args.Contains("x")) {
-					fromlocalPosition.x=(float)args["x"];
+					fromPosition.x=(float)args["x"];
 				}
 				if (args.Contains("y")) {
-					fromlocalPosition.y=(float)args["y"];
+					fromPosition.y=(float)args["y"];
 				}
 				if (args.Contains("z")) {
-					fromlocalPosition.z=(float)args["z"];
+					fromPosition.z=(float)args["z"];
 				}
 			}
 			
-			//apply fromlocalPosition:
+			//apply fromPosition:
 			if(tempIsLocal){
-				target.transform.localPosition = fromlocalPosition;
+				target.transform.localPosition = fromPosition;
 			}else{
-				target.transform.localPosition = fromlocalPosition;	
+				target.transform.position = fromPosition;	
 			}
 			
-			//set new localPosition arg:
-			args["localPosition"]=templocalPosition;
+			//set new position arg:
+			args["position"]=tempPosition;
 		}
 			
 		//establish iTween:
@@ -1637,13 +1637,13 @@ public class iTween : MonoBehaviour{
 	}
 		
 	/// <summary>
-	/// Translates a GameObject's localPosition over time with MINIMUM customization options.
+	/// Translates a GameObject's position over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
 	/// A <see cref="GameObject"/> to be the target of the animation.
 	/// </param>
 	/// <param name="amount">
-	/// A <see cref="Vector3"/> for the amount of change in localPosition to move the GameObject.
+	/// A <see cref="Vector3"/> for the amount of change in position to move the GameObject.
 	/// </param>
 	/// <param name="time">
 	/// A <see cref="System.Single"/> for the time in seconds the animation will take to complete.
@@ -1653,10 +1653,10 @@ public class iTween : MonoBehaviour{
 	}
 	
 	/// <summary>
-	/// Translates a GameObject's localPosition over time with FULL customization options.
+	/// Translates a GameObject's position over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
-	/// A <see cref="Vector3"/> for the amount of change in localPosition to move the GameObject.
+	/// A <see cref="Vector3"/> for the amount of change in position to move the GameObject.
 	/// </param>
 	/// <param name="x">
 	/// A <see cref="System.Single"/> or <see cref="System.Double"/> for the individual setting of the x axis.
@@ -1741,7 +1741,7 @@ public class iTween : MonoBehaviour{
 	/// A <see cref="GameObject"/> to be the target of the animation.
 	/// </param>
 	/// <param name="amount">
-	/// A <see cref="Vector3"/> for the amount of change in localPosition to move the GameObject.
+	/// A <see cref="Vector3"/> for the amount of change in position to move the GameObject.
 	/// </param>
 	/// <param name="time">
 	/// A <see cref="System.Single"/> for the time in seconds the animation will take to complete.
@@ -1751,10 +1751,10 @@ public class iTween : MonoBehaviour{
 	}
 	
 	/// <summary>
-	/// Adds the supplied coordinates to a GameObject's localPosition with FULL customization options.
+	/// Adds the supplied coordinates to a GameObject's position with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
-	/// A <see cref="Vector3"/> for the amount of change in localPosition to move the GameObject.
+	/// A <see cref="Vector3"/> for the amount of change in position to move the GameObject.
 	/// </param>
 	/// <param name="x">
 	/// A <see cref="System.Single"/> or <see cref="System.Double"/> for the individual setting of the x axis.
@@ -1913,7 +1913,7 @@ public class iTween : MonoBehaviour{
 		if(args.Contains("scale")){
 			if (args["scale"].GetType() == typeof(Transform)) {
 				Transform transform = (Transform)args["scale"];
-				args["localPosition"]=new Vector3(transform.localPosition.x,transform.localPosition.y,transform.localPosition.z);
+				args["position"]=new Vector3(transform.position.x,transform.position.y,transform.position.z);
 				args["rotation"]=new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,transform.eulerAngles.z);
 				args["scale"]=new Vector3(transform.localScale.x,transform.localScale.y,transform.localScale.z);
 			}
@@ -2290,7 +2290,7 @@ public class iTween : MonoBehaviour{
 		if(args.Contains("rotation")){
 			if (args["rotation"].GetType() == typeof(Transform)) {
 				Transform transform = (Transform)args["rotation"];
-				args["localPosition"]=new Vector3(transform.localPosition.x,transform.localPosition.y,transform.localPosition.z);
+				args["position"]=new Vector3(transform.position.x,transform.position.y,transform.position.z);
 				args["rotation"]=new Vector3(transform.eulerAngles.x,transform.eulerAngles.y,transform.eulerAngles.z);
 				args["scale"]=new Vector3(transform.localScale.x,transform.localScale.y,transform.localScale.z);
 			}
@@ -2612,7 +2612,7 @@ public class iTween : MonoBehaviour{
 	}		
 	
 	/// <summary>
-	/// Randomly shakes a GameObject's localPosition by a diminishing amount over time with MINIMUM customization options.
+	/// Randomly shakes a GameObject's position by a diminishing amount over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
 	/// A <see cref="GameObject"/> to be the target of the animation.
@@ -2623,12 +2623,12 @@ public class iTween : MonoBehaviour{
 	/// <param name="time">
 	/// A <see cref="System.Single"/> for the time in seconds the animation will take to complete.
 	/// </param>
-	public static void ShakelocalPosition(GameObject target, Vector3 amount, float time){
-		ShakelocalPosition(target,Hash("amount",amount,"time",time));
+	public static void ShakePosition(GameObject target, Vector3 amount, float time){
+		ShakePosition(target,Hash("amount",amount,"time",time));
 	}
 	
 	/// <summary>
-	/// Randomly shakes a GameObject's localPosition by a diminishing amount over time with FULL customization options.
+	/// Randomly shakes a GameObject's position by a diminishing amount over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
 	/// A <see cref="Vector3"/> for the magnitude of shake.
@@ -2690,13 +2690,13 @@ public class iTween : MonoBehaviour{
 	/// <param name="oncompleteparams">
 	/// A <see cref="System.Object"/> for arguments to be sent to the "oncomplete" method.
 	/// </param>
-	public static void ShakelocalPosition(GameObject target, Hashtable args){
+	public static void ShakePosition(GameObject target, Hashtable args){
 		//clean args:
 		args = iTween.CleanArgs(args);
 		
 		//establish iTween
 		args["type"]="shake";
-		args["method"]="localPosition";
+		args["method"]="position";
 		Launch(target,args);
 	}		
 	
@@ -2858,7 +2858,7 @@ public class iTween : MonoBehaviour{
 	}			
 	
 	/// <summary>
-	/// Applies a jolt of force to a GameObject's localPosition and wobbles it back to its initial localPosition with MINIMUM customization options.
+	/// Applies a jolt of force to a GameObject's position and wobbles it back to its initial position with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
 	/// A <see cref="GameObject"/> to be the target of the animation.
@@ -2869,12 +2869,12 @@ public class iTween : MonoBehaviour{
 	/// <param name="time">
 	/// A <see cref="System.Single"/> for the time in seconds the animation will take to complete.
 	/// </param>
-	public static void PunchlocalPosition(GameObject target, Vector3 amount, float time){
-		PunchlocalPosition(target,Hash("amount",amount,"time",time));
+	public static void PunchPosition(GameObject target, Vector3 amount, float time){
+		PunchPosition(target,Hash("amount",amount,"time",time));
 	}
 	
 	/// <summary>
-	/// Applies a jolt of force to a GameObject's localPosition and wobbles it back to its initial localPosition with FULL customization options.
+	/// Applies a jolt of force to a GameObject's position and wobbles it back to its initial position with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
 	/// A <see cref="Vector3"/> for the magnitude of shake.
@@ -2933,13 +2933,13 @@ public class iTween : MonoBehaviour{
 	/// <param name="oncompleteparams">
 	/// A <see cref="System.Object"/> for arguments to be sent to the "oncomplete" method.
 	/// </param>
-	public static void PunchlocalPosition(GameObject target, Hashtable args){
+	public static void PunchPosition(GameObject target, Hashtable args){
 		//clean args:
 		args = iTween.CleanArgs(args);
 		
 		//establish iTween
 		args["type"]="punch";
-		args["method"]="localPosition";
+		args["method"]="position";
 		args["easetype"]=EaseType.punch;
 		Launch(target,args);
 	}		
@@ -3203,9 +3203,9 @@ public class iTween : MonoBehaviour{
 			break;
 			case "shake":
 				switch (method) {
-					case "localPosition":
-						GenerateShakelocalPositionTargets();
-						apply = new ApplyTween(ApplyShakelocalPositionTargets);
+					case "position":
+						GenerateShakePositionTargets();
+						apply = new ApplyTween(ApplyShakePositionTargets);
 					break;		
 					case "scale":
 						GenerateShakeScaleTargets();
@@ -3219,9 +3219,9 @@ public class iTween : MonoBehaviour{
 			break;			
 			case "punch":
 				switch (method) {
-					case "localPosition":
-						GeneratePunchlocalPositionTargets();
-						apply = new ApplyTween(ApplyPunchlocalPositionTargets);
+					case "position":
+						GeneratePunchPositionTargets();
+						apply = new ApplyTween(ApplyPunchPositionTargets);
 					break;	
 					case "rotation":
 						GeneratePunchRotationTargets();
@@ -3524,14 +3524,14 @@ public class iTween : MonoBehaviour{
 			}
 			suppliedPath = new Vector3[temp.Length];
 			for (int i = 0; i < temp.Length; i++) {
-				suppliedPath[i]=temp[i].localPosition;
+				suppliedPath[i]=temp[i].position;
 			}
 		}
 		
 		//do we need to plot a path to get to the beginning of the supplied path?		
 		bool plotStart;
 		int offset;
-		if(transform.localPosition != suppliedPath[0]){
+		if(transform.position != suppliedPath[0]){
 			if(!tweenArguments.Contains("movetopath") || (bool)tweenArguments["movetopath"]==true){
 				plotStart=true;
 				offset=3;	
@@ -3547,7 +3547,7 @@ public class iTween : MonoBehaviour{
 		//build calculated path:
 		vector3s = new Vector3[suppliedPath.Length+offset];
 		if(plotStart){
-			vector3s[1]=transform.localPosition;
+			vector3s[1]=transform.position;
 			offset=2;
 		}else{
 			offset=1;
@@ -3589,16 +3589,16 @@ public class iTween : MonoBehaviour{
 		if (isLocal) {
 			vector3s[0]=vector3s[1]=transform.localPosition;				
 		}else{
-			vector3s[0]=vector3s[1]=transform.localPosition;
+			vector3s[0]=vector3s[1]=transform.position;
 		}
 		
 		//to values:
-		if (tweenArguments.Contains("localPosition")) {
-			if (tweenArguments["localPosition"].GetType() == typeof(Transform)){
-				Transform trans = (Transform)tweenArguments["localPosition"];
-				vector3s[1]=trans.localPosition;
-			}else if(tweenArguments["localPosition"].GetType() == typeof(Vector3)){
-				vector3s[1]=(Vector3)tweenArguments["localPosition"];
+		if (tweenArguments.Contains("position")) {
+			if (tweenArguments["position"].GetType() == typeof(Transform)){
+				Transform trans = (Transform)tweenArguments["position"];
+				vector3s[1]=trans.position;
+			}else if(tweenArguments["position"].GetType() == typeof(Vector3)){
+				vector3s[1]=(Vector3)tweenArguments["position"];
 			}
 		}else{
 			if (tweenArguments.Contains("x")) {
@@ -3632,7 +3632,7 @@ public class iTween : MonoBehaviour{
 		vector3s[4] = transform.eulerAngles;
 		
 		//from values:
-		vector3s[0]=vector3s[1]=vector3s[3]=transform.localPosition;
+		vector3s[0]=vector3s[1]=vector3s[3]=transform.position;
 				
 		//to values:
 		if (tweenArguments.Contains("amount")) {
@@ -3651,8 +3651,8 @@ public class iTween : MonoBehaviour{
 		
 		//calculation for dial in:
 		transform.Translate(vector3s[1],space);
-		vector3s[5] = transform.localPosition;
-		transform.localPosition=vector3s[0];
+		vector3s[5] = transform.position;
+		transform.position=vector3s[0];
 		
 		//handle orient to path request:
 		if(tweenArguments.Contains("orienttopath") && (bool)tweenArguments["orienttopath"]){
@@ -3857,7 +3857,7 @@ public class iTween : MonoBehaviour{
 		}
 	}		
 	
-	void GenerateShakelocalPositionTargets(){
+	void GenerateShakePositionTargets(){
 		//values holder [0] from, [1] to, [2] calculated value from ease equation, [3] original rotation to make sure look requests don't interfere with the direction object should move in:
 		vector3s=new Vector3[4];
 		
@@ -3865,7 +3865,7 @@ public class iTween : MonoBehaviour{
 		vector3s[3] = transform.eulerAngles;		
 		
 		//root:
-		vector3s[0]=transform.localPosition;
+		vector3s[0]=transform.position;
 		
 		//amount:
 		if (tweenArguments.Contains("amount")) {
@@ -3929,7 +3929,7 @@ public class iTween : MonoBehaviour{
 		}
 	}	
 	
-	void GeneratePunchlocalPositionTargets(){
+	void GeneratePunchPositionTargets(){
 		//values holder [0] from, [1] to, [2] calculated value from ease equation, [3] previous value for Translate usage to allow Space utilization, [4] original rotation to make sure look requests don't interfere with the direction object should move in:
 		vector3s=new Vector3[5];
 		
@@ -3937,7 +3937,7 @@ public class iTween : MonoBehaviour{
 		vector3s[4] = transform.eulerAngles;
 		
 		//from values:
-		vector3s[0]=transform.localPosition;
+		vector3s[0]=transform.position;
 		vector3s[1]=vector3s[3]=Vector3.zero;
 				
 		//to values:
@@ -4155,7 +4155,7 @@ public class iTween : MonoBehaviour{
 	}
 	
 	void ApplyMoveToPathTargets(){
-		preUpdate = transform.localPosition;
+		preUpdate = transform.position;
 		float t = ease(0,1,percentage);
 		float lookAheadAmount;
 		
@@ -4163,7 +4163,7 @@ public class iTween : MonoBehaviour{
 		if(isLocal){
 			transform.localPosition=path.Interp(Mathf.Clamp(t,0,1));	
 		}else{
-			transform.localPosition=path.Interp(Mathf.Clamp(t,0,1));	
+			transform.position=path.Interp(Mathf.Clamp(t,0,1));	
 		}
 		
 		//handle orient to path request:
@@ -4180,21 +4180,21 @@ public class iTween : MonoBehaviour{
 			tLook = ease(0,1, Mathf.Min(1f, percentage+lookAheadAmount)); 
 			
 			//locate new leading point with a clamp as stated above:
-			//Vector3 lookDistance = path.Interp(Mathf.Clamp(tLook,0,1)) - transform.localPosition;
+			//Vector3 lookDistance = path.Interp(Mathf.Clamp(tLook,0,1)) - transform.position;
 			tweenArguments["looktarget"] = path.Interp(Mathf.Clamp(tLook,0,1));
 		}
 		
 		//need physics?
-		postUpdate=transform.localPosition;
+		postUpdate=transform.position;
 		if(physics){
-			transform.localPosition=preUpdate;
+			transform.position=preUpdate;
 			rigidbody.MovePosition(postUpdate);
 		}
 	}
 	
 	void ApplyMoveToTargets(){
 		//record current:
-		preUpdate=transform.localPosition;
+		preUpdate=transform.position;
 			
 		//calculate:
 		vector3s[2].x = ease(vector3s[0].x,vector3s[1].x,percentage);
@@ -4205,7 +4205,7 @@ public class iTween : MonoBehaviour{
 		if (isLocal) {
 			transform.localPosition=vector3s[2];
 		}else{
-			transform.localPosition=vector3s[2];
+			transform.position=vector3s[2];
 		}
 			
 		//dial in:
@@ -4213,20 +4213,20 @@ public class iTween : MonoBehaviour{
 			if (isLocal) {
 				transform.localPosition=vector3s[1];		
 			}else{
-				transform.localPosition=vector3s[1];
+				transform.position=vector3s[1];
 			}
 		}
 			
 		//need physics?
-		postUpdate=transform.localPosition;
+		postUpdate=transform.position;
 		if(physics){
-			transform.localPosition=preUpdate;
+			transform.position=preUpdate;
 			rigidbody.MovePosition(postUpdate);
 		}
 	}	
 	
 	void ApplyMoveByTargets(){	
-		preUpdate = transform.localPosition;
+		preUpdate = transform.position;
 		
 		//reset rotation to prevent look interferences as object rotates and attempts to move with translate and record current rotation
 		Vector3 currentRotation = new Vector3();
@@ -4255,14 +4255,14 @@ public class iTween : MonoBehaviour{
 		/*
 		//dial in:
 		if(percentage==1){	
-			transform.localPosition=vector3s[5];
+			transform.position=vector3s[5];
 		}
 		*/
 		
 		//need physics?
-		postUpdate=transform.localPosition;
+		postUpdate=transform.position;
 		if(physics){
-			transform.localPosition=preUpdate;
+			transform.position=preUpdate;
 			rigidbody.MovePosition(postUpdate);
 		}
 	}	
@@ -4350,8 +4350,8 @@ public class iTween : MonoBehaviour{
 		}		
 	}	
 	
-	void ApplyShakelocalPositionTargets(){
-		preUpdate = transform.localPosition;
+	void ApplyShakePositionTargets(){
+		preUpdate = transform.position;
 		
 		//reset rotation to prevent look interferences as object rotates and attempts to move with translate and record current rotation
 		Vector3 currentRotation = new Vector3();
@@ -4367,7 +4367,7 @@ public class iTween : MonoBehaviour{
 		}
 		
 		//reset:
-		transform.localPosition=vector3s[0];
+		transform.position=vector3s[0];
 		
 		//generate:
 		float diminishingControl = 1-percentage;
@@ -4384,9 +4384,9 @@ public class iTween : MonoBehaviour{
 		}	
 		
 		//need physics?
-		postUpdate=transform.localPosition;
+		postUpdate=transform.position;
 		if(physics){
-			transform.localPosition=preUpdate;
+			transform.position=preUpdate;
 			rigidbody.MovePosition(postUpdate);
 		}
 	}	
@@ -4438,8 +4438,8 @@ public class iTween : MonoBehaviour{
 		}
 	}		
 	
-	void ApplyPunchlocalPositionTargets(){
-		preUpdate = transform.localPosition;
+	void ApplyPunchPositionTargets(){
+		preUpdate = transform.position;
 		
 		//reset rotation to prevent look interferences as object rotates and attempts to move with translate and record current rotation
 		Vector3 currentRotation = new Vector3();
@@ -4480,14 +4480,14 @@ public class iTween : MonoBehaviour{
 		//dial in:
 		/*
 		if(percentage==1){	
-			transform.localPosition=vector3s[0];
+			transform.position=vector3s[0];
 		}
 		*/
 		
 		//need physics?
-		postUpdate=transform.localPosition;
+		postUpdate=transform.position;
 		if(physics){
-			transform.localPosition=preUpdate;
+			transform.position=preUpdate;
 			rigidbody.MovePosition(postUpdate);
 		}
 	}		
@@ -5152,7 +5152,7 @@ public class iTween : MonoBehaviour{
 	/// <summary>
 	/// Similar to MoveTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options. Does not utilize an EaseType. 
 	/// </summary>
-	/// <param name="localPosition">
+	/// <param name="position">
 	/// A <see cref="Transform"/> or <see cref="Vector3"/> for a point in space the GameObject will animate to.
 	/// </param>
 	/// <param name="x">
@@ -5188,7 +5188,7 @@ public class iTween : MonoBehaviour{
 		float time;
 		Vector3[] vector3s = new Vector3[4];
 		bool isLocal;
-		Vector3 preUpdate = target.transform.localPosition;
+		Vector3 preUpdate = target.transform.position;
 			
 		//set smooth time:
 		if(args.Contains("time")){
@@ -5209,16 +5209,16 @@ public class iTween : MonoBehaviour{
 		if(isLocal){
 			vector3s[0] = vector3s[1] = target.transform.localPosition;
 		}else{
-			vector3s[0] = vector3s[1] = target.transform.localPosition;	
+			vector3s[0] = vector3s[1] = target.transform.position;	
 		}
 		
 		//to values:
-		if (args.Contains("localPosition")) {
-			if (args["localPosition"].GetType() == typeof(Transform)){
-				Transform trans = (Transform)args["localPosition"];
-				vector3s[1]=trans.localPosition;
-			}else if(args["localPosition"].GetType() == typeof(Vector3)){
-				vector3s[1]=(Vector3)args["localPosition"];
+		if (args.Contains("position")) {
+			if (args["position"].GetType() == typeof(Transform)){
+				Transform trans = (Transform)args["position"];
+				vector3s[1]=trans.position;
+			}else if(args["position"].GetType() == typeof(Vector3)){
+				vector3s[1]=(Vector3)args["position"];
 			}			
 		}else{
 			if (args.Contains("x")) {
@@ -5251,13 +5251,13 @@ public class iTween : MonoBehaviour{
 		if(isLocal){
 			target.transform.localPosition = vector3s[3];			
 		}else{
-			target.transform.localPosition=vector3s[3];	
+			target.transform.position=vector3s[3];	
 		}	
 		
 		//need physics?
 		if(target.rigidbody != null){
-			Vector3 postUpdate=target.transform.localPosition;
-			target.transform.localPosition=preUpdate;
+			Vector3 postUpdate=target.transform.position;
+			target.transform.position=preUpdate;
 			target.rigidbody.MovePosition(postUpdate);
 		}
 	}
@@ -5268,14 +5268,14 @@ public class iTween : MonoBehaviour{
 	/// <param name="target">
 	/// A <see cref="GameObject"/> to be the target of the animation.
 	/// </param>
-	/// <param name="localPosition">
+	/// <param name="position">
 	/// A <see cref="Vector3"/> for a point in space the GameObject will animate to.
 	/// </param>
 	/// <param name="time">
 	/// A <see cref="System.Single"/> for the time in seconds the animation will take to complete.
 	/// </param>
-	public static void MoveUpdate(GameObject target, Vector3 localPosition, float time){
-		MoveUpdate(target,Hash("localPosition",localPosition,"time",time));
+	public static void MoveUpdate(GameObject target, Vector3 position, float time){
+		MoveUpdate(target,Hash("position",position,"time",time));
 	}
 	
 	/// <summary>
@@ -5394,7 +5394,7 @@ public class iTween : MonoBehaviour{
 		
 		//create and store path points:
 		for (int i = 0; i < path.Length; i++) {
-			suppliedPath[i]=path[i].localPosition;
+			suppliedPath[i]=path[i].position;
 		}
 		
 		Vector3[] vector3s = PathControlPointGenerator(suppliedPath);
@@ -5472,7 +5472,7 @@ public class iTween : MonoBehaviour{
 	/// A <see cref="System.Single"/>
 	/// </param>
 	public static void PutOnPath(GameObject target, Vector3[] path, float percent){
-		target.transform.localPosition=Interp(PathControlPointGenerator(path),percent);
+		target.transform.position=Interp(PathControlPointGenerator(path),percent);
 	}
 	
 	/// <summary>
@@ -5488,7 +5488,7 @@ public class iTween : MonoBehaviour{
 	/// A <see cref="System.Single"/>
 	/// </param>
 	public static void PutOnPath(Transform target, Vector3[] path, float percent){
-		target.localPosition=Interp(PathControlPointGenerator(path),percent);
+		target.position=Interp(PathControlPointGenerator(path),percent);
 	}	
 	
 	/// <summary>
@@ -5507,9 +5507,9 @@ public class iTween : MonoBehaviour{
 		//create and store path points:
 		Vector3[] suppliedPath = new Vector3[path.Length];
 		for (int i = 0; i < path.Length; i++) {
-			suppliedPath[i]=path[i].localPosition;
+			suppliedPath[i]=path[i].position;
 		}	
-		target.transform.localPosition=Interp(PathControlPointGenerator(suppliedPath),percent);
+		target.transform.position=Interp(PathControlPointGenerator(suppliedPath),percent);
 	}	
 	
 	/// <summary>
@@ -5528,13 +5528,13 @@ public class iTween : MonoBehaviour{
 		//create and store path points:
 		Vector3[] suppliedPath = new Vector3[path.Length];
 		for (int i = 0; i < path.Length; i++) {
-			suppliedPath[i]=path[i].localPosition;
+			suppliedPath[i]=path[i].position;
 		}	
-		target.localPosition=Interp(PathControlPointGenerator(suppliedPath),percent);
+		target.position=Interp(PathControlPointGenerator(suppliedPath),percent);
 	}		
 	
 	/// <summary>
-	/// Returns a Vector3 localPosition on a path at the provided percentage  
+	/// Returns a Vector3 position on a path at the provided percentage  
 	/// </summary>
 	/// <param name="path">
 	/// A <see cref="Transform[]"/>
@@ -5549,7 +5549,7 @@ public class iTween : MonoBehaviour{
 		//create and store path points:
 		Vector3[] suppliedPath = new Vector3[path.Length];
 		for (int i = 0; i < path.Length; i++) {
-			suppliedPath[i]=path[i].localPosition;
+			suppliedPath[i]=path[i].position;
 		}	
 		return(Interp(PathControlPointGenerator(suppliedPath),percent));
 	}
@@ -5592,7 +5592,7 @@ public class iTween : MonoBehaviour{
 			//create and store line points:
 			Vector3[] suppliedLine = new Vector3[line.Length];
 			for (int i = 0; i < line.Length; i++) {
-				suppliedLine[i]=line[i].localPosition;
+				suppliedLine[i]=line[i].position;
 			}
 			DrawLineHelper(suppliedLine,Defaults.color,"gizmos");
 		}
@@ -5612,7 +5612,7 @@ public class iTween : MonoBehaviour{
 			//create and store line points:
 			Vector3[] suppliedLine = new Vector3[line.Length];
 			for (int i = 0; i < line.Length; i++) {
-				suppliedLine[i]=line[i].localPosition;
+				suppliedLine[i]=line[i].position;
 			}
 			
 			DrawLineHelper(suppliedLine, color,"gizmos");
@@ -5657,7 +5657,7 @@ public class iTween : MonoBehaviour{
 			//create and store line points:
 			Vector3[] suppliedLine = new Vector3[line.Length];
 			for (int i = 0; i < line.Length; i++) {
-				suppliedLine[i]=line[i].localPosition;
+				suppliedLine[i]=line[i].position;
 			}
 			DrawLineHelper(suppliedLine,Defaults.color,"gizmos");
 		}
@@ -5677,7 +5677,7 @@ public class iTween : MonoBehaviour{
 			//create and store line points:
 			Vector3[] suppliedLine = new Vector3[line.Length];
 			for (int i = 0; i < line.Length; i++) {
-				suppliedLine[i]=line[i].localPosition;
+				suppliedLine[i]=line[i].position;
 			}
 			
 			DrawLineHelper(suppliedLine, color,"gizmos");
@@ -5722,7 +5722,7 @@ public class iTween : MonoBehaviour{
 			//create and store line points:
 			Vector3[] suppliedLine = new Vector3[line.Length];
 			for (int i = 0; i < line.Length; i++) {
-				suppliedLine[i]=line[i].localPosition;
+				suppliedLine[i]=line[i].position;
 			}
 			DrawLineHelper(suppliedLine,Defaults.color,"handles");
 		}
@@ -5742,7 +5742,7 @@ public class iTween : MonoBehaviour{
 			//create and store line points:
 			Vector3[] suppliedLine = new Vector3[line.Length];
 			for (int i = 0; i < line.Length; i++) {
-				suppliedLine[i]=line[i].localPosition;
+				suppliedLine[i]=line[i].position;
 			}
 			
 			DrawLineHelper(suppliedLine, color,"handles");
@@ -5750,7 +5750,7 @@ public class iTween : MonoBehaviour{
 	}	
 	
 	/// <summary>
-	/// Returns a Vector3 localPosition on a path at the provided percentage  
+	/// Returns a Vector3 position on a path at the provided percentage  
 	/// </summary>
 	/// <param name="path">
 	/// A <see cref="Vector3[]"/>
@@ -5803,7 +5803,7 @@ public class iTween : MonoBehaviour{
 			//create and store path points:
 			Vector3[] suppliedPath = new Vector3[path.Length];
 			for (int i = 0; i < path.Length; i++) {
-				suppliedPath[i]=path[i].localPosition;
+				suppliedPath[i]=path[i].position;
 			}
 			
 			DrawPathHelper(suppliedPath,Defaults.color,"gizmos");	
@@ -5824,7 +5824,7 @@ public class iTween : MonoBehaviour{
 			//create and store path points:
 			Vector3[] suppliedPath = new Vector3[path.Length];
 			for (int i = 0; i < path.Length; i++) {
-				suppliedPath[i]=path[i].localPosition;
+				suppliedPath[i]=path[i].position;
 			}
 			
 			DrawPathHelper(suppliedPath, color,"gizmos");
@@ -5869,7 +5869,7 @@ public class iTween : MonoBehaviour{
 			//create and store path points:
 			Vector3[] suppliedPath = new Vector3[path.Length];
 			for (int i = 0; i < path.Length; i++) {
-				suppliedPath[i]=path[i].localPosition;
+				suppliedPath[i]=path[i].position;
 			}
 			
 			DrawPathHelper(suppliedPath,Defaults.color,"gizmos");	
@@ -5890,7 +5890,7 @@ public class iTween : MonoBehaviour{
 			//create and store path points:
 			Vector3[] suppliedPath = new Vector3[path.Length];
 			for (int i = 0; i < path.Length; i++) {
-				suppliedPath[i]=path[i].localPosition;
+				suppliedPath[i]=path[i].position;
 			}
 			
 			DrawPathHelper(suppliedPath, color,"gizmos");
@@ -5935,7 +5935,7 @@ public class iTween : MonoBehaviour{
 			//create and store path points:
 			Vector3[] suppliedPath = new Vector3[path.Length];
 			for (int i = 0; i < path.Length; i++) {
-				suppliedPath[i]=path[i].localPosition;
+				suppliedPath[i]=path[i].position;
 			}
 			
 			DrawPathHelper(suppliedPath,Defaults.color,"handles");	
@@ -5956,7 +5956,7 @@ public class iTween : MonoBehaviour{
 			//create and store path points:
 			Vector3[] suppliedPath = new Vector3[path.Length];
 			for (int i = 0; i < path.Length; i++) {
-				suppliedPath[i]=path[i].localPosition;
+				suppliedPath[i]=path[i].position;
 			}
 			
 			DrawPathHelper(suppliedPath, color,"handles");
@@ -5971,7 +5971,7 @@ public class iTween : MonoBehaviour{
 	/// </param>
 	public static void CameraFadeDepth(int depth){
 		if(cameraFade){
-			cameraFade.transform.localPosition=new Vector3(cameraFade.transform.localPosition.x,cameraFade.transform.localPosition.y,depth);
+			cameraFade.transform.position=new Vector3(cameraFade.transform.position.x,cameraFade.transform.position.y,depth);
 		}
 	}
 	
@@ -6014,7 +6014,7 @@ public class iTween : MonoBehaviour{
 		}else{			
 			//establish colorFade object:
 			cameraFade = new GameObject("iTween Camera Fade");
-			cameraFade.transform.localPosition= new Vector3(.5f,.5f,depth);
+			cameraFade.transform.position= new Vector3(.5f,.5f,depth);
 			cameraFade.AddComponent("GUITexture");
 			cameraFade.guiTexture.texture=texture;
 			cameraFade.guiTexture.color = new Color(.5f,.5f,.5f,0);
@@ -6037,7 +6037,7 @@ public class iTween : MonoBehaviour{
 		}else{			
 			//establish colorFade object:
 			cameraFade = new GameObject("iTween Camera Fade");
-			cameraFade.transform.localPosition= new Vector3(.5f,.5f,Defaults.cameraFadeDepth);
+			cameraFade.transform.position= new Vector3(.5f,.5f,Defaults.cameraFadeDepth);
 			cameraFade.AddComponent("GUITexture");
 			cameraFade.guiTexture.texture=texture;
 			cameraFade.guiTexture.color = new Color(.5f,.5f,.5f,0);
@@ -6057,7 +6057,7 @@ public class iTween : MonoBehaviour{
 		}else{			
 			//establish colorFade object:
 			cameraFade = new GameObject("iTween Camera Fade");
-			cameraFade.transform.localPosition= new Vector3(.5f,.5f,Defaults.cameraFadeDepth);
+			cameraFade.transform.position= new Vector3(.5f,.5f,Defaults.cameraFadeDepth);
 			cameraFade.AddComponent("GUITexture");
 			cameraFade.guiTexture.texture=CameraTexture(Color.black);
 			cameraFade.guiTexture.color = new Color(.5f,.5f,.5f,0);
@@ -7452,9 +7452,9 @@ public class iTween : MonoBehaviour{
 	public static void moveToUpdate(GameObject target, Hashtable args){Debug.LogError("iTween Error: moveToUpdate() has been renamed to MoveUpdate().");}
 	public static void moveToUpdateWorld(GameObject target, Hashtable args){Debug.LogError("iTween Error: moveToUpdateWorld() has been deprecated. Please investigate MoveUpdate().");}
 	public static void moveToWorld(GameObject target, Hashtable args){Debug.LogError("iTween Error: moveToWorld() has been deprecated. Please investigate MoveTo().");}
-	public static void punchlocalPosition(GameObject target, Hashtable args){Debug.LogError("iTween Error: punchlocalPosition() has been renamed to PunchlocalPosition().");}
-	public static void punchlocalPositionWorld(GameObject target, Hashtable args){Debug.LogError("iTween Error: punchlocalPositionWorld() has been deprecated. Please investigate PunchlocalPosition().");}	
-	public static void punchRotation(GameObject target, Hashtable args){Debug.LogError("iTween Error: punchlocalPosition() has been renamed to PunchRotation().");}
+	public static void punchPosition(GameObject target, Hashtable args){Debug.LogError("iTween Error: punchPosition() has been renamed to PunchPosition().");}
+	public static void punchPositionWorld(GameObject target, Hashtable args){Debug.LogError("iTween Error: punchPositionWorld() has been deprecated. Please investigate PunchPosition().");}	
+	public static void punchRotation(GameObject target, Hashtable args){Debug.LogError("iTween Error: punchPosition() has been renamed to PunchRotation().");}
 	public static void punchRotationWorld(GameObject target, Hashtable args){Debug.LogError("iTween Error: punchRotationWorld() has been deprecated. Please investigate PunchRotation().");}	
 	public static void punchScale(GameObject target, Hashtable args){Debug.LogError("iTween Error: punchScale() has been renamed to PunchScale().");}
 	public static void rotateAdd(GameObject target, Hashtable args){Debug.LogError("iTween Error: rotateAdd() has been renamed to RotateAdd().");}
@@ -7466,8 +7466,8 @@ public class iTween : MonoBehaviour{
 	public static void scaleBy(GameObject target, Hashtable args){Debug.LogError("iTween Error: scaleBy() has been renamed to ScaleBy().");}
 	public static void scaleFrom(GameObject target, Hashtable args){Debug.LogError("iTween Error: scaleFrom() has been renamed to ScaleFrom().");}
 	public static void scaleTo(GameObject target, Hashtable args){Debug.LogError("iTween Error: scaleTo() has been renamed to ScaleTo().");}
-	public static void shake(GameObject target, Hashtable args){Debug.LogError("iTween Error: scale() has been deprecated. Please investigate ShakelocalPosition(), ShakeRotation() and ShakeScale().");}
-	public static void shakeWorld(GameObject target, Hashtable args){Debug.LogError("iTween Error: shakeWorld() has been deprecated. Please investigate ShakelocalPosition(), ShakeRotation() and ShakeScale().");}
+	public static void shake(GameObject target, Hashtable args){Debug.LogError("iTween Error: scale() has been deprecated. Please investigate ShakePosition(), ShakeRotation() and ShakeScale().");}
+	public static void shakeWorld(GameObject target, Hashtable args){Debug.LogError("iTween Error: shakeWorld() has been deprecated. Please investigate ShakePosition(), ShakeRotation() and ShakeScale().");}
 	public static void stab(GameObject target, Hashtable args){Debug.LogError("iTween Error: stab() has been renamed to Stab().");}
 	public static void stop(GameObject target, Hashtable args){Debug.LogError("iTween Error: stop() has been renamed to Stop().");}
 	public static void stopType(GameObject target, Hashtable args){Debug.LogError("iTween Error: stopType() has been deprecated. Please investigate Stop().");}

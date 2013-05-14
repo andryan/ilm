@@ -44,7 +44,7 @@ public class HelperBehaviour : MonoBehaviour {
 	}
 	private void Init()
 	{
-		prevHelperPost = this.gameObject.transform.localPosition;
+		prevHelperPost = this.gameObject.transform.position;
 		SpriteAnimObj = this.gameObject.transform.Find("SpriteAnim");
 		sAnim = (SpriteAnimator)SpriteAnimObj.GetComponent("SpriteAnimator");
 		InvokeRepeating ("sAnimEnterFrame",0f,0.06f);
@@ -75,8 +75,8 @@ public class HelperBehaviour : MonoBehaviour {
 	
 	private Vector3 convertPosToTile(GameObject currentObj)
 	{		
-		float tempY = (currentObj.transform.localPosition.y - Res.DefaultHeight()/2) /TileArray.tileHeight;
-		float tempX = (currentObj.transform.localPosition.x + Res.DefaultWidth()/2)/TileArray.tileWidth;
+		float tempY = currentObj.transform.position.y/TileArray.tileHeight;
+		float tempX = currentObj.transform.position.x/TileArray.tileWidth;
 				
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);
@@ -93,24 +93,24 @@ public class HelperBehaviour : MonoBehaviour {
 		int tempZ = (int)-currHelper.y*2;
 		//this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y, tempZ-1);
 		
-		int totalZ = tempZ - (int)this.gameObject.transform.localPosition.z;
+		int totalZ = tempZ - (int)this.gameObject.transform.position.z;
 		//print ("totalZ "+(totalZ-1));
 		//print ("tempZ "+ tempZ);
 		sAnim.transform.localPosition = new Vector3(0, 0, totalZ-1);
 		//prin
-		if(prevHelperPost.y > this.gameObject.transform.localPosition.y)
+		if(prevHelperPost.y > this.gameObject.transform.position.y)
 		{
 			sAnim.Play ("charac_walk_front");
 		}
-		else if(prevHelperPost.y < this.gameObject.transform.localPosition.y)
+		else if(prevHelperPost.y < this.gameObject.transform.position.y)
 		{
 			sAnim.Play ("charac_walk_behind");
 		}
-		else if(prevHelperPost.x < this.gameObject.transform.localPosition.x)
+		else if(prevHelperPost.x < this.gameObject.transform.position.x)
 		{
 			sAnim.Play ("charac_walk_right");
 		}
-		else if(prevHelperPost.x > this.gameObject.transform.localPosition.x)
+		else if(prevHelperPost.x > this.gameObject.transform.position.x)
 		{
 			sAnim.Play ("charac_walk_left");
 		}
@@ -118,11 +118,11 @@ public class HelperBehaviour : MonoBehaviour {
 		{
 			sAnim.Play ("charac_serving");
 		}
-		else if(prevHelperPost.y == this.gameObject.transform.localPosition.y && prevHelperPost.x == this.gameObject.transform.localPosition.x)
+		else if(prevHelperPost.y == this.gameObject.transform.position.y && prevHelperPost.x == this.gameObject.transform.position.x)
 		{
 			sAnim.Play ("charac_idle");
 		}
-		prevHelperPost = this.gameObject.transform.localPosition;
+		prevHelperPost = this.gameObject.transform.position;
 	}
 	
 	private void EnterFrame()
