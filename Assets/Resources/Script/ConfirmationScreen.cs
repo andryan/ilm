@@ -541,7 +541,7 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelBG = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelBG);
 			MyInfoPanelBG.name = "InfoPanelBG";
-			MyInfoPanelBG.transform.localPosition = new Vector3(400 - Res.DefaultWidth()/2,-240 + Res.DefaultHeight()/2,-46);
+			MyInfoPanelBG.transform.localPosition = new Vector3(512 - Res.DefaultWidth()/2,-384 + Res.DefaultHeight()/2,-46);
 			MyInfoPanelBG.transform.localScale = new Vector3(800/Main.SizeFactor, 1, 480/Main.SizeFactor);
 			MyInfoPanelBG.transform.Rotate (90, -180, 0);
 			MyInfoPanelBG.renderer.enabled = false;
@@ -557,7 +557,7 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelGO);
 			MyInfoPanelGO.name = "InfoPanel";
-			MyInfoPanelGO.transform.localPosition = new Vector3(400 - Res.DefaultWidth()/2,-240 + Res.DefaultHeight()/2,-48);
+			MyInfoPanelGO.transform.localPosition = new Vector3(512 - Res.DefaultWidth()/2,-384 + Res.DefaultHeight()/2,-48);
 			MyInfoPanelGO.transform.localScale = new Vector3(0.001f, 1, 0.001f);
 			MyInfoPanelGO.transform.Rotate (90,-180,0);
 			MyInfoPanelBmp = (Material)Resources.Load ("PlanAndManage/Materials/InfoPanel");
@@ -571,7 +571,8 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelCoinBarGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelCoinBarGO);
 			MyInfoPanelCoinBarGO.name = "InfoPanelCoinBar";
-			MyInfoPanelCoinBarGO.transform.localPosition = new Vector3((430-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 112)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			//MyInfoPanelCoinBarGO.transform.localPosition = new Vector3((550-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 180)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			MyInfoPanelCoinBarGO.transform.localPosition = new Vector3(50,130,-50);
 			MyInfoPanelCoinBarGO.transform.localScale = new Vector3((186/Main.SizeFactor)/1.5f, 1, (48/Main.SizeFactor)/1.5f);
 			MyInfoPanelCoinBarGO.transform.Rotate (90,-180,0);
 			MyInfoPanelCoinBarGO.renderer.enabled = false;
@@ -588,7 +589,8 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelDiamondBarGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelDiamondBarGO);
 			MyInfoPanelDiamondBarGO.name = "InfoPanelDiamondBar";
-			MyInfoPanelDiamondBarGO.transform.localPosition = new Vector3((569-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 112)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			//MyInfoPanelDiamondBarGO.transform.localPosition = new Vector3((730-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 180)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			MyInfoPanelDiamondBarGO.transform.localPosition = new Vector3(180,130,-50);
 			MyInfoPanelDiamondBarGO.transform.localScale = new Vector3((186/Main.SizeFactor)/1.5f, 1, (48/Main.SizeFactor)/1.5f);
 			MyInfoPanelDiamondBarGO.transform.Rotate (90,-180,0);
 			MyInfoPanelDiamondBarGO.renderer.enabled = false;
@@ -605,7 +607,8 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelPictureBarGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelPictureBarGO);
 			MyInfoPanelPictureBarGO.name = "InfoPanelPictureBar";
-			MyInfoPanelPictureBarGO.transform.localPosition = new Vector3((275-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 235)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			//MyInfoPanelPictureBarGO.transform.localPosition = new Vector3((350-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 375)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			MyInfoPanelPictureBarGO.transform.localPosition = new Vector3(-130,0,-50);
 			MyInfoPanelPictureBarGO.transform.localScale = new Vector3((281/Main.SizeFactor)/1.5f, 1, (278/Main.SizeFactor)/1.5f);
 			MyInfoPanelPictureBarGO.transform.Rotate (90,-180,0);
 			MyInfoPanelPictureBarGO.renderer.enabled = false;
@@ -616,7 +619,8 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelPotraitGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelPotraitGO);
 			MyInfoPanelPotraitGO.name = "InfoPanelPictureBar";
-			MyInfoPanelPotraitGO.transform.localPosition = new Vector3((275-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 235)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			//MyInfoPanelPotraitGO.transform.localPosition = new Vector3((350-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 375)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			MyInfoPanelPotraitGO.transform.localPosition = new Vector3(-130,0,-50);
 			MyInfoPanelPotraitGO.transform.localScale = new Vector3((281/Main.SizeFactor)/1.5f, 1, (278/Main.SizeFactor)/1.5f);
 			MyInfoPanelPotraitGO.transform.Rotate (90,-180,0);
 			MyInfoPanelPotraitGO.renderer.enabled = false;
@@ -629,7 +633,8 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelGetDiamondGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelGetDiamondGO);
 			MyInfoPanelGetDiamondGO.name = "InfoPanelGetDiamond";
-			MyInfoPanelGetDiamondGO.transform.localPosition = new Vector3((275-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 352)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			//MyInfoPanelGetDiamondGO.transform.localPosition = new Vector3((350-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 565)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			MyInfoPanelGetDiamondGO.transform.localPosition = new Vector3(-130,-110,-50);
 			MyInfoPanelGetDiamondGO.transform.localScale = new Vector3((276/Main.SizeFactor)/1.5f, 1, (65/Main.SizeFactor)/1.5f);
 			MyInfoPanelGetDiamondGO.transform.Rotate (90,-180,0);
 			MyInfoPanelGetDiamondGO.renderer.enabled = false;
@@ -645,7 +650,8 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelConfirmGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelConfirmGO);
 			MyInfoPanelConfirmGO.name = "InfoPanelConfirm";
-			MyInfoPanelConfirmGO.transform.localPosition = new Vector3((460-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 330)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			//MyInfoPanelConfirmGO.transform.localPosition = new Vector3((590-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 530)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			MyInfoPanelConfirmGO.transform.localPosition = new Vector3(65,-80,-50);
 			MyInfoPanelConfirmGO.transform.localScale = new Vector3((117/Main.SizeFactor)/1.5f, 1, (130/Main.SizeFactor)/1.5f);
 			MyInfoPanelConfirmGO.transform.Rotate (90,-180,0);
 			MyInfoPanelConfirmGO.renderer.enabled = false;
@@ -661,7 +667,8 @@ public class ConfirmationScreen : MonoBehaviour
 			MyInfoPanelCancelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelCancelGO);
 			MyInfoPanelCancelGO.name = "InfoPanelCancel";
-			MyInfoPanelCancelGO.transform.localPosition = new Vector3((560-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 330)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			//MyInfoPanelCancelGO.transform.localPosition = new Vector3((715-(0/2))/Main.PostFactor - Res.DefaultWidth()/2,((0/2) - 530)/Main.PostFactor + Res.DefaultHeight()/2,-50);
+			MyInfoPanelCancelGO.transform.localPosition = new Vector3(160,-80,-50);
 			MyInfoPanelCancelGO.transform.localScale = new Vector3((117/Main.SizeFactor)/1.5f, 1, (130/Main.SizeFactor)/1.5f);
 			MyInfoPanelCancelGO.transform.Rotate (90,-180,0);
 			MyInfoPanelCancelGO.renderer.enabled = false;
@@ -677,7 +684,8 @@ public class ConfirmationScreen : MonoBehaviour
 			CoinText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(CoinText);
 			CoinText.name = "InfoPanelCoinText";
-			CoinText.transform.localPosition = new Vector3((410 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) -112f)/Main.PostFactor + Res.DefaultHeight()/2, -52);
+			//CoinText.transform.localPosition = new Vector3((525 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) -180)/Main.PostFactor + Res.DefaultHeight()/2, -52);
+			CoinText.transform.localPosition = new Vector3(30,130, -52);
 			CoinText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			CoinText.transform.Rotate (0,-180,0);
 			CoinText.renderer.material.color = Color.black;	
@@ -687,7 +695,8 @@ public class ConfirmationScreen : MonoBehaviour
 			DiamondText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(DiamondText);
 			DiamondText.name = "InfoPanelDiamondText";
-			DiamondText.transform.localPosition = new Vector3((550 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 112f)/Main.PostFactor - Res.DefaultHeight()/2, -52);
+			//DiamondText.transform.localPosition = new Vector3((705 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 180)/Main.PostFactor - Res.DefaultHeight()/2, -52);
+			DiamondText.transform.localPosition = new Vector3(160,130, -52);
 			DiamondText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			DiamondText.transform.Rotate (0,-180,0);
 			DiamondText.renderer.material.color = Color.black;	
@@ -696,8 +705,9 @@ public class ConfirmationScreen : MonoBehaviour
 		{
 			NameText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(NameText);
-			NameText.name = "InfoPanelDescriptionText";
-			NameText.transform.localPosition = new Vector3((385 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 165f)/Main.PostFactor + Res.DefaultHeight()/2, -50);
+			NameText.name = "InfoPanelNameText";
+			//NameText.transform.localPosition = new Vector3((490 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 265)/Main.PostFactor + Res.DefaultHeight()/2, -50);
+			NameText.transform.localPosition = new Vector3(-15,80, -50);
 			NameText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			NameText.transform.Rotate (0,-180,0);
 			NameText.renderer.material.color = Color.black;		
@@ -707,7 +717,8 @@ public class ConfirmationScreen : MonoBehaviour
 			CostText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(CostText);
 			CostText.name = "InfoPanelCostText";
-			CostText.transform.position = new Vector3((385 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 195f)/Main.PostFactor + Res.DefaultHeight()/2, -50);
+			//CostText.transform.position = new Vector3((490 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 310)/Main.PostFactor + Res.DefaultHeight()/2, -50);
+			CostText.transform.localPosition = new Vector3(-15,20, -50);
 			CostText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			CostText.transform.Rotate (0,-180,0);
 			CostText.renderer.material.color = Color.black;	
@@ -717,7 +728,8 @@ public class ConfirmationScreen : MonoBehaviour
 			DescriptionText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(DescriptionText);
 			DescriptionText.name = "InfoPanelDescriptionText";
-			DescriptionText.transform.position = new Vector3((385 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 225)/Main.PostFactor + Res.DefaultHeight()/2, -50);
+			//DescriptionText.transform.position = new Vector3((490 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 360)/Main.PostFactor + Res.DefaultHeight()/2, -50);
+			DescriptionText.transform.localPosition = new Vector3(-15,50, -50);
 			DescriptionText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			DescriptionText.transform.Rotate (0,-180,0);
 			DescriptionText.renderer.material.color = Color.black;	

@@ -94,11 +94,12 @@ public class CustomerClass : MonoBehaviour {
 	{
 		GameObject CustomerObject;
 		
-		CustomerObject =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/CustomerPrefab"));
+		int Rand = Random.Range(1, 5);
+		CustomerObject =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/CustomerPrefab" + Rand.ToString()));
 		CustomerObject.name = "Customer"+customerReferenceID.Count;
 		//0, 17
-		CustomerObject.AddComponent("CustomerAtr");
-		CustomerObject.AddComponent("CustomerBehaviour");
+		//CustomerObject.AddComponent("CustomerAtr");
+		//CustomerObject.AddComponent("CustomerBehaviour");
 		
 		Main.AddParent(CustomerObject);
 		
@@ -109,15 +110,16 @@ public class CustomerClass : MonoBehaviour {
 		customerReferenceID.Add (customerReferenceID.Count);
 		customerStatus.Add (0);
 	
+		/*
 		Transform SpriteAnim = CustomerObject.transform.Find("SpriteAnim");
 		int Rand = Random.Range(1, 4);
 		print ("texture "+Rand);
 		//print ("Materials/Clients/Customer "+Rand.ToString()/Customer "+Rand.ToString());
-		Material MyBmp = (Material)Resources.Load ("Materials/Client/Customer2/Customer2");
+		Material MyBmp = (Material)Resources.Load ("Materials/Client/Customer1/Customer1.mat");
 		SpriteAnim.renderer.material = MyBmp;
-		
+		*/
 		//moveCustomerToCashier(CustomerObject);
-		print ("CustomerObject.name "+CustomerObject.name);
+		//Debug.Log("CustomerObject.name "+CustomerObject.name);
 		moveCustomerToQueue(CustomerObject);
 	}
 	//public GameObject GetCustomerObjectData(GameObject customerObj)

@@ -90,7 +90,8 @@ public class DragDrop : MonoBehaviour {
 	}
     void Update() {
         Ray ray = camera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));        // Gets the mouse position in the form of a ray.
-        if (Input.GetMouseButtonDown(0)) {      // If we click the mouse...
+		//Ray ray = new Ray(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -100), Vector3.forward);
+		if (Input.GetMouseButtonDown(0)) {      // If we click the mouse...
 		//if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
             InvokeRepeating("OnMouseDown", 0f, 0.02f);
 			RaycastHit hit; 

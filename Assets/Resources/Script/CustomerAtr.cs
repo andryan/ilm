@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class CustomerAtr : MonoBehaviour 
 {
 	private string Type = "";
-	private int TypeID = 0;
+	public int TypeID = 0;
 	private float TipsRate = 0.0f;
 	private float Satisfaction = 0.0f;
 	private int CurrentWaitingTime = 0;
@@ -477,6 +477,7 @@ public class CustomerAtr : MonoBehaviour
 	private void SpawnText(string PassString, Vector3 Post)
 	{
 		GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite"));
+		Main.AddParent(MySprite);
 		MySprite.name = "SpawnText";
 		MySprite.transform.localPosition = Post;
 		MySprite.transform.localScale = new Vector3(1.5f*Main.FontFactor, 1.5f*Main.FontFactor, 1.5f*Main.FontFactor);
@@ -534,7 +535,7 @@ public class CustomerAtr : MonoBehaviour
 		Emoticon.name = this.gameObject.name;
 		Emoticon.renderer.material = EmoticonImg;
 		Emoticon.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x,this.gameObject.transform.localPosition.y+35,this.gameObject.transform.localPosition.z-20);
-		Emoticon.transform.localScale = new Vector3(40,40,0.1f);
+		Emoticon.transform.localScale = new Vector3(50,64,0.1f);
 		Emoticon.transform.Rotate (0,0,-180);
 		StoredScale = Emoticon.transform.localScale;
 		if(SpecificPost == null)
