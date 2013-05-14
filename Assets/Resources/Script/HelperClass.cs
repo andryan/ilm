@@ -54,6 +54,7 @@ public class HelperClass : MonoBehaviour {
 				Hashtable HelperClassData = getHelperClassArrByID(HelperIntList[i]);
 				
 				HelperObject =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/HelperPrefab"));
+				Main.AddParent(HelperObject);
 				HelperObject.AddComponent("HelperBehaviour");
 				
 				helperList.Add (HelperObject);
@@ -61,7 +62,8 @@ public class HelperClass : MonoBehaviour {
 				MyHB.SetValue(HelperHashData);
 				
 				Vector3 ObjPosition = convertTileToPos((Vector3)HelperClassData["Post"]);
-				HelperObject.transform.position = ObjPosition;
+				HelperObject.transform.localPosition = ObjPosition;
+				HelperObject.transform.localScale = new Vector3(50,64,0.1f);
 				
 				Transform SpriteAnim = HelperObject.transform.Find("SpriteAnim");
 				print ("Materials/Helper/Helper"+HelperIntList[i].ToString()+"/Helper"+HelperIntList[i].ToString ());
@@ -217,13 +219,13 @@ public class HelperClass : MonoBehaviour {
 	{
 		HelperClassArr = new List<Hashtable>();
 		
-		HelperClassArr.Add (HashObject.Hash("ID", 1, "HelperObj", new GameObject(), "Post", new Vector3(15,4,0), "HelperStatus", 0));
-		HelperClassArr.Add (HashObject.Hash("ID", 2, "HelperObj", new GameObject(), "Post", new Vector3(5,7,0), "HelperStatus", 0));
-		HelperClassArr.Add (HashObject.Hash("ID", 3, "HelperObj", new GameObject(), "Post", new Vector3(6,9,0), "HelperStatus", 0));
-		HelperClassArr.Add (HashObject.Hash("ID", 4, "HelperObj", new GameObject(), "Post", new Vector3(9,9,0),  "HelperStatus", 0));
-		HelperClassArr.Add (HashObject.Hash("ID", 5, "HelperObj", new GameObject(), "Post", new Vector3(13,6,0),  "HelperStatus", 0));
-		HelperClassArr.Add (HashObject.Hash("ID", 6, "HelperObj", new GameObject(), "Post", new Vector3(13,8,0),  "HelperStatus", 0));
-		HelperClassArr.Add (HashObject.Hash("ID", 7, "HelperObj", new GameObject(), "Post", new Vector3(13,10,0),  "HelperStatus", 0));
+		HelperClassArr.Add (HashObject.Hash("ID", 1, "HelperObj", null, "Post", new Vector3(15,4,0), "HelperStatus", 0));
+		HelperClassArr.Add (HashObject.Hash("ID", 2, "HelperObj", null, "Post", new Vector3(5,7,0), "HelperStatus", 0));
+		HelperClassArr.Add (HashObject.Hash("ID", 3, "HelperObj", null, "Post", new Vector3(6,9,0), "HelperStatus", 0));
+		HelperClassArr.Add (HashObject.Hash("ID", 4, "HelperObj", null, "Post", new Vector3(9,9,0),  "HelperStatus", 0));
+		HelperClassArr.Add (HashObject.Hash("ID", 5, "HelperObj", null, "Post", new Vector3(13,6,0),  "HelperStatus", 0));
+		HelperClassArr.Add (HashObject.Hash("ID", 6, "HelperObj", null, "Post", new Vector3(13,8,0),  "HelperStatus", 0));
+		HelperClassArr.Add (HashObject.Hash("ID", 7, "HelperObj", null, "Post", new Vector3(13,10,0),  "HelperStatus", 0));
 		//HelperClassArr.Add (HashObject.Hash("ID", 8, "HelperObj", new GameObject(), "Post", new Vector3(13,8,0),  "HelperStatus", 0));
 	}
 //	
@@ -295,9 +297,9 @@ public class HelperClass : MonoBehaviour {
 	//Tile Conversion-
 	private Vector3 convertTileToPos(Vector3 tilePos)
 	{
-		float posX = tilePos.x * TileArray.tileWidth + (TileArray.tileWidth/2);
-		float posY = -tilePos.y * TileArray.tileHeight - (TileArray.tileHeight/2);
-		float posZ = 0;
+		float posX = tilePos.x * TileArray.tileWidth + (TileArray.tileWidth/2) - Res.DefaultWidth()/2;
+		float posY = -tilePos.y * TileArray.tileHeight - (TileArray.tileHeight/2) + Res.DefaultHeight()/2;
+		float posZ = -20;
 		
 		Vector3 currentPosition = new Vector3(posX, posY, posZ);
 		return currentPosition;
@@ -305,13 +307,13 @@ public class HelperClass : MonoBehaviour {
 	
 	private Vector3 convertPosToTile(GameObject currentObj)
 	{		
-		float tempY = currentObj.transform.position.y/TileArray.tileHeight;
-		float tempX = currentObj.transform.position.x/TileArray.tileWidth;
+		float tempY = (currentObj.transform.localPosition.y - Res.DefaultHeight()/2) /TileArray.tileHeight;
+		float tempX = (currentObj.transform.localPosition.x + Res.DefaultWidth()/2) /TileArray.tileWidth;
 				
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);
 					
-		Vector3 tilePos = new Vector3(tileX, tileY, 0);
+		Vector3 tilePos = new Vector3(tileX, tileY, 20);
 		return tilePos;
 	}
 }

@@ -17,8 +17,9 @@ public class StartScreen : MonoBehaviour {
 	private GameObject MusicObj = null;
 	
 	private List<GameObject> StartScreenBtnArr = null;
-	private List<Vector3> StartScreenObjScale = null;
+	//private List<Vector3> StartScreenObjScale = null;
 	private bool TapAlphaControl = false;
+	
 	// Use this for initialization
 	void Start () {
 
@@ -32,21 +33,30 @@ public class StartScreen : MonoBehaviour {
 	
 	private void SpawnStartScreen()
 	{
-		StartScreenObj = new GameObject();
-		TapStartObj = new GameObject();
+		//StartScreenObj = new GameObject();
+		//TapStartObj = new GameObject();
 		StartScreenBtnArr = new List<GameObject>();
-		StartScreenObjScale = new List<Vector3>();
+		//StartScreenObjScale = new List<Vector3>();
 		
 		StartScreenObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/StartScreenObj"));
 		TapStartObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/TapStartObj"));
-		StartScreenObj.transform.position = new Vector3(400, -240, 0);
-		TapStartObj.transform.position = new Vector3(400, - 460, -2);
+		
+		Main.AddParent(StartScreenObj);
+		Main.AddParent(TapStartObj);
+		
+		StartScreenObj.transform.localPosition = new Vector3(0, 0, 0);
+		TapStartObj.transform.localPosition = new Vector3(0, - 330, -2);
+		
+		
+		StartScreenObj.transform.localScale = new Vector3(1024, 769, 0.1f);
+		TapStartObj.transform.localScale = new Vector3(300, 80, 0.1f);
 		
 		InvokeRepeating("TapObjEnterFrame", 0f, 1f);
 	}
 	
 	private void EnterStartScreen()
 	{
+		/*
 		NewGameObj = new GameObject();
 		ResumeObj = new GameObject();
 		MoreGameObj = new GameObject();
@@ -54,6 +64,7 @@ public class StartScreen : MonoBehaviour {
 		TotalDiamondObj = new GameObject();
 		SoundObj = new GameObject();
 		MusicObj = new GameObject();
+		*/
 		
 		NewGameObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/NewGameObj"));
 		ResumeObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/ResumeObj"));
@@ -63,13 +74,32 @@ public class StartScreen : MonoBehaviour {
 		SoundObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/SoundObj"));
 		MusicObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/MusicObj"));
 		
-		NewGameObj.transform.position = new Vector3(200, -180, -2);
-		ResumeObj.transform.position = new Vector3(600, -180, -2);
-		MoreGameObj.transform.position = new Vector3(200, -300, -2);
-		MoreDiamondObj.transform.position = new Vector3(600, -300, -2);
-		TotalDiamondObj.transform.position = new Vector3(400, -360, -2);
-		SoundObj.transform.position = new Vector3(740, -450, -2);
-		MusicObj.transform.position = new Vector3(680, -450, -2);
+	
+		Main.AddParent(NewGameObj);
+		Main.AddParent(ResumeObj);
+		Main.AddParent(MoreGameObj);
+		Main.AddParent(MoreDiamondObj);
+		Main.AddParent(TotalDiamondObj);
+		Main.AddParent(SoundObj);
+		Main.AddParent(MusicObj);
+		
+		
+		NewGameObj.transform.localPosition = new Vector3(-200, 210, -2);
+		ResumeObj.transform.localPosition = new Vector3(200, 210, -2);
+		MoreGameObj.transform.localPosition = new Vector3(-200, -10, -2);
+		MoreDiamondObj.transform.localPosition = new Vector3(200, -10, -2);
+		TotalDiamondObj.transform.localPosition = new Vector3(0, -200, -2);
+		SoundObj.transform.localPosition = new Vector3(380, -325, -2);
+		MusicObj.transform.localPosition = new Vector3(460, -325, -2);
+		
+		NewGameObj.transform.localScale = new Vector3(350,100,0.1f);
+		ResumeObj.transform.localScale = new Vector3(350,100,0.1f);
+		MoreGameObj.transform.localScale = new Vector3(350,100,0.1f);
+		MoreDiamondObj.transform.localScale = new Vector3(350,100,0.1f);
+		TotalDiamondObj.transform.localScale = new Vector3(350,100,0.1f);
+		SoundObj.transform.localScale = new Vector3(64, 90, 0.1f);
+		MusicObj.transform.localScale = new Vector3(64, 90, 0.1f);
+		
 		
 		StartScreenBtnArr.Add(NewGameObj);
 		StartScreenBtnArr.Add(ResumeObj);
@@ -79,6 +109,7 @@ public class StartScreen : MonoBehaviour {
 		StartScreenBtnArr.Add(SoundObj);
 		StartScreenBtnArr.Add(MusicObj);
 		
+		/*
 		StartScreenObjScale.Add (NewGameObj.transform.localScale);
 		StartScreenObjScale.Add (ResumeObj.transform.localScale);
 		StartScreenObjScale.Add (MoreGameObj.transform.localScale);
@@ -86,6 +117,7 @@ public class StartScreen : MonoBehaviour {
 		StartScreenObjScale.Add (TotalDiamondObj.transform.localScale);
 		StartScreenObjScale.Add (SoundObj.transform.localScale);
 		StartScreenObjScale.Add (MusicObj.transform.localScale);
+		*/
 	}
 	
 	private void TapObjEnterFrame()
@@ -149,10 +181,12 @@ public class StartScreen : MonoBehaviour {
 			RaycastHit hit = new RaycastHit();
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			
+			/*
 			for(int i = 0;i<StartScreenBtnArr.Count; i++)
 			{
 				StartScreenBtnArr[i].transform.localScale = new Vector3(StartScreenObjScale[i].x, StartScreenObjScale[i].y, StartScreenObjScale[i].z);
 			}
+			*/
 		
 			if (Physics.Raycast (ray, out hit)) 
 			{
@@ -228,7 +262,7 @@ public class StartScreen : MonoBehaviour {
 		MusicObj = null;
 		
 		StartScreenBtnArr = null;
-		StartScreenObjScale = null;
+		//StartScreenObjScale = null;
 		
 	}
 }

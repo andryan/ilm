@@ -5,7 +5,10 @@ using System.Collections.Generic;
 public class PnMScreen : MonoBehaviour 
 {
 	//@ Kaizer: Data
-	private int TileSize = 40;
+	//private int TileSize = 40;
+	private int TileWidth = 50;
+	private int TileHeight = 64;
+	
 	public Main Parent = null;
 	private int VFXTimer = 0;
 	private List<string> MListenerList = null;
@@ -426,7 +429,7 @@ public class PnMScreen : MonoBehaviour
 		{
 			TemType = "Char";
 			TemSlot = 0;
-			TextPost = new Vector3(CharGO.transform.position.x, CharGO.transform.position.y-10, -60);
+			TextPost = new Vector3(CharGO.transform.localPosition.x, CharGO.transform.localPosition.y-10, -60);
 		}
 		if(TemType == "")
 		{
@@ -436,7 +439,7 @@ public class PnMScreen : MonoBehaviour
 				{
 					TemType = "Helper";
 					TemSlot = a;
-					TextPost = new Vector3(HelperGOList[a].transform.position.x, HelperGOList[a].transform.position.y-10, -60);
+					TextPost = new Vector3(HelperGOList[a].transform.localPosition.x, HelperGOList[a].transform.localPosition.y-10, -60);
 				}
 			}
 		}
@@ -539,8 +542,9 @@ public class PnMScreen : MonoBehaviour
 	private void SpawnText(string PassString, Vector3 Post)
 	{
 		 GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite"));
+		Main.AddParent(MySprite);
 		 MySprite.name = "SpawnText";
-		 MySprite.transform.position = Post;
+		 MySprite.transform.localPosition = Post;
 		 MySprite.transform.localScale = new Vector3(1.8f*Main.FontFactor, 1.8f*Main.FontFactor, 1.8f*Main.FontFactor);
 		 MySprite.transform.Rotate(0,-180,0);
 		 MySprite.renderer.material.color = Color.black;
@@ -573,16 +577,18 @@ public class PnMScreen : MonoBehaviour
 		{
 			MyMap = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			MyMap.name = "Map";
-			MyMap.transform.position = new Vector3(400,-240,-20);
-			MyMap.transform.localScale = new Vector3(800/Main.SizeFactor, 1,480/Main.SizeFactor);
+			Main.AddParent (MyMap);
+			MyMap.transform.localPosition = new Vector3(0,0,-20);
+			MyMap.transform.localScale = new Vector3(1024/Main.SizeFactor, 1,768/Main.SizeFactor);
 			MyMap.transform.Rotate (90,-180,0);
-			MyMapBmp = (Material)Resources.Load ("PlanAndManage/Materials/FloorBG");
+			MyMapBmp = (Material)Resources.Load ("PlanAndManage/Materials/FloorBG");// + Main.randomTheme);
 			MyMap.renderer.material = MyMapBmp;
 			
 			MyMapWindow = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			MyMapWindow.name = "MapWindow";
-			MyMapWindow.transform.position = new Vector3(-5, 171,-22);
-			MyMapWindow.transform.localScale = new Vector3(315/Main.SizeFactor, 1, 48/Main.SizeFactor);
+			Main.AddParent(MyMapWindow);
+			MyMapWindow.transform.localPosition = new Vector3(-6.4f, 273.6f,-22);
+			MyMapWindow.transform.localScale = new Vector3(403.2f/Main.SizeFactor, 1, 76.8f/Main.SizeFactor);
 			MyMapWindow.transform.Rotate (90, -180, 0);
 			MyMapWindowBmp = (Material)Resources.Load ("PlanAndManage/Materials/FloorBGWindow");
 			MyMapWindow.renderer.material = MyMapWindowBmp;
@@ -617,12 +623,13 @@ public class PnMScreen : MonoBehaviour
 			}
 			for(int c = 0;c<MyQueueUpLevelList.Count;c++)
 			{
-				
-				GameObject MySprite = GameObject.CreatePrimitive(PrimitiveType.Plane);
+				GameObject MySprite =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/QueueUpPrefab"));
 				MySprite.name = "QueueUpSlot"+c.ToString();
-				MySprite.transform.position = new Vector3((QueueUpPost[c].x*TileSize)/Main.PostFactor-(0/2)+(TileSize/2), ((0/2)-(QueueUpPost[c].y*TileSize)/Main.PostFactor) -(TileSize/2) +10,-24);
-				MySprite.transform.localScale = new Vector3(72/Main.SizeFactor, 1, 84/Main.SizeFactor);
-				MySprite.transform.Rotate (90,-180,0);
+				Main.AddParent(MySprite);
+				
+				MySprite.transform.localPosition = this.convertTileToPos(new Vector3(QueueUpPost[c].x, QueueUpPost[c].y, -24f));
+				MySprite.transform.localScale = new Vector3(50, 64, 0.1f);
+				
 				Material MyBmp = null;
 				if(MyQueueUpLevelList[c] >0)
 				{
@@ -634,6 +641,11 @@ public class PnMScreen : MonoBehaviour
 					iTween.FadeTo (MySprite,iTween.Hash("alpha",0.7f,"time",0f, "easetype",iTween.EaseType.linear));
 				}
 				
+				foreach(Transform child in MySprite.transform)
+				{
+					child.renderer.material = MyBmp;
+				}
+			
 				MySprite.renderer.material = MyBmp;
 				if(MyQueueUpLevelList[c]==0)
 				{
@@ -667,11 +679,14 @@ public class PnMScreen : MonoBehaviour
 			}
 			for(int c = 0;c<MyFoodLevelList.Count;c++)
 			{
-				GameObject MySprite = GameObject.CreatePrimitive(PrimitiveType.Plane);
+				
+				GameObject MySprite =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/FoodPrefab"));
 				MySprite.name = "FoodSlot"+c.ToString();
-				MySprite.transform.position = new Vector3((FoodPost[c].x*TileSize)/Main.PostFactor-(0/2)+(TileSize/2), ((0/2)-(FoodPost[c].y*TileSize)/Main.PostFactor) -(TileSize/2),-24);
-				MySprite.transform.localScale = new Vector3(51/Main.SizeFactor, 1, 46/Main.SizeFactor);
-				MySprite.transform.Rotate (90,-180,0);
+				Main.AddParent(MySprite);
+				
+				MySprite.transform.localPosition = this.convertTileToPos(new Vector3(FoodPost[c].x, FoodPost[c].y, -24f));
+				MySprite.transform.localScale = new Vector3(50, 64, 0.1f);
+				
 				Material MyBmp = null;
 				if(MyFoodLevelList[c] >0)
 				{
@@ -683,6 +698,11 @@ public class PnMScreen : MonoBehaviour
 					iTween.FadeTo (MySprite,iTween.Hash("alpha",0.7f,"time",0f, "easetype",iTween.EaseType.linear));
 				}
 				
+				foreach(Transform child in MySprite.transform)
+				{
+					child.renderer.material = MyBmp;
+				}
+			
 				MySprite.renderer.material = MyBmp;
 				if(MyFoodLevelList[c] == 0)
 				{
@@ -715,11 +735,14 @@ public class PnMScreen : MonoBehaviour
 			}
 			for(int c = 0;c<MyTDisplayLevelList.Count;c++)
 			{
-				GameObject MySprite = GameObject.CreatePrimitive(PrimitiveType.Plane);
+				GameObject MySprite =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/TDisplayPrefab"));
 				MySprite.name = "TDisplaySlot"+c.ToString();
-				MySprite.transform.position = new Vector3((TDisplayPost[c].x*TileSize)/Main.PostFactor-(0/2)+(TileSize/2), ((0/2)-(TDisplayPost[c].y*TileSize)/Main.PostFactor) -(TileSize/2) - 5,-24);
-				MySprite.transform.localScale = new Vector3(41/Main.SizeFactor, 1, 40/Main.SizeFactor);
-				MySprite.transform.Rotate (90,-180,0);
+				Main.AddParent(MySprite);
+				
+				MySprite.transform.localPosition = this.convertTileToPos(new Vector3(TDisplayPost[c].x, TDisplayPost[c].y, -24f));
+				MySprite.transform.localScale = new Vector3(50, 64, 0.1f);
+				
+				
 				Material MyBmp = null;
 				if(MyTDisplayLevelList[c] >0)
 				{
@@ -729,6 +752,11 @@ public class PnMScreen : MonoBehaviour
 				{
 					MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/TDisplayLv1");
 					iTween.FadeTo (MySprite,iTween.Hash("alpha",0.7f,"time",0f, "easetype",iTween.EaseType.linear));
+				}
+				
+				foreach(Transform child in MySprite.transform)
+				{
+					child.renderer.material = MyBmp;
 				}
 				
 				MySprite.renderer.material = MyBmp;
@@ -743,6 +771,17 @@ public class PnMScreen : MonoBehaviour
 			}
 		}		
 	}
+	
+	private Vector3 convertTileToPos(Vector3 tilePos)
+	{
+		float posX = tilePos.x * TileArray.tileWidth + (TileArray.tileWidth/2) - Res.DefaultWidth()/2;
+		float posY = -tilePos.y * TileArray.tileHeight - (TileArray.tileHeight/2) + Res.DefaultHeight()/2;
+		float posZ = tilePos.z;
+		
+		Vector3 currentPosition = new Vector3(posX, posY, posZ);
+		return currentPosition;
+	}
+	
 	private void BuildBarTools()
 	{
 		if(BarGOList == null)
@@ -761,13 +800,16 @@ public class PnMScreen : MonoBehaviour
 					}
 				}
 			}
+			
 			for(int c = 0;c<MyBarLevelList.Count;c++)
 			{
-				GameObject MySprite = GameObject.CreatePrimitive(PrimitiveType.Plane);
+				GameObject MySprite =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/BarPrefab"));
 				MySprite.name = "BarSlot"+c.ToString();
-				MySprite.transform.position = new Vector3((BarPost[c].x*TileSize)/Main.PostFactor-(0/2)+(TileSize/2), ((0/2)-(BarPost[c].y*TileSize)/Main.PostFactor) -(TileSize/2) - 22,-24);
-				MySprite.transform.localScale = new Vector3(37.44f/Main.SizeFactor, 1, 77/Main.SizeFactor);
-				MySprite.transform.Rotate (90,-180,0);
+				Main.AddParent(MySprite);
+				
+				MySprite.transform.localPosition = this.convertTileToPos(new Vector3(BarPost[c].x, BarPost[c].y, -24f));
+				MySprite.transform.localScale = new Vector3(50, 64, 0.1f);
+				
 				Material MyBmp = null;
 				if(MyBarLevelList[c] >0)
 				{
@@ -777,6 +819,11 @@ public class PnMScreen : MonoBehaviour
 				{
 					MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/BarLv1");
 					iTween.FadeTo (MySprite,iTween.Hash("alpha",0.7f,"time",0f, "easetype",iTween.EaseType.linear));
+				}
+				
+				foreach(Transform child in MySprite.transform)
+				{
+					child.renderer.material = MyBmp;
 				}
 				
 				MySprite.renderer.material = MyBmp;
@@ -795,13 +842,15 @@ public class PnMScreen : MonoBehaviour
 	{
 		if(CashierGO == null)
 		{
-			CashierGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+			CashierGO = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/CashierObj"));
 			CashierGO.name = "Cashier";
-			CashierGO.transform.position = new Vector3(-285+400, -177-240,-24);
-			CashierGO.transform.localScale = new Vector3(178/Main.SizeFactor, 1, 103/Main.SizeFactor);
-			CashierGO.transform.Rotate (90,-180,0);
-			CashierBmp = (Material)Resources.Load ("PlanAndManage/Materials/Cashier");
-			CashierGO.renderer.material = CashierBmp;
+			Main.AddParent(CashierGO);
+			CashierGO.transform.localPosition =  new Vector3(-362, -306f, -24f);
+			CashierGO.transform.localScale = new Vector3(200,140,0.1f);
+			//CashierGO.transform.localScale = new Vector3(200f, 0.1f, 140f);
+			//CashierGO.transform.Rotate (90,-180,0);
+			//CashierBmp = (Material)Resources.Load ("PlanAndManage/Materials/Cashier");
+			//CashierGO.renderer.material = CashierBmp;
 		}
 	}
 	private void BuildDeco()
@@ -810,8 +859,9 @@ public class PnMScreen : MonoBehaviour
 		{
 			DecoGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			DecoGO.name = "Deco";
-			DecoGO.transform.position = new Vector3((680 - (0/2))/Main.PostFactor, ((0/2)-415)/Main.PostFactor,-24);
-			DecoGO.transform.localScale = new Vector3(150/Main.SizeFactor, 1, 115/Main.SizeFactor);
+			Main.AddParent(DecoGO);
+			DecoGO.transform.localPosition = new Vector3((870 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2)-664)/Main.PostFactor + Res.DefaultHeight()/2,-24);
+			DecoGO.transform.localScale = new Vector3(192/Main.SizeFactor, 1, 184/Main.SizeFactor);
 			DecoGO.transform.Rotate (90,-180,0);
 			DecoBmp = (Material)Resources.Load ("PlanAndManage/Materials/DecoLv"+Main.MyPlayerAtr.ReturnExtraDeco());
 			DecoGO.renderer.material = DecoBmp;
@@ -826,26 +876,41 @@ public class PnMScreen : MonoBehaviour
 	{
 		if(PianoGO == null)
 		{
+			PianoGO = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/PianoObj"));
+			PianoGO.name = "Piano";
+			Main.AddParent(PianoGO);
+			PianoGO.transform.localPosition = new Vector3(-32f, -16f, -28f);
+			PianoGO.transform.localScale = new Vector3(250, 210, 0.1f);
+
+			/*
 			PianoGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			PianoGO.name = "Piano";
 			PianoGO.transform.position = new Vector3(-20+400, -16-240,-28);
 			PianoGO.transform.localScale = new Vector3(204/Main.SizeFactor, 1, 133/Main.SizeFactor);
 			PianoGO.transform.Rotate (90,-180,0);
 			PianoBmp = (Material)Resources.Load ("PlanAndManage/Materials/Piano");
-			PianoGO.renderer.material = PianoBmp;	
+			PianoGO.renderer.material = PianoBmp;
+			*/	
 		}
 	}
 	private void BuildBarTable()
 	{
 		if(BarTableGO == null)
 		{
+			BarTableGO = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/BarObj"));
+			BarTableGO.name = "BarTable";
+			Main.AddParent(BarTableGO);
+			BarTableGO.transform.localPosition = new Vector3(-27, -385, -22f);
+			BarTableGO.transform.localScale = new Vector3(320,90, 0.1f);
+			/*
 			BarTableGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			BarTableGO.name = "BarTable";
-			BarTableGO.transform.position = new Vector3(-21+400, -224-240,-30);
-			BarTableGO.transform.localScale = new Vector3(250/Main.SizeFactor, 1, 57f/Main.SizeFactor);
+			BarTableGO.transform.position = new Vector3(-25+400, -228-240,-30);
+			BarTableGO.transform.localScale = new Vector3(277/Main.SizeFactor, 1, 63/Main.SizeFactor);
 			BarTableGO.transform.Rotate (90,-180,0);
 			BarTableBmp = (Material)Resources.Load ("PlanAndManage/Materials/BarTable");
 			BarTableGO.renderer.material = BarTableBmp;	
+			*/
 		}	
 	}
 	
@@ -879,8 +944,10 @@ public class PnMScreen : MonoBehaviour
 			if(Check == false && Upgradable == true)
 			{
 				GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+				Main.AddParent(MySprite);
 				MySprite.name = QueueUpGOList[a].name;
-				MySprite.transform.position = new Vector3(QueueUpGOList[a].transform.position.x, QueueUpGOList[a].transform.position.y +35,-40);
+				MySprite.transform.localPosition = new Vector3(QueueUpGOList[a].transform.localPosition.x, QueueUpGOList[a].transform.localPosition.y +35,-40);
+				MySprite.transform.localScale = new Vector3(40,40,0.1f);
 				MySprite.transform.Rotate (0,0,-180);
 				Material MyBmp = null;
 				if(TemQueueUpLevelList[a] == 0)
@@ -916,8 +983,10 @@ public class PnMScreen : MonoBehaviour
 			if(Check == false && Upgradable == true)
 			{
 				GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+				Main.AddParent(MySprite);
 				MySprite.name = FoodGOList[a].name;
-				MySprite.transform.position = new Vector3(FoodGOList[a].transform.position.x, FoodGOList[a].transform.position.y +35,-40);
+				MySprite.transform.localPosition = new Vector3(FoodGOList[a].transform.localPosition.x, FoodGOList[a].transform.localPosition.y +35,-40);
+				MySprite.transform.localScale = new Vector3(40,40,0.1f);
 				MySprite.transform.Rotate (0,0,-180);
 				Material MyBmp = null;
 				if(TemFoodLevelList[a] == 0)
@@ -954,8 +1023,10 @@ public class PnMScreen : MonoBehaviour
 			if(Check == false && Upgradable == true)
 			{
 				GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+				Main.AddParent(MySprite);
 				MySprite.name = TDisplayGOList[a].name;
-				MySprite.transform.position = new Vector3(TDisplayGOList[a].transform.position.x, TDisplayGOList[a].transform.position.y +45,-40);
+				MySprite.transform.localPosition = new Vector3(TDisplayGOList[a].transform.localPosition.x, TDisplayGOList[a].transform.localPosition.y +45,-40);
+				MySprite.transform.localScale = new Vector3(40,40,0.1f);
 				MySprite.transform.Rotate (0,0,-180);
 				Material MyBmp = null;
 				if(TemTDisplayLevelList[a] == 0)
@@ -992,8 +1063,10 @@ public class PnMScreen : MonoBehaviour
 			if(Check == false && Upgradable == true)
 			{
 				GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+				Main.AddParent(MySprite);
 				MySprite.name = BarGOList[a].name;
-				MySprite.transform.position = new Vector3(BarGOList[a].transform.position.x, BarGOList[a].transform.position.y +50,-40);
+				MySprite.transform.localPosition = new Vector3(BarGOList[a].transform.localPosition.x, BarGOList[a].transform.localPosition.y +50,-40);
+				MySprite.transform.localScale = new Vector3(40,40,0.1f);
 				MySprite.transform.Rotate (0,0,-180);
 				Material MyBmp = null;
 				if(TemBarLevelList[a] == 0)
@@ -1026,8 +1099,10 @@ public class PnMScreen : MonoBehaviour
 		if(Upgradable == true)
 		{
 			GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+			Main.AddParent(MySprite);
 			MySprite.name = CashierGO.name;
-			MySprite.transform.position = new Vector3(CashierGO.transform.position.x, CashierGO.transform.position.y +45,-40);
+			MySprite.transform.localPosition = new Vector3(CashierGO.transform.localPosition.x, CashierGO.transform.localPosition.y +45,-40);
+			MySprite.transform.localScale = new Vector3(40,40,0.1f);
 			MySprite.transform.Rotate (0,0,-180);
 			Material MyBmp = null;
 			MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/UpgradeIcon");
@@ -1050,8 +1125,10 @@ public class PnMScreen : MonoBehaviour
 		if(Upgradable == true)
 		{
 			GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+			Main.AddParent(MySprite);
 			MySprite.name = DecoGO.name;
-			MySprite.transform.position = new Vector3(DecoGO.transform.position.x, DecoGO.transform.position.y +45,-40);
+			MySprite.transform.localPosition = new Vector3(DecoGO.transform.localPosition.x, DecoGO.transform.localPosition.y +45,-40);
+			MySprite.transform.localScale = new Vector3(40,40,0.1f);
 			MySprite.transform.Rotate (0,0,-180);
 			Material MyBmp = null;
 			MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/UpgradeIcon");
@@ -1087,8 +1164,9 @@ public class PnMScreen : MonoBehaviour
 			
 			CharGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			CharGO.name = "MainChar";
-			CharGO.transform.position = new Vector3((CharPost.x * TileSize)/Main.PostFactor +(TileSize/2) -(0/2), (0/2) - (CharPost.y * TileSize)/Main.PostFactor - (TileSize/2) + 10, -32);
-			CharGO.transform.localScale = new Vector3(67/Main.SizeFactor, 1, 67/Main.SizeFactor);
+			Main.AddParent(CharGO);
+			CharGO.transform.localPosition = new Vector3((CharPost.x * TileWidth)/Main.PostFactor +(TileWidth/2) -(0/2) - Res.DefaultWidth()/2 , (0/2) - (CharPost.y * TileHeight)/Main.PostFactor - (TileHeight/2) + 10 + Res.DefaultHeight()/2, -32);
+			CharGO.transform.localScale = new Vector3(67/Main.SizeFactor, 1, 67/Main.SizeFactor); 
 			CharGO.transform.Rotate (90,-180,0);
 			CharBmp = (Material)Resources.Load ("PlanAndManage/Materials/MainChar");
 			CharGO.renderer.material = CharBmp;		
@@ -1116,7 +1194,8 @@ public class PnMScreen : MonoBehaviour
 			{
 				GameObject MySprite = GameObject.CreatePrimitive(PrimitiveType.Plane);
 				MySprite.name = "Helper"+(c+1).ToString();
-				MySprite.transform.position = new Vector3((HelperPost[c].x*TileSize)/Main.PostFactor-(0/2)+(TileSize/2), ((0/2)-(HelperPost[c].y*TileSize)/Main.PostFactor) -(TileSize/2) + 10,-34);
+				Main.AddParent(MySprite);
+				MySprite.transform.localPosition = new Vector3((HelperPost[c].x*TileWidth)/Main.PostFactor-(0/2)+(TileWidth/2) - Res.DefaultWidth()/2, ((0/2)-(HelperPost[c].y*TileHeight)/Main.PostFactor) -(TileHeight/2) + 10 + Res.DefaultHeight()/2,-34);
 				MySprite.transform.localScale = new Vector3(67/Main.SizeFactor, 1 , 67/Main.SizeFactor);
 				MySprite.transform.Rotate(90, -180, 0);
 				Material MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/Helper"+(c+1).ToString()+"Icon");
@@ -1156,9 +1235,11 @@ public class PnMScreen : MonoBehaviour
 		if(Upgradable == true)
 		{
 			GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+			Main.AddParent(MySprite);
 			MySprite.name = CharGO.name;
-			MySprite.transform.position = new Vector3(CharGO.transform.position.x, CharGO.transform.position.y +35,-40);
+			MySprite.transform.localPosition = new Vector3(CharGO.transform.localPosition.x, CharGO.transform.localPosition.y +35,-40);
 			MySprite.transform.Rotate (0,0,-180);
+			MySprite.transform.localScale = new Vector3(40,40,0.1f);
 			Material MyBmp = null;
 			MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/UpgradeIcon");
 			MySprite.renderer.material = MyBmp;
@@ -1181,11 +1262,13 @@ public class PnMScreen : MonoBehaviour
 			if(MyHelperList[a] == 0)
 			{
 				GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+				Main.AddParent(MySprite);
 				MySprite.name = HelperGOList[a].name;
-				MySprite.transform.position = new Vector3(HelperGOList[a].transform.position.x, HelperGOList[a].transform.position.y +35,-40);
+				MySprite.transform.localPosition = new Vector3(HelperGOList[a].transform.localPosition.x, HelperGOList[a].transform.localPosition.y +35,-40);
 				MySprite.transform.Rotate (0,0,-180);
+				MySprite.transform.localScale = new Vector3(40,40,0.1f);
 				Material MyBmp = null;
-				MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/PurchaseIcon");					
+				MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/PurchaseIcon");
 				MySprite.renderer.material = MyBmp;
 				MySprite.AddComponent("IconVFX");
 				IconGOList.Add (MySprite);
@@ -1196,9 +1279,11 @@ public class PnMScreen : MonoBehaviour
 			else if(MyHelperList[a] > 0 && MyHelperLevelList[a] < 5)
 			{
 				GameObject MySprite = (GameObject)Instantiate((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
+				Main.AddParent(MySprite);
 				MySprite.name = HelperGOList[a].name;
-				MySprite.transform.position = new Vector3(HelperGOList[a].transform.position.x, HelperGOList[a].transform.position.y +35,-40);
+				MySprite.transform.localPosition = new Vector3(HelperGOList[a].transform.localPosition.x, HelperGOList[a].transform.localPosition.y +35,-40);
 				MySprite.transform.Rotate (0,0,-180);
+				MySprite.transform.localScale = new Vector3(40,40,0.1f);
 				Material MyBmp = null;
 				MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/UpgradeIcon");					
 				MySprite.renderer.material = MyBmp;
@@ -1216,7 +1301,8 @@ public class PnMScreen : MonoBehaviour
 		{
 			TopUIGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			TopUIGO.name = "TopUI";
-			TopUIGO.transform.position = new Vector3(0+400,((0/2) - 17.5f)/Main.PostFactor,-40);
+			Main.AddParent(TopUIGO);
+			TopUIGO.transform.localPosition = new Vector3(0+400 - Res.DefaultWidth()/2 ,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-40);
 			TopUIGO.transform.localScale = new Vector3(800/Main.SizeFactor,1, 45/Main.SizeFactor);
 			TopUIGO.transform.Rotate (90, -180, 0);
 			TopUIBmp = (Material)Resources.Load ("PlanAndManage/Materials/TopUIBar");
@@ -1224,7 +1310,8 @@ public class PnMScreen : MonoBehaviour
 			
 			TopCoinGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			TopCoinGO.name = "TopCoin";
-			TopCoinGO.transform.position = new Vector3(280+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+			Main.AddParent(TopCoinGO);
+			TopCoinGO.transform.localPosition = new Vector3(280+400 - Res.DefaultWidth()/2,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 			TopCoinGO.transform.localScale = new Vector3(235/Main.SizeFactor,1, 37/Main.SizeFactor);
 			TopCoinGO.transform.Rotate (90, -180, 0);
 			TopCoinBmp = (Material)Resources.Load ("PlanAndManage/Materials/TopCoinBar");
@@ -1232,7 +1319,8 @@ public class PnMScreen : MonoBehaviour
 			
 			HotelStarGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			HotelStarGO.name = "TopCoin";
-			HotelStarGO.transform.position = new Vector3(-270+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+			Main.AddParent(HotelStarGO);
+			HotelStarGO.transform.localPosition = new Vector3(-270+400 - Res.DefaultWidth()/2,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 			HotelStarGO.transform.localScale = new Vector3(248/Main.SizeFactor,1, 36/Main.SizeFactor);
 			HotelStarGO.transform.Rotate (90, -180, 0);
 			HotelStarBmp = (Material)Resources.Load ("PlanAndManage/Materials/HotelStar");
@@ -1240,7 +1328,8 @@ public class PnMScreen : MonoBehaviour
 			
 			DayPanelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			DayPanelGO.name = "DayPanel";
-			DayPanelGO.transform.position = new Vector3(-90+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+			Main.AddParent(DayPanelGO);
+			DayPanelGO.transform.localPosition = new Vector3(-90+400 - Res.DefaultWidth()/2,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 			DayPanelGO.transform.localScale = new Vector3(97/Main.SizeFactor,1, 31/Main.SizeFactor);
 			DayPanelGO.transform.Rotate (90, -180, 0);
 			DayPanelBmp = (Material)Resources.Load ("PlanAndManage/Materials/DayPanel");
@@ -1248,7 +1337,8 @@ public class PnMScreen : MonoBehaviour
 			
 			TimePanelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			TimePanelGO.name = "TimePanel";
-			TimePanelGO.transform.position = new Vector3(10+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+			Main.AddParent(TimePanelGO);
+			TimePanelGO.transform.localPosition = new Vector3(10+400 - Res.DefaultWidth()/2,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 			TimePanelGO.transform.localScale = new Vector3(97/Main.SizeFactor,1, 31/Main.SizeFactor);
 			TimePanelGO.transform.Rotate (90, -180, 0);
 			TimePanelBmp = (Material)Resources.Load ("PlanAndManage/Materials/TimePanel");
@@ -1256,7 +1346,8 @@ public class PnMScreen : MonoBehaviour
 			
 			LikePanelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			LikePanelGO.name = "LikePanel";
-			LikePanelGO.transform.position = new Vector3(110+400,((0/2) - 17.5f)/Main.PostFactor,-42);
+			Main.AddParent(LikePanelGO);
+			LikePanelGO.transform.localPosition = new Vector3(110+400 - Res.DefaultWidth()/2,((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2,-42);
 			LikePanelGO.transform.localScale = new Vector3(97/Main.SizeFactor,1, 31/Main.SizeFactor);
 			LikePanelGO.transform.Rotate (90, -180, 0);
 			LikePanelBmp = (Material)Resources.Load ("PlanAndManage/Materials/LikePanel");
@@ -1264,7 +1355,8 @@ public class PnMScreen : MonoBehaviour
 			
 			DayText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			DayText.name = "DayText";
-			DayText.transform.position = new Vector3(-100+400, ((0/2) - 17.5f)/Main.PostFactor, -44);
+			Main.AddParent(DayText);
+			DayText.transform.localPosition = new Vector3(-100+400 - Res.DefaultWidth()/2, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 			DayText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			DayText.transform.Rotate (0,-180,0);
 			DayText.renderer.material.color = Color.black;
@@ -1272,7 +1364,8 @@ public class PnMScreen : MonoBehaviour
 			
 			TimeText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			TimeText.name = "TimeText";
-			TimeText.transform.position = new Vector3(-5+400, ((0/2) - 17.5f)/Main.PostFactor, -44);
+			Main.AddParent(TimeText);
+			TimeText.transform.localPosition = new Vector3(-5+400 - Res.DefaultWidth()/2, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 			TimeText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			TimeText.transform.Rotate (0,-180,0);
 			TimeText.renderer.material.color = Color.black;
@@ -1280,7 +1373,8 @@ public class PnMScreen : MonoBehaviour
 			
 			LikeText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			LikeText.name = "LikeText";
-			LikeText.transform.position = new Vector3(100+400, ((0/2) - 17.5f)/Main.PostFactor, -44);
+			Main.AddParent(LikeText);
+			LikeText.transform.localPosition = new Vector3(100+400 - Res.DefaultWidth()/2, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 			LikeText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			LikeText.transform.Rotate (0,-180,0);
 			LikeText.renderer.material.color = Color.black;
@@ -1288,7 +1382,8 @@ public class PnMScreen : MonoBehaviour
 			
 			CoinText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			CoinText.name = "CoinText";
-			CoinText.transform.position = new Vector3(210+400, ((0/2) - 17.5f)/Main.PostFactor, -44);
+			Main.AddParent(CoinText);
+			CoinText.transform.localPosition = new Vector3(210+400 - Res.DefaultWidth()/2, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 			CoinText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			CoinText.transform.Rotate (0,-180,0);
 			CoinText.renderer.material.color = Color.black;
@@ -1300,7 +1395,8 @@ public class PnMScreen : MonoBehaviour
 			{
 				GameObject MySprite = GameObject.CreatePrimitive(PrimitiveType.Plane);
 				MySprite.name = "StarIcon"+a;
-				MySprite.transform.position = new Vector3((103+(a*26) - (0/2))/Main.PostFactor, ((0/2) - 17.5f)/Main.PostFactor, -44);
+				Main.AddParent(MySprite);
+				MySprite.transform.localPosition = new Vector3((103+(a*26) - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 17.5f)/Main.PostFactor + Res.DefaultHeight()/2, -44);
 				MySprite.transform.localScale = new Vector3(24/Main.SizeFactor,1, 24/Main.SizeFactor);
 				MySprite.transform.Rotate (90, -180, 0);
 				Material MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/StarIcon");
@@ -1323,8 +1419,9 @@ public class PnMScreen : MonoBehaviour
 			for(int a = 0;a<TabList.Count;a++)
 			{
 				GameObject MySprite = GameObject.CreatePrimitive(PrimitiveType.Plane);
+				Main.AddParent(MySprite);
 				MySprite.name = TabList[a]+"Icon";
-				MySprite.transform.position = new Vector3((45+(a*58) - (0/2))/Main.PostFactor, ((0/2) - 60f)/Main.PostFactor, -38);
+				MySprite.transform.localPosition = new Vector3((45+(a*58) - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2) - 60f)/Main.PostFactor + Res.DefaultHeight()/2, -38);
 				MySprite.transform.localScale = new Vector3(52/Main.SizeFactor, 1, 43/Main.SizeFactor);
 				MySprite.transform.Rotate (90, -180, 0);
 				Material MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/"+TabList[a]+"1");
@@ -1339,8 +1436,9 @@ public class PnMScreen : MonoBehaviour
 		if(NextGO == null)
 		{
 			NextGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+			Main.AddParent(NextGO);
 			NextGO.name = "NextIcon";
-			NextGO.transform.position = new Vector3((700 - (0/2))/Main.PostFactor, ((0/2)-70)/Main.PostFactor, -38);
+			NextGO.transform.localPosition = new Vector3((700 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2)-70)/Main.PostFactor + Res.DefaultHeight()/2, -38);
 			NextGO.transform.localScale = new Vector3((166/Main.SizeFactor), 1, (38/Main.SizeFactor));
 			NextGO.transform.Rotate (90,-180,0);
 			NextBmp = (Material)Resources.Load ("PlanAndManage/Materials/NextIcon");

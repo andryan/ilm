@@ -7,6 +7,8 @@ using System.Collections.Generic;
 public class ModuleData : MonoBehaviour {
 	
 	private List<Hashtable> ModuleArray = null;
+	
+	private List<Hashtable> ModuleArea = null;
 	// Use this for initialization
 	void Start () {
 		//Init();
@@ -17,7 +19,17 @@ public class ModuleData : MonoBehaviour {
 	}
 	public void Init(){
 		ModuleDataArr();
+		generateArea();
 	}
+	
+	private void generateArea()
+	{
+		ModuleArea = new List<Hashtable>();
+		ModuleArea.Add(HashObject.Hash("AreaType", "nTD", "y1", 6, "x1", 7, "y2", 8, "x2", 11)); 
+		ModuleArea.Add(HashObject.Hash("AreaType", "nF", "y1", 5, "x1", 15, "y2", 8, "x2", 17)); 
+		ModuleArea.Add(HashObject.Hash("AreaType", "nB", "y1", 10, "x1", 7, "y2", 12, "x2", 11)); 
+	}
+	
 	private void ModuleDataArr()
 	{
 		ModuleArray = new List<Hashtable>();
@@ -68,6 +80,34 @@ public class ModuleData : MonoBehaviour {
 		}
 		return MyHash;
 	}
+	
+	
+	//Warning Mostly hardcode
+	public Hashtable GetDataByCoverageArea(int tileY, int tileX)
+	{
+		Hashtable MyHash = new Hashtable();
+		for(int i = 0; i < ModuleArea.Count; i++)
+		{
+			if(tileY > (int) ModuleArea[i]["y1"] && tileY < (int) ModuleArea[i]["y2"] && tileX > (int) ModuleArea[i]["x1"] && tileX < (int) ModuleArea[i]["x2"])
+			{
+				string areaName = ModuleArea[i]["AreaType"].ToString();
+				for(int j = 0; j < ModuleArray.Count; j++)
+				{
+					if(ModuleArray[j]["Type"].Equals(areaName))
+					{
+						//Checking occupy status
+						if(!Main.MyModuleClass.isOccupied(ModuleArray[j]["Type"].ToString(), (int) ModuleArray[j]["ID"]))
+						{
+							MyHash = (Hashtable) ModuleArray[j].Clone();
+							return MyHash;
+						}
+					}
+				}
+			}
+		}
+		return MyHash;
+	}
+	
 	public Hashtable GetDataByPrimaryPos(int tileY, int tileX)
 	{
 		Hashtable MyHash = new Hashtable();
@@ -111,8 +151,8 @@ public class ModuleData : MonoBehaviour {
 	
 	public Hashtable GetModuleDataHash(GameObject referenceObj)
 	{
-		float tempY = referenceObj.gameObject.transform.position.y/TileArray.tileHeight;
-		float tempX = referenceObj.gameObject.transform.position.x/TileArray.tileWidth;
+		float tempY = (referenceObj.gameObject.transform.localPosition.y - Res.DefaultHeight()/2)/TileArray.tileHeight;
+		float tempX = (referenceObj.gameObject.transform.localPosition.x + Res.DefaultWidth()/2)/TileArray.tileWidth;
 				
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);

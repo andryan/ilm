@@ -9,7 +9,7 @@ public class TextVFX : MonoBehaviour
 	private void Update()
 	{
 		Timer++;
-		this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y+1, this.gameObject.transform.position.z);
+		this.gameObject.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x, this.gameObject.transform.localPosition.y+1, this.gameObject.transform.localPosition.z);
 		if(Timer == 50)
 		{
 			Clear ();	

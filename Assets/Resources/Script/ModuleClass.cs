@@ -59,7 +59,7 @@ public class ModuleClass : MonoBehaviour {
 		{
 			if(ModuleIntList[i] != 0)
 			{
-				GameObject ModuleObject = new GameObject();
+				GameObject ModuleObject = null;// = new GameObject();
 				Hashtable ModuleHashData = new Hashtable();
 				
 				
@@ -103,13 +103,15 @@ public class ModuleClass : MonoBehaviour {
 					Material MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/TDisplayLv"+currTDLvl);
 					SpriteAnimObj.renderer.material = MyBmp;
 				}
+				
+				Main.AddParent(ModuleObject);
 				Vector3 tempModulePost = convertTileToPos(new Vector3((int)ModuleHashData["primaryX"],(int)ModuleHashData["primaryY"],(int)ModuleHashData["primaryZ"]));
 				ModuleObject.name = (string)ModuleHashData["Name"];
-				ModuleObject.transform.position = tempModulePost;
+				ModuleObject.transform.localPosition = tempModulePost;
+				ModuleObject.transform.localScale = new Vector3(50,64,0.1f);
 				moduleList.Add (ModuleObject);
 			}
 		}
-		
 	}
 	/*private void SpawnHelper()
 	{		
@@ -250,8 +252,8 @@ public class ModuleClass : MonoBehaviour {
 	
 	public Hashtable GetModuleClassHash(GameObject referenceObj)
 	{
-		float tempY = referenceObj.gameObject.transform.position.y/TileArray.tileHeight;
-		float tempX = referenceObj.gameObject.transform.position.x/TileArray.tileWidth;
+		float tempY = (referenceObj.gameObject.transform.localPosition.y - Res.DefaultHeight()/2)/TileArray.tileHeight;
+		float tempX = (referenceObj.gameObject.transform.localPosition.x + Res.DefaultWidth()/2)/TileArray.tileWidth;
 				
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);
@@ -280,6 +282,28 @@ public class ModuleClass : MonoBehaviour {
 		}
 		return MyHash;
 	}
+	
+	//By : Sakti Sarjono 18 April 2013
+	public bool isOccupied(string moduleType, int nodeId)
+	{
+		for(int i=0;i<ModuleClassArray.Count;i++)
+		{
+			//check for correct moduleType
+			if((string)ModuleDataArray[i]["Type"] == moduleType)
+			{
+				//check for correct id
+				if((int)ModuleDataArray[i]["ID"]== nodeId)
+				{
+					if((int)ModuleClassArray[i]["Occupy"] == 1)
+						return true;
+					else
+						return false;
+				} 
+			}
+		}
+		return true;
+	}
+	
 	
 	public void SetOccupy( string moduleType, int nodeId, string occupyType)
 	{
@@ -319,8 +343,8 @@ public class ModuleClass : MonoBehaviour {
 	
 	private Vector3 convertTileToPos(Vector3 tilePos)
 	{
-		float posX = tilePos.x * TileArray.tileWidth + (TileArray.tileWidth/2);
-		float posY = -tilePos.y * TileArray.tileHeight - (TileArray.tileHeight/2);
+		float posX = tilePos.x * TileArray.tileWidth + (TileArray.tileWidth/2) - Res.DefaultWidth()/2;
+		float posY = -tilePos.y * TileArray.tileHeight - (TileArray.tileHeight/2) + Res.DefaultHeight()/2;
 		float posZ = tilePos.z;
 		
 		Vector3 currentPosition = new Vector3(posX, posY, posZ);

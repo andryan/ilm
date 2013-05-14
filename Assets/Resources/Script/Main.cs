@@ -5,9 +5,16 @@ using System.Collections.Generic;
 
 public class Main : MonoBehaviour 
 {
+	public static void AddParent(GameObject go)
+	{
+		GameObject world = GameObject.Find("World");	
+		go.transform.parent = world.transform;
+	}
+	
+	
 	//static vars
-	public static int GameWidth = 800;
-	public static int GameHeight = 480;
+	public static int GameWidth = 1024;
+	public static int GameHeight = 768;
 	public static int FPS = 50;
 	public static int SizeFactor = 10;
 	public static int PostFactor = 1;
@@ -40,6 +47,12 @@ public class Main : MonoBehaviour
 	}
 	private void Init()
 	{
+		randomTheme = Random.Range(1,4);
+		
+	
+		Res.AdjustCameraSize(this.gameObject);
+		Res.AdjustWorldSize(GameObject.Find("World"));
+		
 		if(DEBUG == true)
 		{
 			FontFactor = 1f;	
@@ -67,7 +80,6 @@ public class Main : MonoBehaviour
 		MyStartScreen = (StartScreen)this.gameObject.AddComponent("StartScreen");
 		MyStartScreen.GetType().GetField ("Parent").SetValue(MyStartScreen, this);
 		MyStartScreen.Init();
-		
 		//Invoke ("ShowGameScreen", 1);	
 	}
 	public void ClearStartScreen()
@@ -78,9 +90,14 @@ public class Main : MonoBehaviour
 			MyStartScreen = null;	
 		}
 	}
+	
+	public static int randomTheme;
+	
 	public void ShowGameScreen()
-	{	
+	{
+		
 		ClearStartScreen();
+		
 		StartResultCal();
 		MySE.PlayBGM("Game");
 		CameraFade.StartAlphaFade(Color.black, true,2.0f,0f);
