@@ -501,7 +501,7 @@ public class ConfirmationScreen : MonoBehaviour
 		string ReqText = "Req :";
 		if(Req.Count >0)
 		{
-			
+		
 			if(Req.Contains("Like"))
 			{
 				ReqText = ReqText + Req["Like"].ToString ()+" Like";

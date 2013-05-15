@@ -8,7 +8,7 @@ public class PnMScreen : MonoBehaviour
 	//private int TileSize = 40;
 	private int TileWidth = 50;
 	private int TileHeight = 64;
-	
+
 	public Main Parent = null;
 	private int VFXTimer = 0;
 	private List<string> MListenerList = null;
@@ -629,7 +629,7 @@ public class PnMScreen : MonoBehaviour
 				
 				MySprite.transform.localPosition = this.convertTileToPos(new Vector3(QueueUpPost[c].x, QueueUpPost[c].y, -24f));
 				MySprite.transform.localScale = new Vector3(50, 64, 0.1f);
-				
+
 				Material MyBmp = null;
 				if(MyQueueUpLevelList[c] >0)
 				{
@@ -645,7 +645,6 @@ public class PnMScreen : MonoBehaviour
 				{
 					child.renderer.material = MyBmp;
 				}
-			
 				MySprite.renderer.material = MyBmp;
 				if(MyQueueUpLevelList[c]==0)
 				{
@@ -679,14 +678,12 @@ public class PnMScreen : MonoBehaviour
 			}
 			for(int c = 0;c<MyFoodLevelList.Count;c++)
 			{
-				
 				GameObject MySprite =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/FoodPrefab"));
 				MySprite.name = "FoodSlot"+c.ToString();
 				Main.AddParent(MySprite);
-				
 				MySprite.transform.localPosition = this.convertTileToPos(new Vector3(FoodPost[c].x, FoodPost[c].y, -24f));
 				MySprite.transform.localScale = new Vector3(50, 64, 0.1f);
-				
+
 				Material MyBmp = null;
 				if(MyFoodLevelList[c] >0)
 				{
@@ -697,12 +694,11 @@ public class PnMScreen : MonoBehaviour
 					MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/FoodLv1");
 					iTween.FadeTo (MySprite,iTween.Hash("alpha",0.7f,"time",0f, "easetype",iTween.EaseType.linear));
 				}
-				
+
 				foreach(Transform child in MySprite.transform)
 				{
 					child.renderer.material = MyBmp;
 				}
-			
 				MySprite.renderer.material = MyBmp;
 				if(MyFoodLevelList[c] == 0)
 				{
@@ -742,7 +738,6 @@ public class PnMScreen : MonoBehaviour
 				MySprite.transform.localPosition = this.convertTileToPos(new Vector3(TDisplayPost[c].x, TDisplayPost[c].y, -24f));
 				MySprite.transform.localScale = new Vector3(50, 64, 0.1f);
 				
-				
 				Material MyBmp = null;
 				if(MyTDisplayLevelList[c] >0)
 				{
@@ -753,7 +748,6 @@ public class PnMScreen : MonoBehaviour
 					MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/TDisplayLv1");
 					iTween.FadeTo (MySprite,iTween.Hash("alpha",0.7f,"time",0f, "easetype",iTween.EaseType.linear));
 				}
-				
 				foreach(Transform child in MySprite.transform)
 				{
 					child.renderer.material = MyBmp;
@@ -771,7 +765,7 @@ public class PnMScreen : MonoBehaviour
 			}
 		}		
 	}
-	
+
 	private Vector3 convertTileToPos(Vector3 tilePos)
 	{
 		float posX = tilePos.x * TileArray.tileWidth + (TileArray.tileWidth/2) - Res.DefaultWidth()/2;
@@ -781,7 +775,7 @@ public class PnMScreen : MonoBehaviour
 		Vector3 currentPosition = new Vector3(posX, posY, posZ);
 		return currentPosition;
 	}
-	
+
 	private void BuildBarTools()
 	{
 		if(BarGOList == null)
@@ -800,16 +794,15 @@ public class PnMScreen : MonoBehaviour
 					}
 				}
 			}
-			
+
 			for(int c = 0;c<MyBarLevelList.Count;c++)
 			{
 				GameObject MySprite =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/BarPrefab"));
 				MySprite.name = "BarSlot"+c.ToString();
 				Main.AddParent(MySprite);
-				
+
 				MySprite.transform.localPosition = this.convertTileToPos(new Vector3(BarPost[c].x, BarPost[c].y, -24f));
 				MySprite.transform.localScale = new Vector3(50, 64, 0.1f);
-				
 				Material MyBmp = null;
 				if(MyBarLevelList[c] >0)
 				{
@@ -820,12 +813,12 @@ public class PnMScreen : MonoBehaviour
 					MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/BarLv1");
 					iTween.FadeTo (MySprite,iTween.Hash("alpha",0.7f,"time",0f, "easetype",iTween.EaseType.linear));
 				}
-				
+
 				foreach(Transform child in MySprite.transform)
 				{
 					child.renderer.material = MyBmp;
 				}
-				
+
 				MySprite.renderer.material = MyBmp;
 				if(MyBarLevelList[c] == 0)
 				{
@@ -890,7 +883,7 @@ public class PnMScreen : MonoBehaviour
 			PianoGO.transform.Rotate (90,-180,0);
 			PianoBmp = (Material)Resources.Load ("PlanAndManage/Materials/Piano");
 			PianoGO.renderer.material = PianoBmp;
-			*/	
+			*/
 		}
 	}
 	private void BuildBarTable()
@@ -1166,7 +1159,7 @@ public class PnMScreen : MonoBehaviour
 			CharGO.name = "MainChar";
 			Main.AddParent(CharGO);
 			CharGO.transform.localPosition = new Vector3((CharPost.x * TileWidth)/Main.PostFactor +(TileWidth/2) -(0/2) - Res.DefaultWidth()/2 , (0/2) - (CharPost.y * TileHeight)/Main.PostFactor - (TileHeight/2) + 10 + Res.DefaultHeight()/2, -32);
-			CharGO.transform.localScale = new Vector3(67/Main.SizeFactor, 1, 67/Main.SizeFactor); 
+			CharGO.transform.localScale = new Vector3(67/Main.SizeFactor, 1, 67/Main.SizeFactor);
 			CharGO.transform.Rotate (90,-180,0);
 			CharBmp = (Material)Resources.Load ("PlanAndManage/Materials/MainChar");
 			CharGO.renderer.material = CharBmp;		

@@ -15,6 +15,7 @@ public class EmoticonClass : MonoBehaviour {
 	public void SpawnEmoticon(GameObject MyObj)
 	{
 		GameObject EmoticonObj;
+		
 		EmoticonObj =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/EmoticonPrefab"));
 		Main.AddParent(EmoticonObj);
 		

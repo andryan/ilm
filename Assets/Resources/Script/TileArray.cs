@@ -13,7 +13,7 @@ public class TileArray : MonoBehaviour {
 	
 	public bool isLose;
 	
-	public int maxCustOut = 2;
+	public int maxCustOut = 0;
 	
 	private List<List<int>> tileArr = null; 
 	
@@ -352,14 +352,11 @@ public class TileArray : MonoBehaviour {
 		
 		
 				if(isLose == true)
-				{
-						// -- error --
-						//ResultScreen MyRS = (ResultScreen)this.gameObject.AddComponent("ResultScreen");
-						//MyRS.InitLose(Parent);
-						//CancelInvoke("UpdateUIText");
-						//CancelInvoke("UpdateTimeText");
-						Time.timeScale = 0;
-					
+				{		
+					ResultScreen MyRS = (ResultScreen)this.gameObject.AddComponent("ResultScreen");
+					MyRS.InitLose(Parent);
+					CancelInvoke("UpdateUIText");
+					CancelInvoke("UpdateTimeText");
 				}
 	}
 	private void UpdateUIText()

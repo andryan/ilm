@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class ModuleData : MonoBehaviour {
 	
 	private List<Hashtable> ModuleArray = null;
-	
+
 	private List<Hashtable> ModuleArea = null;
 	// Use this for initialization
 	void Start () {
@@ -21,15 +21,15 @@ public class ModuleData : MonoBehaviour {
 		ModuleDataArr();
 		generateArea();
 	}
-	
+
 	private void generateArea()
 	{
 		ModuleArea = new List<Hashtable>();
 		ModuleArea.Add(HashObject.Hash("AreaType", "nTD", "y1", 6, "x1", 7, "y2", 8, "x2", 11)); 
 		ModuleArea.Add(HashObject.Hash("AreaType", "nF", "y1", 5, "x1", 15, "y2", 8, "x2", 17)); 
-		ModuleArea.Add(HashObject.Hash("AreaType", "nB", "y1", 10, "x1", 7, "y2", 12, "x2", 11)); 
+		ModuleArea.Add(HashObject.Hash("AreaType", "nB", "y1", 10, "x1", 7, "y2", 12, "x2", 11));
 	}
-	
+
 	private void ModuleDataArr()
 	{
 		ModuleArray = new List<Hashtable>();
@@ -80,8 +80,6 @@ public class ModuleData : MonoBehaviour {
 		}
 		return MyHash;
 	}
-	
-	
 	//Warning Mostly hardcode
 	public Hashtable GetDataByCoverageArea(int tileY, int tileX)
 	{
@@ -107,7 +105,7 @@ public class ModuleData : MonoBehaviour {
 		}
 		return MyHash;
 	}
-	
+
 	public Hashtable GetDataByPrimaryPos(int tileY, int tileX)
 	{
 		Hashtable MyHash = new Hashtable();

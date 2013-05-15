@@ -6,25 +6,25 @@ using System.Collections.Generic;
 public class CustomerAtr : MonoBehaviour 
 {
 	private string Type = "";
-	public int TypeID = 0;
+	private int TypeID = 0;
 	private float TipsRate = 0.0f;
 	private float Satisfaction = 0.0f;
 	private int CurrentWaitingTime = 0;
 	private int WaitingTime = 0;
 	private float LikeRate = 0.0f;
 	private int Coin = 0;
-	private List<string> ActionList = null;
-	private List<int> ActionCount = null;
-	private List<string> TypeList = null;
-	private List<int> TypeRate = null;
-	private List<Hashtable> TipsList = null;
-	private List<int> CoinList = null;
-	private List<string> ActionTypeList = null;
-	private List<int> STList = null;
-	private List<int> WTList = null;
-	private List<float> LRList = null;
-	private List<int> STRateList = null;
-	private List<float> STEffectList = null;
+	public List<string> ActionList = null;
+	public List<int> ActionCount = null;
+	public List<string> TypeList = null;
+	public List<int> TypeRate = null;
+	public List<Hashtable> TipsList = null;
+	public List<int> CoinList = null;
+	public List<string> ActionTypeList = null;
+	public List<int> STList = null;
+	public List<int> WTList = null;
+	public List<float> LRList = null;
+	public List<int> STRateList = null;
+	public List<float> STEffectList = null;
 	
 	private GameObject Emoticon = null;
 	private Material EmoticonImg = null;

@@ -19,7 +19,7 @@ public class StartScreen : MonoBehaviour {
 	private List<GameObject> StartScreenBtnArr = null;
 	//private List<Vector3> StartScreenObjScale = null;
 	private bool TapAlphaControl = false;
-	
+
 	// Use this for initialization
 	void Start () {
 
@@ -40,10 +40,10 @@ public class StartScreen : MonoBehaviour {
 		
 		StartScreenObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/StartScreenObj"));
 		TapStartObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/TapStartObj"));
-		
+
 		Main.AddParent(StartScreenObj);
 		Main.AddParent(TapStartObj);
-		
+
 		StartScreenObj.transform.localPosition = new Vector3(0, 0, 0);
 		TapStartObj.transform.localPosition = new Vector3(0, - 330, -2);
 		
@@ -74,7 +74,7 @@ public class StartScreen : MonoBehaviour {
 		SoundObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/SoundObj"));
 		MusicObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/MusicObj"));
 		
-	
+
 		Main.AddParent(NewGameObj);
 		Main.AddParent(ResumeObj);
 		Main.AddParent(MoreGameObj);
@@ -82,8 +82,8 @@ public class StartScreen : MonoBehaviour {
 		Main.AddParent(TotalDiamondObj);
 		Main.AddParent(SoundObj);
 		Main.AddParent(MusicObj);
-		
-		
+
+
 		NewGameObj.transform.localPosition = new Vector3(-200, 210, -2);
 		ResumeObj.transform.localPosition = new Vector3(200, 210, -2);
 		MoreGameObj.transform.localPosition = new Vector3(-200, -10, -2);
@@ -100,7 +100,7 @@ public class StartScreen : MonoBehaviour {
 		SoundObj.transform.localScale = new Vector3(64, 90, 0.1f);
 		MusicObj.transform.localScale = new Vector3(64, 90, 0.1f);
 		
-		
+
 		StartScreenBtnArr.Add(NewGameObj);
 		StartScreenBtnArr.Add(ResumeObj);
 		StartScreenBtnArr.Add(MoreGameObj);

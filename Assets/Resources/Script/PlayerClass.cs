@@ -103,7 +103,7 @@ public class PlayerClass : MonoBehaviour {
 		DoorObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/DoorObj"));
 		PianoObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/PianoObj"));
 		RoadObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/RoadObj"));
-		
+
 		Main.AddParent(MapObj);
 		Main.AddParent(BarObj);
 		Main.AddParent(CashierObj);

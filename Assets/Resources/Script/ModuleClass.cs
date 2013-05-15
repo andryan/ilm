@@ -103,7 +103,7 @@ public class ModuleClass : MonoBehaviour {
 					Material MyBmp = (Material)Resources.Load ("PlanAndManage/Materials/TDisplayLv"+currTDLvl);
 					SpriteAnimObj.renderer.material = MyBmp;
 				}
-				
+
 				Main.AddParent(ModuleObject);
 				Vector3 tempModulePost = convertTileToPos(new Vector3((int)ModuleHashData["primaryX"],(int)ModuleHashData["primaryY"],(int)ModuleHashData["primaryZ"]));
 				ModuleObject.name = (string)ModuleHashData["Name"];
@@ -282,7 +282,7 @@ public class ModuleClass : MonoBehaviour {
 		}
 		return MyHash;
 	}
-	
+
 	//By : Sakti Sarjono 18 April 2013
 	public bool isOccupied(string moduleType, int nodeId)
 	{
@@ -303,7 +303,7 @@ public class ModuleClass : MonoBehaviour {
 		}
 		return true;
 	}
-	
+
 	
 	public void SetOccupy( string moduleType, int nodeId, string occupyType)
 	{

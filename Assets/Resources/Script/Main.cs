@@ -10,8 +10,8 @@ public class Main : MonoBehaviour
 		GameObject world = GameObject.Find("World");	
 		go.transform.parent = world.transform;
 	}
-	
-	
+
+
 	//static vars
 	public static int GameWidth = 1024;
 	public static int GameHeight = 768;
@@ -92,12 +92,12 @@ public class Main : MonoBehaviour
 	}
 	
 	public static int randomTheme;
-	
+
 	public void ShowGameScreen()
 	{
-		
+	
 		ClearStartScreen();
-		
+
 		StartResultCal();
 		MySE.PlayBGM("Game");
 		CameraFade.StartAlphaFade(Color.black, true,2.0f,0f);

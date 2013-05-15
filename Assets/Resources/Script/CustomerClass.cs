@@ -31,8 +31,11 @@ public class CustomerClass : MonoBehaviour {
 		CancelInvoke("SpawnCustEnterFrame");
 		for(int i=0;i<customerList.Count;i++)
 		{
-			CustomerAtr MyCA = (CustomerAtr)customerList[i].GetComponent("CustomerAtr");
-			MyCA.Clear ();
+			if(customerList[i] != null)
+			{
+				CustomerAtr MyCA = (CustomerAtr)customerList[i].GetComponent("CustomerAtr");
+				MyCA.Clear ();
+			}
 		}
 		customerList = null;
 		customerObjReference = null;
@@ -44,8 +47,8 @@ public class CustomerClass : MonoBehaviour {
 		cashierCustomerArr = null;
 		cashierQueueTileY = 0;
 		cashierQueueTileX = 0;
-		
 	}
+	
 	public void Init()
 	{
 		customerList = new List<GameObject>();
@@ -102,7 +105,7 @@ public class CustomerClass : MonoBehaviour {
 		//CustomerObject.AddComponent("CustomerBehaviour");
 		
 		Main.AddParent(CustomerObject);
-		
+
 		//CustomerObject.transform.Rotate(0,0,180);
 		CustomerObject.transform.localPosition = new Vector3(680 - Res.DefaultWidth()/2, -60 + Res.DefaultHeight()/2 ,0);
 		CustomerObject.transform.localScale = new Vector3(50,64,1);
@@ -283,9 +286,6 @@ public class CustomerClass : MonoBehaviour {
 				float walkingTime = timeToReach();
 				CustomerAtr MyCA = (CustomerAtr)customerList[i].GetComponent("CustomerAtr");
 				MyCA.SetTimeToClear(walkingTime);
-				
-				
-				
 				if(MyCA.ReturnRequest() != "nC")
 				{
 					Vector3 tilePos = convertPosToTile(customerList[i]);
@@ -313,6 +313,16 @@ public class CustomerClass : MonoBehaviour {
 			}
 		}
 	}
+	
+	public void destroyAllCustomer()
+	{
+		for(int i = 0; i<customerList.Count;i++)
+		{
+				Destroy(customerList[i]);
+			
+		}
+	}
+
 	private float timeToReach()
 	{
 		float tileWalkingTime = customerWalkingSpeed * Main.MyTile.TotalPath;
