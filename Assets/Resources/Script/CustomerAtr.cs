@@ -93,6 +93,7 @@ public class CustomerAtr : MonoBehaviour
 		if(CurrentWaitingTime == 0)
 		{
 			Main.MyCustomer.runAway(this.gameObject);
+			Main.MyComboDetector.ComboBreak();
 			Runaway ();
 			CancelInvoke("EnterFrame");	
 		}
@@ -398,9 +399,27 @@ public class CustomerAtr : MonoBehaviour
 		CalTotalCoin ();
 		CalTotalLike();
 		
+		UpdateCombo();
+		UpdateFeverGauge();
 		UpdateAchievement ();
 		DestroyIcon ();
 	}
+	
+	private void UpdateFeverGauge()
+	{
+		float tempFever = Main.FeverPoint + 0.2f;
+		if(tempFever > 1)
+			Main.FeverPoint = 1f;
+		else
+			Main.FeverPoint = tempFever;
+		
+	}
+	
+	private void UpdateCombo()
+	{
+		Main.MyComboDetector.UpdateCombo((int) this.Satisfaction);
+	}
+	
 	private void UpdateAchievement()
 	{
 		string TemString = "";
@@ -519,7 +538,7 @@ public class CustomerAtr : MonoBehaviour
 	
 	private void CheckIconPost()
 	{
-		Emoticon.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x,this.gameObject.transform.localPosition.y+35,this.gameObject.transform.localPosition.z-20);
+		Emoticon.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x,this.gameObject.transform.localPosition.y+35,-120);
 		if(Mathf.Abs(Emoticon.transform.localPosition.x - StoredPost.x) > 0 || Mathf.Abs (Emoticon.transform.localPosition.y - StoredPost.y) >0)
 		{
 			//Emoticon.renderer.enabled = false;	
@@ -554,7 +573,7 @@ public class CustomerAtr : MonoBehaviour
 		Main.AddParent(Emoticon);
 		Emoticon.name = this.gameObject.name;
 		Emoticon.renderer.material = EmoticonImg;
-		Emoticon.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x,this.gameObject.transform.localPosition.y+35,this.gameObject.transform.localPosition.z-20);
+		Emoticon.transform.localPosition = new Vector3(this.gameObject.transform.localPosition.x,this.gameObject.transform.localPosition.y+35,-120);
 		Emoticon.transform.localScale = new Vector3(50,64,0.1f);
 		Emoticon.transform.Rotate (0,0,-180);
 		StoredScale = Emoticon.transform.localScale;

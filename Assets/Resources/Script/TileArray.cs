@@ -175,19 +175,36 @@ public class TileArray : MonoBehaviour {
 		tileArr.Add(new List<int>(new int[]{9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}));//row 0
 		tileArr.Add(new List<int>(new int[]{9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9}));//1
 		tileArr.Add(new List<int>(new int[]{9,9,9,0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}));//2
-		tileArr.Add(new List<int>(new int[]{0,0,0,0,9,9,3,9,3,9,3,9,3,9,3,9,9,9,0,0}));//3
-		tileArr.Add(new List<int>(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));//4
-		tileArr.Add(new List<int>(new int[]{0,0,0,0,0,0,0,9,9,9,9,9,0,0,0,5,0,5,0,0}));//5
-		tileArr.Add(new List<int>(new int[]{0,0,0,0,0,0,0,9,9,9,9,9,0,0,0,0,0,0,0,0}));//6
-		tileArr.Add(new List<int>(new int[]{0,0,0,0,0,0,0,9,9,9,9,9,0,0,0,0,0,0,0,0}));//7
-		tileArr.Add(new List<int>(new int[]{0,0,0,0,0,0,0,4,4,0,4,4,0,0,0,5,0,5,0,0}));//8
-		tileArr.Add(new List<int>(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));//9
-		tileArr.Add(new List<int>(new int[]{0,6,6,6,6,0,7,9,7,9,7,9,7,0,0,8,8,8,8,0}));//10
-		tileArr.Add(new List<int>(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,8,8,0}));//11
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,9,9,9,0,9,0,9,0,9,0,9,0,0,0,0,0}));//3
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));//4
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,9,9,9,9,9,9,0,0,0,0,0,0,0}));//5
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,9,0,5,0,5,0,0,0,0,4,0,4,0}));//6
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0}));//7
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,9,9,0,5,0,5,0,0,0,0,4,0,4,0}));//8
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));//9
+		tileArr.Add(new List<int>(new int[]{9,6,6,6,6,0,0,0,7,7,9,9,7,7,0,0,8,8,8,8}));//10
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,8,8}));//11
 		
 	}
 	
-	
+	//21 May 2013 By Sakti Sarjono
+	public int getTotalPath(GameObject tweenObject, int endX, int endY)
+	{
+		if(tweenObject != null && Main.MyPlayer.MapObj != null)
+		{
+			//convert current position to current tile
+			int startY = Math.Abs((int)(tweenObject.transform.localPosition.y - Res.DefaultHeight() /2) /tileHeight);
+			int startX = Math.Abs((int)(tweenObject.transform.localPosition.x + Res.DefaultWidth() / 2) /tileWidth);
+			
+			List<List<int>> FPath = AStar.FindPath(tileArr, startY, startX, endY, endX);
+			FPath.Reverse();
+			TotalPath = FPath.Count;
+			return TotalPath;
+		}
+		
+		return -1;
+		
+	}
 	
 	public void findPosition(GameObject tweenObject, float AISpeed,int endY, int endX)
 	{

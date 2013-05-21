@@ -30,6 +30,11 @@ public class PnMScreen : MonoBehaviour
 	private GameObject MyMapWindow = null;
 	private Material MyMapWindowBmp = null;
 	
+	private GameObject MyRoad = null;
+	private Material MyRoadBmp = null;
+	
+
+	
 	private GameObject CharGO = null;
 	private Material CharBmp = null;
 	
@@ -116,19 +121,21 @@ public class PnMScreen : MonoBehaviour
 		Helper		= 8
 		Uncrossable = 9
 		*/
-		MapTile = new List<List<int>>();
-		MapTile.Add (new List<int>(new int[]{9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9}));
-		MapTile.Add (new List<int>(new int[]{9,9,9,9,0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}));
-		MapTile.Add (new List<int>(new int[]{9,9,9,9,0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}));
-		MapTile.Add (new List<int>(new int[]{0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0}));
-		MapTile.Add (new List<int>(new int[]{0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));
-		MapTile.Add (new List<int>(new int[]{0,0,0,0,0,0,0,9,9,9,9,9,8,0,0,3,0,3,0,0}));
-		MapTile.Add (new List<int>(new int[]{0,0,0,0,8,0,0,9,9,9,9,9,0,0,0,0,0,0,0,0}));
-		MapTile.Add (new List<int>(new int[]{0,0,0,0,0,0,0,9,9,9,9,9,0,8,0,0,8,0,0,0}));
-		MapTile.Add (new List<int>(new int[]{0,0,0,0,0,8,0,2,2,0,2,2,0,0,0,3,0,3,0,0}));
-		MapTile.Add (new List<int>(new int[]{0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0}));
-		MapTile.Add (new List<int>(new int[]{0,5,5,5,5,0,0,4,4,9,4,4,0,8,0,6,6,6,6,0}));
-		MapTile.Add (new List<int>(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,0}));
+		List<List<int>> tileArr = new List<List<int>>();
+		tileArr.Add(new List<int>(new int[]{9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}));//row 0
+		tileArr.Add(new List<int>(new int[]{9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9}));//1
+		tileArr.Add(new List<int>(new int[]{9,9,9,0,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9}));//2
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,9,9,9,1,9,1,9,1,9,1,9,1,0,0,0,0}));//3
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));//4
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,9,9,9,9,9,9,0,0,0,0,0,0,0}));//5
+		tileArr.Add(new List<int>(new int[]{9,0,8,8,0,0,0,9,0,3,0,3,0,0,0,0,2,0,2,0}));//6
+		tileArr.Add(new List<int>(new int[]{9,0,8,8,8,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0}));//7
+		tileArr.Add(new List<int>(new int[]{9,0,7,8,8,0,9,9,0,3,0,3,0,0,0,0,2,0,2,0}));//8
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));//9
+		tileArr.Add(new List<int>(new int[]{9,6,6,6,6,0,0,0,4,4,0,4,4,0,0,0,0,0,0,0}));//10
+		tileArr.Add(new List<int>(new int[]{9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}));//11
+	
+		MapTile = tileArr;
 		
 		MListenerList = new List<string>();
 		TabMListenerList = new List<string>();
@@ -589,11 +596,22 @@ public class PnMScreen : MonoBehaviour
 			MyMapWindow = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			MyMapWindow.name = "MapWindow";
 			Main.AddParent(MyMapWindow);
-			MyMapWindow.transform.localPosition = new Vector3(-6.4f, 273.6f,-22);
-			MyMapWindow.transform.localScale = new Vector3(403.2f/Main.SizeFactor, 1, 76.8f/Main.SizeFactor);
+			MyMapWindow.transform.localPosition = new Vector3(50, 280,-20);
+			MyMapWindow.transform.localScale = new Vector3(50, 1, 20);
 			MyMapWindow.transform.Rotate (90, -180, 0);
 			MyMapWindowBmp = (Material)Resources.Load ("PlanAndManage/Materials/FloorBGWindow");
 			MyMapWindow.renderer.material = MyMapWindowBmp;
+			
+			MyRoad = GameObject.CreatePrimitive(PrimitiveType.Plane);
+			MyRoad.name = "Road";
+			Main.AddParent(MyRoad);
+			MyRoad.transform.localPosition = new Vector3(15,280,-18);
+			MyRoad.transform.localScale = new Vector3(90,1,18);
+			MyRoad.transform.Rotate(90, -180,0);
+			MyRoadBmp  = (Material) Resources.Load("PlanAndManage/Materials/Road");
+			MyRoad.renderer.material = MyRoadBmp;
+			
+			
 		}
 	}
 	private void BuildTools()
@@ -840,7 +858,7 @@ public class PnMScreen : MonoBehaviour
 			CashierGO = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/CashierObj"));
 			CashierGO.name = "Cashier";
 			Main.AddParent(CashierGO);
-			CashierGO.transform.localPosition =  new Vector3(-362, -306f, -24f);
+			CashierGO.transform.localPosition =  new Vector3(-400, -285, -24f);
 			CashierGO.transform.localScale = new Vector3(200,140,0.1f);
 			//CashierGO.transform.localScale = new Vector3(200f, 0.1f, 140f);
 			//CashierGO.transform.Rotate (90,-180,0);
@@ -852,14 +870,11 @@ public class PnMScreen : MonoBehaviour
 	{
 		if(DecoGO == null)
 		{
-			DecoGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
+			DecoGO = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/PianoObj"));
 			DecoGO.name = "Deco";
 			Main.AddParent(DecoGO);
-			DecoGO.transform.localPosition = new Vector3((870 - (0/2))/Main.PostFactor - Res.DefaultWidth()/2, ((0/2)-664)/Main.PostFactor + Res.DefaultHeight()/2,-24);
-			DecoGO.transform.localScale = new Vector3(192/Main.SizeFactor, 1, 184/Main.SizeFactor);
-			DecoGO.transform.Rotate (90,-180,0);
-			DecoBmp = (Material)Resources.Load ("PlanAndManage/Materials/DecoLv"+Main.MyPlayerAtr.ReturnExtraDeco());
-			DecoGO.renderer.material = DecoBmp;
+			DecoGO.transform.localPosition = new Vector3(420, -300f, -28f);
+			DecoGO.transform.localScale = new Vector3(150, 150, 0.1f);
 		}	
 	}
 	private void BuildMapComponent()
@@ -874,8 +889,8 @@ public class PnMScreen : MonoBehaviour
 			PianoGO = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/PianoObj"));
 			PianoGO.name = "Piano";
 			Main.AddParent(PianoGO);
-			PianoGO.transform.localPosition = new Vector3(-32f, -16f, -28f);
-			PianoGO.transform.localScale = new Vector3(250, 210, 0.1f);
+			PianoGO.transform.localPosition = new Vector3(420, -300f, -28f);
+			PianoGO.transform.localScale = new Vector3(150, 150, 0.1f);
 
 			/*
 			PianoGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -895,8 +910,8 @@ public class PnMScreen : MonoBehaviour
 			BarTableGO = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/BarObj"));
 			BarTableGO.name = "BarTable";
 			Main.AddParent(BarTableGO);
-			BarTableGO.transform.localPosition = new Vector3(-27, -385, -22f);
-			BarTableGO.transform.localScale = new Vector3(320,90, 0.1f);
+			BarTableGO.transform.localPosition = new Vector3(10, -350, -25);
+			BarTableGO.transform.localScale = new Vector3(280,60, 0.1f);
 			/*
 			BarTableGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			BarTableGO.name = "BarTable";
@@ -1707,6 +1722,12 @@ public class PnMScreen : MonoBehaviour
 			MyMapBmp = null;
 			Destroy(MyMap);	
 			MyMap = null;
+		}
+		if(MyRoad != null)
+		{
+			MyRoadBmp = null;
+			Destroy(MyRoad);
+			MyRoad = null;
 		}
 	}
 	private void ClearScreen()

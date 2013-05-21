@@ -13,7 +13,7 @@ public class CustomerBehaviour : MonoBehaviour {
 	private Vector3 prevCustPost = new Vector3(0,0,0);
 	private SpriteAnimator sAnim = null;
 	private Transform SpriteAnimObj = null;
-	private int tempZ = 0;
+	private int tempZ = -2;
 	
 	public string ActionType = "";
 	public Hashtable PrevReferenceHash = null;
@@ -30,7 +30,7 @@ public class CustomerBehaviour : MonoBehaviour {
 		prevCustPost = new Vector3(0,0,0);
 		sAnim = null;
 		SpriteAnimObj = null;
-		tempZ = 0;
+		tempZ = -2;
 		ActionType = "";
 		CustomerStatus = 0;
 	}
@@ -56,17 +56,21 @@ public class CustomerBehaviour : MonoBehaviour {
 		Vector3 currCustomerPos = convertPosToTile(this.gameObject);
 		
 		//if(this.gameObject.transform.localPosition.y<= 0 + Res.DefaultHeight()/2 && this.gameObject.transform.localPosition.y >= -80 + Res.DefaultHeight()/2)
-		if(this.gameObject.transform.localPosition.y > 200)
+		if(this.gameObject.transform.localPosition.y > 260)
 		{
 			//this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y, 0);
-			sAnim.transform.localPosition = new Vector3(0, 0, 20);
-		
-		} else {
-			tempZ = (int)-currCustomerPos.y*2;
-			int totalZ = tempZ - (int)this.gameObject.transform.localPosition.z;
+			sAnim.transform.localPosition = new Vector3(sAnim.transform.localPosition.x, sAnim.transform.localPosition.y, -2);
+		} 
+		else 
+		{
+			tempZ = (int)-currCustomerPos.y*10 - 5;
+			//int totalZ = tempZ - (int)this.gameObject.transform.localPosition.z;
 			//print ("totalZ "+(totalZ-1));
 			//print ("tempZ "+ tempZ);
-			sAnim.transform.localPosition = new Vector3(0, 0, totalZ-1);
+			//sAnim.transform.localPosition = new Vector3(0, 0, totalZ-1);
+			sAnim.transform.localPosition = new Vector3(sAnim.transform.localPosition.x, sAnim.transform.localPosition.y, tempZ);
+			BoxCollider box = (BoxCollider) gameObject.GetComponent("BoxCollider");
+			box.center = new Vector3(0, 0, tempZ);
 		}
 		
 		//prin

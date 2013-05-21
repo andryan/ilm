@@ -11,6 +11,10 @@ public class Main : MonoBehaviour
 		go.transform.parent = world.transform;
 	}
 
+	//Fever gauge
+	public static float FeverPoint = 0;
+	
+	
 	//static vars
 	public static int GameWidth = 1024;
 	public static int GameHeight = 768;
@@ -43,6 +47,10 @@ public class Main : MonoBehaviour
 	public static Achievement MyAchievement = null;
 	public StartScreen MyStartScreen = null;
 	private PnMScreen MyPnMScreen = null;
+	
+	//Combo Breaker
+	public static ComboDetector MyComboDetector = null;
+	
 	
 	private void Start()
 	{
@@ -115,6 +123,11 @@ public class Main : MonoBehaviour
 		MyHelper = (HelperClass)this.gameObject.AddComponent("HelperClass");
 		MyControl = (Controls)this.gameObject.AddComponent("Controls");
 		MyDragDrop = (DragDrop)this.gameObject.AddComponent("DragDrop");
+		
+		MyComboDetector = (ComboDetector) this.gameObject.AddComponent("ComboDetector");
+		this.gameObject.AddComponent("FeverClass");
+		
+		FeverPoint = 0;
 		
 		MyPlayer.Init();
 		MyModule.Init ();

@@ -90,13 +90,13 @@ public class HelperBehaviour : MonoBehaviour {
 		Vector3 currHelper = convertPosToTile(this.gameObject);
 		
 			
-		int tempZ = (int)-currHelper.y*2;
+		int tempZ = (int)-currHelper.y*10 - 9;
 		//this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y, tempZ-1);
 		
-		int totalZ = tempZ - (int)this.gameObject.transform.localPosition.z;
+		//int totalZ = tempZ - (int)this.gameObject.transform.localPosition.z;
 		//print ("totalZ "+(totalZ-1));
 		//print ("tempZ "+ tempZ);
-		sAnim.transform.localPosition = new Vector3(0, 0, totalZ-1);
+		sAnim.transform.localPosition = new Vector3(0, 0, tempZ*Main.SizeFactor);
 		//prin
 		if(prevHelperPost.y > this.gameObject.transform.localPosition.y)
 		{

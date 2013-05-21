@@ -188,8 +188,15 @@ public class HelperClass : MonoBehaviour {
 					if(j == moduleX && i == moduleY)
 					{
 						HelperID.Add (MyHB.ID);
-						int currDistanceVal = Mathf.Abs((int)currHelperTilePost.y - moduleY) + Mathf.Abs((int)currHelperTilePost.x - moduleX);
-						HelperDistanceVal.Add (currDistanceVal);
+						//21 May 2013 By Sakti Sarjono
+						//Check by total Movement instead of absolute distance
+						//int currDistanceVal = Mathf.Abs((int)currHelperTilePost.y - moduleY) + Mathf.Abs((int)currHelperTilePost.x - moduleX);
+						int currDistanceVal = Main.MyTile.getTotalPath(currHelperObj, moduleX, moduleY);
+						Debug.LogError("Total path : " + currDistanceVal);
+						if(currDistanceVal == -1)
+							Debug.LogError("Error total Path");
+						else
+							HelperDistanceVal.Add (currDistanceVal);
 						break;
 					}
 				}
@@ -299,7 +306,7 @@ public class HelperClass : MonoBehaviour {
 	{
 		float posX = tilePos.x * TileArray.tileWidth + (TileArray.tileWidth/2) - Res.DefaultWidth()/2;
 		float posY = -tilePos.y * TileArray.tileHeight - (TileArray.tileHeight/2) + Res.DefaultHeight()/2;
-		float posZ = -20;
+		float posZ = 0;
 		
 		Vector3 currentPosition = new Vector3(posX, posY, posZ);
 		return currentPosition;
@@ -313,7 +320,7 @@ public class HelperClass : MonoBehaviour {
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);
 					
-		Vector3 tilePos = new Vector3(tileX, tileY, 20);
+		Vector3 tilePos = new Vector3(tileX, tileY, 0);
 		return tilePos;
 	}
 }

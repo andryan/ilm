@@ -58,7 +58,7 @@ public class CustomerClass : MonoBehaviour {
 		totalCustomerAtCashier = 0;
 		cashierCustomerArr = null;
 		cashierQueueTileY = 0;
-		cashierQueueTileX = 0;
+		cashierQueueTileX = 2;
 	}
 	
 	public void Init()
@@ -74,7 +74,7 @@ public class CustomerClass : MonoBehaviour {
 		//cashier
 		cashierCustomerArr = new List<GameObject>();
 		cashierQueueTileY = 9;
-		cashierQueueTileX = 3;
+		cashierQueueTileX = 2;
 			
 		SpawnSpeed = 9 - 1.17f*Main.MyPlayerAtr.ReturnHotelRank();
 		
@@ -431,7 +431,7 @@ public class CustomerClass : MonoBehaviour {
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);
 					
-		Vector3 tilePos = new Vector3(tileX, tileY, 0);
+		Vector3 tilePos = new Vector3(tileX, tileY, currentObj.transform.localPosition.z);
 		return tilePos;
 	}
 	

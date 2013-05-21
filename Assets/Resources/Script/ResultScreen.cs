@@ -412,7 +412,7 @@ public class ResultScreen : MonoBehaviour
 			MyInfoPanelNextGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelNextGO);
 			MyInfoPanelNextGO.name = "NextGO";
-			MyInfoPanelNextGO.transform.localPosition = new Vector3(65,-80,-50);
+			MyInfoPanelNextGO.transform.localPosition = new Vector3(0, -115,-60);
 			MyInfoPanelNextGO.transform.localScale = new Vector3((166/Main.SizeFactor), 1, (38/Main.SizeFactor));
 			MyInfoPanelNextGO.transform.Rotate (90, -180, 0);
 			MyInfoPanelNextGO.renderer.enabled = false;
@@ -454,7 +454,7 @@ public class ResultScreen : MonoBehaviour
 			EarningText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite"));
 			Main.AddParent(EarningText);
 			EarningText.name = "InfoPanelEarningText";
-			EarningText.transform.localPosition = new Vector3(30,130, -52);
+			EarningText.transform.localPosition = new Vector3(-100,65, -52);
 			EarningText.transform.localScale = new Vector3(2f*Main.FontFactor, 2f*Main.FontFactor, 2f*Main.FontFactor);
 			EarningText.transform.Rotate (0,-180,0);
 			EarningText.renderer.material.color = Color.black;		
@@ -464,7 +464,7 @@ public class ResultScreen : MonoBehaviour
 			STText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite"));
 			Main.AddParent(STText);
 			STText.name = "InfoPanelSTText";
-			STText.transform.localPosition = new Vector3((500 - (0/2))/Main.PostFactor, ((0/2) -175f)/Main.PostFactor, -52);
+			STText.transform.localPosition = new Vector3(100,65, -52);
 			STText.transform.localScale = new Vector3(2f*Main.FontFactor, 2f*Main.FontFactor, 2f*Main.FontFactor);
 			STText.transform.Rotate (0,-180,0);
 			STText.renderer.material.color = Color.black;		
@@ -474,7 +474,7 @@ public class ResultScreen : MonoBehaviour
 			CoinText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(CoinText);
 			CoinText.name = "InfoPanelCoinText";
-			CoinText.transform.localPosition = new Vector3((230 - (0/2))/Main.PostFactor, ((0/2) -205f)/Main.PostFactor, -52);
+			CoinText.transform.localPosition = new Vector3(-170,30,-52);
 			CoinText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			CoinText.transform.Rotate (0,-180,0);
 			CoinText.renderer.material.color = Color.black;	
@@ -484,7 +484,7 @@ public class ResultScreen : MonoBehaviour
 			LikeText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(LikeText);
 			LikeText.name = "InfoPanelLikeText";
-			LikeText.transform.localPosition = new Vector3((230 - (0/2))/Main.PostFactor, ((0/2) - 235f)/Main.PostFactor, -52);
+			LikeText.transform.localPosition = new Vector3(-170,0 ,-52);
 			LikeText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			LikeText.transform.Rotate (0,-180,0);
 			LikeText.renderer.material.color = Color.black;	
@@ -494,7 +494,7 @@ public class ResultScreen : MonoBehaviour
 			RunawayText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(RunawayText);
 			RunawayText.name = "InfoPanelRunawayText";
-			RunawayText.transform.localPosition = new Vector3((230 - (0/2))/Main.PostFactor, ((0/2) - 265f)/Main.PostFactor, -52);
+			RunawayText.transform.localPosition = new Vector3(-170, -30, -52);
 			RunawayText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			RunawayText.transform.Rotate (0,-180,0);
 			RunawayText.renderer.material.color = Color.black;		
@@ -505,7 +505,7 @@ public class ResultScreen : MonoBehaviour
 			ST3StarText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(ST3StarText);
 			ST3StarText.name = "InfoPanelST3StarText";
-			ST3StarText.transform.localPosition = new Vector3((435 - (0/2))/Main.PostFactor, ((0/2) - 205f)/Main.PostFactor, -52);
+			ST3StarText.transform.localPosition = new Vector3(40,30, -52);
 			ST3StarText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			ST3StarText.transform.Rotate (0,-180,0);
 			ST3StarText.renderer.material.color = Color.black;		
@@ -515,7 +515,7 @@ public class ResultScreen : MonoBehaviour
 			ST4StarText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(ST4StarText);
 			ST4StarText.name = "InfoPanelST4StarText";
-			ST4StarText.transform.localPosition = new Vector3((435 - (0/2))/Main.PostFactor, ((0/2) - 235f)/Main.PostFactor, -52);
+			ST4StarText.transform.localPosition = new Vector3(40, 0, -52);
 			ST4StarText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			ST4StarText.transform.Rotate (0,-180,0);
 			ST4StarText.renderer.material.color = Color.black;	
@@ -525,7 +525,7 @@ public class ResultScreen : MonoBehaviour
 			ST5StarText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(ST5StarText);
 			ST5StarText.name = "InfoPanelST5StarText";
-			ST5StarText.transform.position = new Vector3((435 - (0/2))/Main.PostFactor, ((0/2) - 265)/Main.PostFactor, -52);
+			ST5StarText.transform.localPosition = new Vector3(40, -30, -52);
 			ST5StarText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			ST5StarText.transform.Rotate (0,-180,0);
 			ST5StarText.renderer.material.color = Color.black;	
@@ -535,7 +535,7 @@ public class ResultScreen : MonoBehaviour
 			ST6StarText = (GameObject)Instantiate((GameObject)Resources.Load ("PlanAndManage/Prefabs/TextSprite_Left"));
 			Main.AddParent(ST6StarText);
 			ST6StarText.name = "InfoPanelST6StarText";
-			ST6StarText.transform.position = new Vector3((435 - (0/2))/Main.PostFactor, ((0/2) - 295)/Main.PostFactor, -52);
+			ST6StarText.transform.localPosition = new Vector3(40, -60, -52);
 			ST6StarText.transform.localScale = new Vector3(1*Main.FontFactor, 1*Main.FontFactor, 1*Main.FontFactor);
 			ST6StarText.transform.Rotate (0,-180,0);
 			ST6StarText.renderer.material.color = Color.black;	

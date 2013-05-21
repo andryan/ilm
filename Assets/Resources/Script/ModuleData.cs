@@ -25,38 +25,38 @@ public class ModuleData : MonoBehaviour {
 	private void generateArea()
 	{
 		ModuleArea = new List<Hashtable>();
-		ModuleArea.Add(HashObject.Hash("AreaType", "nTD", "y1", 6, "x1", 7, "y2", 8, "x2", 11)); 
-		ModuleArea.Add(HashObject.Hash("AreaType", "nF", "y1", 5, "x1", 15, "y2", 8, "x2", 17)); 
-		ModuleArea.Add(HashObject.Hash("AreaType", "nB", "y1", 10, "x1", 7, "y2", 12, "x2", 11));
+		ModuleArea.Add(HashObject.Hash("AreaType", "nTD", "y1", 6, "x1", 15, "y2", 9, "x2", 19)); 
+		ModuleArea.Add(HashObject.Hash("AreaType", "nF", "y1", 7, "x1", 8, "y2", 11, "x2", 12)); 
+		ModuleArea.Add(HashObject.Hash("AreaType", "nB", "y1", 10, "x1", 8, "y2", 12, "x2", 12));
 	}
 
 	private void ModuleDataArr()
 	{
 		ModuleArray = new List<Hashtable>();
 		//nodeQueue
-		ModuleArray.Add (HashObject.Hash ("Name", "nQ_0", "Type", "nQ", "ID", 0, "primaryY", 3, "primaryX", 6, "primaryZ", -6, "secondaryY", 4, "secondaryX", 6));
-		ModuleArray.Add (HashObject.Hash ("Name", "nQ_1", "Type", "nQ", "ID", 1, "primaryY", 3, "primaryX", 8, "primaryZ", -6, "secondaryY", 4, "secondaryX", 8));
-		ModuleArray.Add (HashObject.Hash ("Name", "nQ_2", "Type", "nQ", "ID", 2, "primaryY", 3, "primaryX", 10, "primaryZ", -6, "secondaryY", 4, "secondaryX", 10));
-		ModuleArray.Add (HashObject.Hash ("Name", "nQ_3", "Type", "nQ", "ID", 3, "primaryY", 3, "primaryX", 12, "primaryZ", -6, "secondaryY", 4, "secondaryX", 12));
-		ModuleArray.Add (HashObject.Hash ("Name", "nQ_4", "Type", "nQ", "ID", 4, "primaryY", 3, "primaryX", 14, "primaryZ", -6, "secondaryY", 4, "secondaryX", 14));
+		ModuleArray.Add (HashObject.Hash ("Name", "nQ_0", "Type", "nQ", "ID", 0, "primaryY", 3, "primaryX", 7, "primaryZ", -31, "secondaryY", 3, "secondaryX", 7));
+		ModuleArray.Add (HashObject.Hash ("Name", "nQ_1", "Type", "nQ", "ID", 1, "primaryY", 3, "primaryX", 9, "primaryZ", -31, "secondaryY", 3, "secondaryX", 9));
+		ModuleArray.Add (HashObject.Hash ("Name", "nQ_2", "Type", "nQ", "ID", 2, "primaryY", 3, "primaryX", 11, "primaryZ", -31, "secondaryY", 3, "secondaryX", 11));
+		ModuleArray.Add (HashObject.Hash ("Name", "nQ_3", "Type", "nQ", "ID", 3, "primaryY", 3, "primaryX", 13, "primaryZ", -31, "secondaryY", 3, "secondaryX", 13));
+		ModuleArray.Add (HashObject.Hash ("Name", "nQ_4", "Type", "nQ", "ID", 4, "primaryY", 3, "primaryX", 15, "primaryZ", -31, "secondaryY", 3, "secondaryX", 15));
 		//ModuleArray.Add (HashObject.Hash ("Name", "nQ_5", "posY", 3, "posX", 14));
 		//nodeTalentDisplay
-		ModuleArray.Add (HashObject.Hash ("Name", "nTD_0", "Type", "nTD", "ID", 0, "primaryY", 8, "primaryX", 7, "primaryZ", -16, "secondaryY", 9, "secondaryX", 7));
-		ModuleArray.Add (HashObject.Hash ("Name", "nTD_1", "Type", "nTD", "ID", 1, "primaryY", 8, "primaryX", 8, "primaryZ", -16, "secondaryY", 9, "secondaryX", 8));
-		ModuleArray.Add (HashObject.Hash ("Name", "nTD_2", "Type", "nTD", "ID", 2, "primaryY", 8, "primaryX", 10, "primaryZ", -16, "secondaryY", 9, "secondaryX", 10));
-		ModuleArray.Add (HashObject.Hash ("Name", "nTD_3", "Type", "nTD", "ID", 3, "primaryY", 8, "primaryX", 11, "primaryZ", -16, "secondaryY", 9, "secondaryX", 11));
+		ModuleArray.Add (HashObject.Hash ("Name", "nTD_0", "Type", "nTD", "ID", 0, "primaryY", 6, "primaryX", 16, "primaryZ", -61, "secondaryY", 7, "secondaryX", 16));
+		ModuleArray.Add (HashObject.Hash ("Name", "nTD_1", "Type", "nTD", "ID", 1, "primaryY", 6, "primaryX", 18, "primaryZ", -61, "secondaryY", 7, "secondaryX", 18));
+		ModuleArray.Add (HashObject.Hash ("Name", "nTD_2", "Type", "nTD", "ID", 2, "primaryY", 8, "primaryX", 16, "primaryZ", -81, "secondaryY", 9, "secondaryX", 16));
+		ModuleArray.Add (HashObject.Hash ("Name", "nTD_3", "Type", "nTD", "ID", 3, "primaryY", 8, "primaryX", 18, "primaryZ", -81, "secondaryY", 9, "secondaryX", 18));
 		//nodeFood
-		ModuleArray.Add (HashObject.Hash ("Name", "nF_0", "Type", "nF", "ID", 0, "primaryY", 5, "primaryX", 15, "primaryZ", -12, "secondaryY", 6, "secondaryX", 15));
-		ModuleArray.Add (HashObject.Hash ("Name", "nF_1", "Type", "nF", "ID", 1, "primaryY", 5, "primaryX", 17, "primaryZ", -12, "secondaryY", 6, "secondaryX", 17));
-		ModuleArray.Add (HashObject.Hash ("Name", "nF_2", "Type", "nF", "ID", 2, "primaryY", 8, "primaryX", 15, "primaryZ", -18, "secondaryY", 9, "secondaryX", 15));
-		ModuleArray.Add (HashObject.Hash ("Name", "nF_3", "Type", "nF", "ID", 3, "primaryY", 8, "primaryX", 17, "primaryZ", -18, "secondaryY", 9, "secondaryX", 17));
+		ModuleArray.Add (HashObject.Hash ("Name", "nF_0", "Type", "nF", "ID", 0, "primaryY", 6, "primaryX", 9, "primaryZ", -66, "secondaryY", 7, "secondaryX", 9));
+		ModuleArray.Add (HashObject.Hash ("Name", "nF_1", "Type", "nF", "ID", 1, "primaryY", 6, "primaryX", 11, "primaryZ", -66, "secondaryY", 7, "secondaryX", 11));
+		ModuleArray.Add (HashObject.Hash ("Name", "nF_2", "Type", "nF", "ID", 2, "primaryY", 8, "primaryX", 9, "primaryZ", -86, "secondaryY", 9, "secondaryX", 9));
+		ModuleArray.Add (HashObject.Hash ("Name", "nF_3", "Type", "nF", "ID", 3, "primaryY", 8, "primaryX", 11, "primaryZ", -86, "secondaryY", 9, "secondaryX", 11));
 		//nodeBar
-		ModuleArray.Add (HashObject.Hash ("Name", "nB_0", "Type", "nB", "ID", 0, "primaryY", 10, "primaryX", 7, "primaryZ", -6, "secondaryY", 11, "secondaryX", 7));
-		ModuleArray.Add (HashObject.Hash ("Name", "nB_1", "Type", "nB", "ID", 1, "primaryY", 10, "primaryX", 8, "primaryZ", -6, "secondaryY", 11, "secondaryX", 8));
-		ModuleArray.Add (HashObject.Hash ("Name", "nB_2", "Type", "nB", "ID", 2, "primaryY", 10, "primaryX", 10, "primaryZ", -6, "secondaryY", 11, "secondaryX", 10));
-		ModuleArray.Add (HashObject.Hash ("Name", "nB_3", "Type", "nB", "ID", 3, "primaryY", 10, "primaryX", 11, "primaryZ", -6, "secondaryY", 11, "secondaryX", 11));
+		ModuleArray.Add (HashObject.Hash ("Name", "nB_0", "Type", "nB", "ID", 0, "primaryY", 10, "primaryX", 8, "primaryZ", -101, "secondaryY", 11, "secondaryX", 8));
+		ModuleArray.Add (HashObject.Hash ("Name", "nB_1", "Type", "nB", "ID", 1, "primaryY", 10, "primaryX", 9, "primaryZ", -101, "secondaryY", 11, "secondaryX", 9));
+		ModuleArray.Add (HashObject.Hash ("Name", "nB_2", "Type", "nB", "ID", 2, "primaryY", 10, "primaryX", 11, "primaryZ", -101, "secondaryY", 11, "secondaryX", 11));
+		ModuleArray.Add (HashObject.Hash ("Name", "nB_3", "Type", "nB", "ID", 3, "primaryY", 10, "primaryX", 12, "primaryZ", -101, "secondaryY", 11, "secondaryX", 12));
 		//nodeCashier
-		ModuleArray.Add (HashObject.Hash ("Name", "nC_0", "Type", "nC", "ID", 0, "primaryY", 9, "primaryX", 3, "secondaryY", 11, "secondaryX", 3));
+		ModuleArray.Add (HashObject.Hash ("Name", "nC_0", "Type", "nC", "ID", 0, "primaryY", 9, "primaryX", 2, "secondaryY", 11, "secondaryX", 2));
 	}
 	
 	// Update is called once per frame
