@@ -6,13 +6,22 @@ using System.Collections.Generic;
 //this class this to be change to using hashtags instead of many listArrays and convert the data into customer behaviour class instead of for looping to control
 public class CustomerClass : MonoBehaviour {
 	
+	//GameObject CustomerObject;
+	
 	public List<GameObject> customerList = null; //customer's game objects
 	public List<GameObject> customerObjReference = null; //customer's targeted gameobject
 	public List<int> customerObjReferenceID = null; //customer's targeted object id
 	public List<int> customerReferenceID = null; //customer's individual id number
 	public List<int> customerStatus = null; //check if customer request is completed
 	
-	private float customerWalkingSpeed = 0.0f;
+	public float customerWalkingSpeed = 0.0f;
+	
+	public int maxCustomerSize;
+	
+	public int randWaveCust; // random customer / wave
+	
+	public int minCustRandom; // minimum jumlah customer
+	public int maxCustRandom; // maksimum jumlah customer
 	
 	//cashier
 	private int totalCustomerAtCashier = 0;
@@ -24,7 +33,10 @@ public class CustomerClass : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
+		maxCustomerSize = 2;
+		minCustRandom = 1;
+		maxCustRandom = 3;
+		randWaveCust = Random.Range(minCustRandom, maxCustRandom);
 	}
 	public void Reset()
 	{
@@ -51,23 +63,31 @@ public class CustomerClass : MonoBehaviour {
 	
 	public void Init()
 	{
+		//Main.MySpawn.Init();
 		customerList = new List<GameObject>();
 		customerObjReference = new List<GameObject>();
 		customerObjReferenceID = new List<int>();
 		customerReferenceID = new List<int>();
 		customerStatus = new List<int>();
-		
-		customerWalkingSpeed = 0.3F;
-		
+		customerWalkingSpeed = 0.3f;
+				
 		//cashier
 		cashierCustomerArr = new List<GameObject>();
 		cashierQueueTileY = 9;
 		cashierQueueTileX = 3;
+			
+		SpawnSpeed = 9 - 1.17f*Main.MyPlayerAtr.ReturnHotelRank();
 		
-		SpawnSpeed = 10 - 1.17f*Main.MyPlayerAtr.ReturnHotelRank();
+		//if(isSpawn == true)	
+		//{
+			InvokeRepeating("SpawnCustEnterFrame",0.1f,SpawnSpeed);
 		
-		InvokeRepeating("SpawnCustEnterFrame",0f,SpawnSpeed);
+		//}
+		//if(Main.MySpawn.isSpawn == true){
+		//	SpawnCustEnterFrame();
+		//}	
 	}
+	
 	private void SpawnCustEnterFrame()
 	{
 		List<Hashtable> ModuleClassArr = Main.MyModuleClass.GetModuleClassArrByType("nQ");
@@ -84,34 +104,107 @@ public class CustomerClass : MonoBehaviour {
 					break;
 				}
 			}
-		}
-		
+		}	
 	}
-	
-	private void SetCustomerSpawnTime()
-	{
-		
-	}
-	
+
 	private void spawnCustomer()
 	{
 		GameObject CustomerObject;
 		
-		int Rand = Random.Range(1, 5);
-		CustomerObject =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/CustomerPrefab" + Rand.ToString()));
-		CustomerObject.name = "Customer"+customerReferenceID.Count;
+		
+		int Rand = Random.Range(1, 6);
+		
+			//CustomerObject =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/CustomerPrefab" + Rand.ToString()));
+		if(Rand == 1 && Main.MySpawn.normalCount < maxCustomerSize)
+		{
+			CustomerObject = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/CustomerPrefab1"));
+			CustomerObject.name = "Customer"+customerReferenceID.Count;
+			Main.AddParent(CustomerObject);
+			CustomerObject.transform.localPosition = new Vector3(680 - Res.DefaultWidth()/2, -60 + Res.DefaultHeight()/2 ,0);
+			CustomerObject.transform.localScale = new Vector3(50,64,1);
+			customerList.Add (CustomerObject);
+			customerReferenceID.Add (customerReferenceID.Count);
+			customerStatus.Add (0);
+			moveCustomerToQueue(CustomerObject);
+			
+			Main.MySpawn.normalCount++;
+			Main.MySpawn.myNormalCount++;
+		}
+		else if(Main.MySpawn.normalCount > maxCustomerSize-1)
+		{
+			Rand = Random.Range(2, 6);
+		}
+		
+		if(Rand == 2 && Main.MySpawn.vipCount < maxCustomerSize)
+		{
+			CustomerObject = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/CustomerPrefab2"));
+			CustomerObject.name = "Customer"+customerReferenceID.Count;
+			Main.AddParent(CustomerObject);
+			CustomerObject.transform.localPosition = new Vector3(680 - Res.DefaultWidth()/2, -60 + Res.DefaultHeight()/2 ,0);
+			CustomerObject.transform.localScale = new Vector3(50,64,1);
+			customerList.Add (CustomerObject);
+			customerReferenceID.Add (customerReferenceID.Count);
+			customerStatus.Add (0);
+			moveCustomerToQueue(CustomerObject);
+			
+			Main.MySpawn.vipCount++;
+			Main.MySpawn.myVipCount++;
+		}
+		else if(Main.MySpawn.vipCount > maxCustomerSize-1)
+		{
+			Rand = Random.Range(1, 6);
+		}
+		
+		if(Rand == 3 && Main.MySpawn.shortTCount < maxCustomerSize)
+		{
+			CustomerObject = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/CustomerPrefab3"));
+			CustomerObject.name = "Customer"+customerReferenceID.Count;
+			Main.AddParent(CustomerObject);
+			CustomerObject.transform.localPosition = new Vector3(680 - Res.DefaultWidth()/2, -60 + Res.DefaultHeight()/2 ,0);
+			CustomerObject.transform.localScale = new Vector3(50,64,1);
+			customerList.Add (CustomerObject);
+			customerReferenceID.Add (customerReferenceID.Count);
+			customerStatus.Add (0);
+			moveCustomerToQueue(CustomerObject);
+			
+			Main.MySpawn.shortTCount++;
+			Main.MySpawn.myShortTCount++;
+		}
+		else if(Main.MySpawn.shortTCount > maxCustomerSize-1)
+		{
+			Rand = Random.Range(1, 6);
+		}
+		
+		if(Rand == 4 && Main.MySpawn.casualCount < maxCustomerSize)
+		{
+			CustomerObject = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/CustomerPrefab4"));
+			CustomerObject.name = "Customer"+customerReferenceID.Count;
+			Main.AddParent(CustomerObject);
+			CustomerObject.transform.localPosition = new Vector3(680 - Res.DefaultWidth()/2, -60 + Res.DefaultHeight()/2 ,0);
+			CustomerObject.transform.localScale = new Vector3(50,64,1);
+			customerList.Add (CustomerObject);
+			customerReferenceID.Add (customerReferenceID.Count);
+			customerStatus.Add (0);
+			moveCustomerToQueue(CustomerObject);
+			
+			Main.MySpawn.casualCount++;
+			Main.MySpawn.myCasualCount++;
+		}
+		else if(Main.MySpawn.casualCount > maxCustomerSize-1)
+		{
+			Rand = Random.Range(1, 5);
+		}
+		
+			
+		
 		//0, 17
 		//CustomerObject.AddComponent("CustomerAtr");
-		//CustomerObject.AddComponent("CustomerBehaviour");
+		//CustomerObject.AddComponent("CusstomerBehaviour");
 		
-		Main.AddParent(CustomerObject);
-
+		
+			
 		//CustomerObject.transform.Rotate(0,0,180);
-		CustomerObject.transform.localPosition = new Vector3(680 - Res.DefaultWidth()/2, -60 + Res.DefaultHeight()/2 ,0);
-		CustomerObject.transform.localScale = new Vector3(50,64,1);
-		customerList.Add (CustomerObject);
-		customerReferenceID.Add (customerReferenceID.Count);
-		customerStatus.Add (0);
+		
 	
 		/*
 		Transform SpriteAnim = CustomerObject.transform.Find("SpriteAnim");
@@ -123,7 +216,7 @@ public class CustomerClass : MonoBehaviour {
 		*/
 		//moveCustomerToCashier(CustomerObject);
 		//Debug.Log("CustomerObject.name "+CustomerObject.name);
-		moveCustomerToQueue(CustomerObject);
+		
 	}
 	//public GameObject GetCustomerObjectData(GameObject customerObj)
 	//{
@@ -301,6 +394,7 @@ public class CustomerClass : MonoBehaviour {
 	}
 	public void destroyCustomer(GameObject destroyCustomerObj)
 	{
+		
 		for(int i=0;i<customerList.Count;i++)
 		{
 			if(customerList[i] == destroyCustomerObj)
@@ -309,7 +403,7 @@ public class CustomerClass : MonoBehaviour {
 				customerList.RemoveAt(i);
 				customerObjReference.RemoveAt(i);
 				customerObjReferenceID.RemoveAt(i);
-				break;
+				break;				
 			}
 		}
 	}
@@ -319,7 +413,6 @@ public class CustomerClass : MonoBehaviour {
 		for(int i = 0; i<customerList.Count;i++)
 		{
 				Destroy(customerList[i]);
-			
 		}
 	}
 
@@ -348,7 +441,31 @@ public class CustomerClass : MonoBehaviour {
 	//	customerObjReference = null;
 	//}
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		
+		if(Main.MySpawn.normalCount >= maxCustomerSize && Main.MySpawn.vipCount >= maxCustomerSize && Main.MySpawn.shortTCount >= maxCustomerSize && Main.MySpawn.casualCount >= maxCustomerSize)
+		{
+			CancelInvoke("SpawnCustEnterFrame");
+		}	
+		
+		if(Main.MySpawn.tempTotalCust >= randWaveCust)
+		{
+			CancelInvoke("SpawnCustEnterFrame");
+			if(customerList.Count == 0)
+			{
+				Main.MySpawn.myNormalCount = 0;
+				Main.MySpawn.myVipCount = 0;
+				Main.MySpawn.myShortTCount = 0;
+				Main.MySpawn.myCasualCount = 0;
+				Main.MySpawn.tempTotalCust = 0;
+				randWaveCust = 0;	
+				InvokeRepeating("SpawnCustEnterFrame",0.1f,SpawnSpeed);
+				if(randWaveCust == 0)
+				{
+					randWaveCust = Random.Range(minCustRandom, maxCustRandom);
+				}
+			}	
+		}
 	}
 }

@@ -11,7 +11,6 @@ public class Main : MonoBehaviour
 		go.transform.parent = world.transform;
 	}
 
-
 	//static vars
 	public static int GameWidth = 1024;
 	public static int GameHeight = 768;
@@ -31,12 +30,16 @@ public class Main : MonoBehaviour
 	public static ModuleClass MyModuleClass = null;
 	public static PlayerClass MyPlayer = null;
 	public static CustomerClass MyCustomer = null;
+	
+	public static SpawnCustomer MySpawn = null;
+	
 	public static HelperClass MyHelper = null;
 	public static Controls MyControl = null;
 	public static SaveSystem MySaveSystem = null;
 	public static ResultCal MyResultCal = null;
 	public static DragDrop MyDragDrop = null;
 	public static CustomerBehaviour MyCustomerBehaviour = null;
+	public static CustomerAtr MyCustomerAttribute = null;
 	public static Achievement MyAchievement = null;
 	public StartScreen MyStartScreen = null;
 	private PnMScreen MyPnMScreen = null;
@@ -47,8 +50,7 @@ public class Main : MonoBehaviour
 	}
 	private void Init()
 	{
-		randomTheme = Random.Range(1,4);
-		
+		randomTheme = Random.Range(1,4);	
 	
 		Res.AdjustCameraSize(this.gameObject);
 		Res.AdjustWorldSize(GameObject.Find("World"));
@@ -106,6 +108,10 @@ public class Main : MonoBehaviour
 		MyModule = (ModuleData)this.gameObject.AddComponent("ModuleData");
 		MyModuleClass = (ModuleClass)this.gameObject.AddComponent("ModuleClass");
 		MyCustomer = (CustomerClass)this.gameObject.AddComponent("CustomerClass");
+		if(MySpawn == null)
+		{
+			MySpawn = (SpawnCustomer)this.gameObject.AddComponent("SpawnCustomer");
+		}
 		MyHelper = (HelperClass)this.gameObject.AddComponent("HelperClass");
 		MyControl = (Controls)this.gameObject.AddComponent("Controls");
 		MyDragDrop = (DragDrop)this.gameObject.AddComponent("DragDrop");
@@ -205,7 +211,6 @@ public class Main : MonoBehaviour
 	
 	private void Update()
 	{
-			
 		if (Application.platform == RuntimePlatform.Android)
         {
 			//if (Input.GetKey(KeyCode.Escape) && MyStartScreen != null)

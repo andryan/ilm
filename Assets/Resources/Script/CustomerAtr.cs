@@ -6,11 +6,13 @@ using System.Collections.Generic;
 public class CustomerAtr : MonoBehaviour 
 {
 	private string Type = "";
-	private int TypeID = 0;
+	public int TypeID;
 	private float TipsRate = 0.0f;
 	private float Satisfaction = 0.0f;
-	private int CurrentWaitingTime = 0;
-	private int WaitingTime = 0;
+	private float CurrentWaitingTime = 0.0f;
+	public float WaitingTime = 0.0f;
+	public float minusTime = 0.0f;
+	
 	private float LikeRate = 0.0f;
 	private int Coin = 0;
 	public List<string> ActionList = null;
@@ -39,6 +41,13 @@ public class CustomerAtr : MonoBehaviour
 	private Vector3 StoredScale;
 	private int ScaleFactor = 1;
 	
+	public float disappearIcon = 0;
+	
+	public int normalAction = 0;
+	public int VIPAction = 0;
+	public int shortTAction = 0;
+	public int casualAction = 0;
+	
 	private void Start()
 	{
 		Init();	
@@ -46,10 +55,15 @@ public class CustomerAtr : MonoBehaviour
 	}
 	private void Init()
 	{
+		normalAction = 4;
+		VIPAction = 6;
+		shortTAction = 4;
+		casualAction = 3;
+		
 		TypeList = new List<string>(new string[]{"Normal","VIP","ShortT","Casual"});
 		TypeRate = new List<int>(new int[]{40,10,25,25});
 		ActionTypeList = new List<string>(new string[]{"nF","nB","nTD"});
-		ActionCount = new List<int>(new int[]{4,6,4,3});
+		ActionCount = new List<int>(new int[]{normalAction,VIPAction,shortTAction,casualAction});
 		CoinList = new List<int>(new int[]{50,100,60,40});
 		STList = new List<int>(new int[]{2,2,2,3});
 		WTList = new List<int>(new int[]{30,30,20,40});
@@ -62,6 +76,8 @@ public class CustomerAtr : MonoBehaviour
 		TipsList.Add (HashObject.Hash("Star",4,"TR",+0.2f));
 		TipsList.Add (HashObject.Hash("Star",5,"TR",+0.4f));
 		TipsList.Add (HashObject.Hash("Star",6,"TR",+0.6f));
+		
+		disappearIcon = 10f;
 		
 		ActionList = new List<string>();
 		
@@ -127,7 +143,8 @@ public class CustomerAtr : MonoBehaviour
 	}
 	public void GetWaitingTime(float StationWT = 0f)
 	{
-		WaitingTime = (int)((float)WTList[TypeID]*(1+Main.MyPlayerAtr.ReturnGlobalWT ()+StationWT));
+		WaitingTime = (int)((float)WTList[TypeID]*(1+Main.MyPlayerAtr.ReturnGlobalWT ()+StationWT) - minusTime);
+		
 		CurrentWaitingTime = WaitingTime;
 		TemStationWT = StationWT;
 		InvokeRepeating ("EnterFrame",0f,1f);
@@ -135,7 +152,8 @@ public class CustomerAtr : MonoBehaviour
 	}
 	private void GetCurStationWT()
 	{
-		WaitingTime = (int)((float)WTList[TypeID]*(1+Main.MyPlayerAtr.ReturnGlobalWT ()+TemStationWT));	
+		WaitingTime = (int)((float)WTList[TypeID]*(1+Main.MyPlayerAtr.ReturnGlobalWT ()+TemStationWT) - minusTime);
+		
 		CurrentWaitingTime = WaitingTime;
 		InvokeRepeating ("EnterFrame",0f,1f);
 		Debug.Log ("WaitingTime "+WaitingTime);
@@ -159,13 +177,15 @@ public class CustomerAtr : MonoBehaviour
 			for(int a = 0;a<TypeRate.Count;a++)
 			{
 				StoreInt += TypeRate[a];
-				if(CatchInt <StoreInt)
-				{
-					TypeID = a;
-					break;
-				}
+//				if(CatchInt <StoreInt)
+//				{
+//					TypeID = a;
+//					break;
+//				}
 			}
+
 		}
+		
 		Type = TypeList[TypeID];
 		Debug.Log ("Type "+Type);
 	}
@@ -439,11 +459,11 @@ public class CustomerAtr : MonoBehaviour
 	{
 		return ObtainLike;	
 	}
-	public int ReturnCurrentWaitingTime()
+	public float ReturnCurrentWaitingTime()
 	{
 		return CurrentWaitingTime;	
 	}
-	public int ReturnWaitingTime()
+	public float ReturnWaitingTime()
 	{
 		return WaitingTime;	
 	}
@@ -508,7 +528,7 @@ public class CustomerAtr : MonoBehaviour
 		{
 			//Emoticon.renderer.enabled = true;	
 		}
-		if(Emoticon != null && CurrentWaitingTime <= 10)
+		if(Emoticon != null && CurrentWaitingTime <= disappearIcon)
 		{
 			if(Emoticon.transform.localScale.x >= StoredScale.x+5)
 			{
@@ -581,4 +601,44 @@ public class CustomerAtr : MonoBehaviour
 		Main.MyCustomer.destroyCustomer(this.gameObject);
 	}
 	
+	private void Update()
+	{
+		
+		if(Main.MySpawn.myMinusTime > minusTime)
+		{
+			if(minusTime <= 15)
+			{
+				minusTime+=0.5f;
+			}
+			if(disappearIcon > 3.0f)
+			{
+				disappearIcon-=0.2f;
+			}	
+		}
+		
+		if(minusTime >= 5 && minusTime < 10)
+		{
+			normalAction += 5;
+			VIPAction += 7;
+			shortTAction += 5;
+			casualAction += 4;
+		}
+		
+		else if(minusTime >= 10 && minusTime < 15)
+		{
+			normalAction += 6;
+			VIPAction += 8;
+			shortTAction += 6;
+			casualAction += 5;
+		}
+		
+		else if(minusTime >= 15)
+		{
+			normalAction += 7;
+			VIPAction += 9;
+			shortTAction += 7;
+			casualAction += 6;
+		}
+		
+	}	
 }

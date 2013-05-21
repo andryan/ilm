@@ -13,7 +13,7 @@ public class TileArray : MonoBehaviour {
 	
 	public bool isLose;
 	
-	public int maxCustOut = 0;
+	public int maxCustOut = 10;
 	
 	private List<List<int>> tileArr = null; 
 	
@@ -50,7 +50,7 @@ public class TileArray : MonoBehaviour {
 	
 	private int Hour = 0;
 	private int Minutes = 0;
-	private int TotalTime = 0;
+	public int TotalTime = 0;
 	
 	//Use this for initialization
 	/// <summary>
@@ -322,7 +322,7 @@ public class TileArray : MonoBehaviour {
 			MyBmp = null;
 		}
 		InvokeRepeating("UpdateUIText", 0f, 0.02f);
-		TotalTime = 540;
+		TotalTime = 1240;
 		InvokeRepeating("UpdateTimeText", 0f, 0.2f);
 		//UpdateUIText();
 	}
@@ -349,7 +349,6 @@ public class TileArray : MonoBehaviour {
 				CancelInvoke ("UpdateTimeText");
 			}
 		}
-		
 		
 				if(isLose == true)
 				{		
@@ -473,8 +472,5 @@ public class TileArray : MonoBehaviour {
 			}
 		}
 	}
+			
 }
-
-
-
-

@@ -287,6 +287,13 @@ public class ResultScreen : MonoBehaviour
 			MyCA.STRateList = null;
 			MyCA.STEffectList = null;
 			MyCA.DestroyIcon ();
+			Main.MySpawn.casualCount = 0;
+			Main.MySpawn.normalCount = 0;
+			Main.MySpawn.shortTCount = 0;
+			Main.MySpawn.vipCount = 0;
+			
+			//Main.MyCustomer.customerWalkingSpeed = 0.3f;
+			
 		}
 	}
 	
@@ -360,6 +367,7 @@ public class ResultScreen : MonoBehaviour
 			MyInfoPanelGO.renderer.material = MyInfoPanelBmp;
 		}
 	}
+	
 	private void BuildInfoPanelPictureBar()
 	{
 		if(MyInfoPanelPictureBarGO == null)
@@ -396,6 +404,7 @@ public class ResultScreen : MonoBehaviour
 			MyInfoPanelPotraitGO.renderer.enabled = false;
 		}
 	}
+	
 	private void BuildInfoPanelNext()
 	{
 		if(MyInfoPanelNextGO == null)
@@ -714,11 +723,6 @@ public class ResultScreen : MonoBehaviour
 		StopVFX_2();
 	}
 	
-	private void ClearLoseVFX()
-	{
-		
-	}
-	
 	private void ClearAllListener()
 	{
 		//RemoveMUpOnButtons();
@@ -736,9 +740,24 @@ public class ResultScreen : MonoBehaviour
 		Main.MyResultCal.UpdatePlayerAtr();
 		Parent.ClearGameScreen();
 		print ("CLEARED GAME SCREEN");
-		Parent.ShowPnMScreen();
+		Parent.ShowGameScreen();
+		Main.MyPlayerAtr.AddDay (1);
+		//Parent.ShowPnMScreen();
 		Parent = null;
 		Destroy (this.gameObject.GetComponent("ResultScreen"));
+		
+		Main.MySpawn.normalCount = 0;
+		Main.MySpawn.vipCount = 0;
+		Main.MySpawn.shortTCount = 0;
+		Main.MySpawn.casualCount = 0;
+		
+		Main.MySpawn.myNormalCount = 0;
+		Main.MySpawn.myVipCount = 0;
+		Main.MySpawn.myShortTCount = 0;
+		Main.MySpawn.myCasualCount = 0;
+		
+		Main.MySpawn.totalCustomer = 0;
+		Main.MySpawn.tempTotalCust = 0;
 	}
 	
 	public void ClearToMainMenu()
@@ -754,5 +773,27 @@ public class ResultScreen : MonoBehaviour
 		Parent.ShowStartScreen();
 		Parent = null;
 		Destroy (this.gameObject.GetComponent("ResultScreen"));
+		
+		if(Main.MyCustomer != null)
+		{
+			Main.MyCustomer.customerWalkingSpeed = 0.3f;
+		}
+		Main.MySpawn.myCustomerSpeed = 0.3f;
+		
+		Main.MyPlayerAtr.Day = 1;
+		Main.MySpawn.myDay = 2;
+		
+		Main.MySpawn.normalCount = 0;
+		Main.MySpawn.vipCount = 0;
+		Main.MySpawn.shortTCount = 0;
+		Main.MySpawn.casualCount = 0;
+		
+		Main.MySpawn.myNormalCount = 0;
+		Main.MySpawn.myVipCount = 0;
+		Main.MySpawn.myShortTCount = 0;
+		Main.MySpawn.myCasualCount = 0;
+		
+		Main.MySpawn.totalCustomer = 0;
+		Main.MySpawn.tempTotalCust = 0;
 	}
 }

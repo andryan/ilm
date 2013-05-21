@@ -411,6 +411,8 @@ public class PnMScreen : MonoBehaviour
 	//@ Kaizer: Features
 	private void ReadyToClear()
 	{
+		GameObject mainCamera = GameObject.Find("Main Camera");
+		Main myMain = mainCamera.GetComponent<Main>();
 		Main.MyPlayerAtr.AddDay (1);
 		Clear ();	
 	}
@@ -1743,5 +1745,4 @@ public class PnMScreen : MonoBehaviour
 		print ("SHOW GAME SCREEN");
 		Parent = null;
 	}
-		
 }

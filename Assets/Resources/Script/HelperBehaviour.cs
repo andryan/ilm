@@ -17,7 +17,7 @@ public class HelperBehaviour : MonoBehaviour {
 	private Vector3 prevHelperPost = new Vector3(0,0,0);
 	private SpriteAnimator sAnim = null;
 	private Transform SpriteAnimObj = null;
-	public bool Serving = false;	
+	public bool Serving = false;
 	void Start () {
 		Init ();
 	}

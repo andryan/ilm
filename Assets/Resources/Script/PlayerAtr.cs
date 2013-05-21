@@ -11,7 +11,7 @@ public class PlayerAtr : MonoBehaviour
 	private int TotalCoin = 0;
 	private int Diamond = 0;
 	private int TotalDiamond = 0;
-	private int Day = 0;
+	public int Day = 0;
 	private int HotelRank = 0;
 	
 	private string DayType = "";
@@ -199,7 +199,7 @@ public class PlayerAtr : MonoBehaviour
 	}
 	public void AddDay(int Add = 1)
 	{
-		Day += Add;	
+		Day += Add;
 	}
 	public void AddHotelRank(int Add = 1)
 	{
