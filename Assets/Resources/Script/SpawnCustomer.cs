@@ -3,109 +3,219 @@ using System.Collections;
 
 public class SpawnCustomer : MonoBehaviour {
 	
-	public float spawnDelay = 10f;
+	public int myDay = 2; // hari pada mulai game start Day 2
 	
-	public int myDay = 2;
+	public float myDisappearIcon = 10.0f; // waktu pada saat icon customer jadi besar kecil (impatient)
 	
-	public float myDisappearIcon = 10f;
+	public float myCustomerSpeed = 0.3f; // penampung kecepatan customer
 	
-	public float myCustomerSpeed = 0.3f;
+	public float myMinusTime = 0.0f; // penampung pengurangan waktu untuk durasi customer saat menunggu
 	
-	public float myMinusTime = 0.0f;
-	
-	public int vipCount = 0;
+	public int vipCount = 0; // jumlah customer yg datang
 	public int shortTCount = 0;
 	public int normalCount = 0;
 	public int casualCount = 0;
 	
-	public int myVipCount = 0;
+	public int myVipCount = 0; // penampung jumlah customer yg datang
 	public int myShortTCount = 0;
 	public int myNormalCount = 0;
 	public int myCasualCount = 0;
 	
-	public int totalCustomer = 0;
-	public int tempTotalCust = 0;
+	public int totalCustomer = 0; // total keseluruhan customer per hari
+	public int tempTotalCust = 0; // penampung total customer
 	
+	public int daysForUpgradeCustomerSpeed = 1;
+	public int daysForUpgradeCustomerSpeedCount;
+	
+	public int daysForUpgradeCustomerSize = 3; // hari buat update jumlah max customer per hari
+	public int daysForUpgradeCount;
+	
+	public int addNormalCustomer = 1; // jumlah max customer per hari yg akan ditambahkan
+	public int addVipCustomer = 1;
+	public int addShortTCustomer = 1;
+	public int addCasualCustomer = 1;
+	
+	public float additionalCustomerSpeed = 0.005f;  // penambahan customer speed
+	
+	public int maxNormalCustomerSize = 2; // jumlah max customer normal perhari
+	public int maxVipCustomerSize = 2;
+	public int maxShortTCustomerSize = 2;
+	public int maxCasualCustomerSize = 2;
+	
+	public float maxCustomerSpeed = 0.1f;
+	public float maxMinusTime = 15.0f;
+	
+	public int daysForUpdateIconCustDisappear = 1; // hari buat ngubah durasi icon customer
+	public int daysForUpdateIconCustDisappearCount;
+	
+	public float addTimeForIconCustDisappear = 0.1f; // buat ngurangin durasi icon customer yg besar-kecil (impatient)
+	
+	public int daysForUpdateCustWaitingTime = 1; // hari buat ngubah waiting time
+	public int daysForUpdateCustWaitingTimeCount;
+	
+	public float addTimeForCustWaitingTime = 0.5f; // buat ngurangin waiting time customer
+	
+	public int daysForUpdateCustomerMaxAction = 5; // hari buat ngubah action list
+	public int daysForUpdateCustomerMaxActionCount;
+	
+	public int addNormalCustomerActionSize  = 1; // buat nambah action list customer
+	public int addVipCustomerActionSize = 1;
+	public int addShortTCustomerActionSize = 1;
+	public int addCasualCustomerActionSize = 1;
+	
+	public int myNormalAction = 4; //penampung action
+	public int myVIPAction = 6;
+	public int myShortTAction = 4;
+	public int myCasualAction = 3;
+	
+
 	
 	// Use this for initialization
 	void Start () {
-
+		daysForUpgradeCount = 0;
+		daysForUpgradeCustomerSpeedCount = 0;
+		daysForUpdateIconCustDisappearCount = 0;
+		daysForUpdateCustWaitingTimeCount = 0;
+		daysForUpdateCustomerMaxActionCount = 0;
+			
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		GameObject mainCamera = GameObject.Find("Main Camera");
-		Main myMain = mainCamera.GetComponent<Main>();
-		
 		totalCustomer = normalCount + vipCount + shortTCount + casualCount;
 		tempTotalCust = myNormalCount + myVipCount + myShortTCount + myCasualCount;
 		
 		if(myDay < Main.MyPlayerAtr.Day)
 		{
-			myCustomerSpeed -= 0.005f;
-			myDisappearIcon -= 1;
 			myDay++;
-			myMinusTime += 0.5f;
+			daysForUpgradeCount++;
+			daysForUpgradeCustomerSpeedCount++;
+			daysForUpdateIconCustDisappearCount++;
+			daysForUpdateCustWaitingTimeCount++;
+			daysForUpdateIconCustDisappearCount++;
+			daysForUpdateCustomerMaxActionCount++;
+		}
+
+		if(daysForUpgradeCount >= daysForUpgradeCustomerSize)
+		{	
+			AddNormalCustomerSize();
+			AddVipCustomerSize();
+			AddShortTCustomerSize();
+			AddCasualCustomerSize();	
+			daysForUpgradeCount = 0;
 		}
 		
-		if(Main.MyPlayerAtr.Day == 5)
+		if(daysForUpgradeCustomerSpeedCount >= daysForUpgradeCustomerSpeed)
 		{
-			Main.MyCustomer.maxCustomerSize = 3;
-		}
-		if(Main.MyPlayerAtr.Day == 10)
-		{
-			Main.MyCustomer.maxCustomerSize = 4;
-		}
-		if(Main.MyPlayerAtr.Day == 15)
-		{
-			Main.MyCustomer.maxCustomerSize = 5;
-		}
-		if(Main.MyPlayerAtr.Day == 20)
-		{
-			Main.MyCustomer.maxCustomerSize = 6;
-		}
-		if(Main.MyPlayerAtr.Day == 25)
-		{
-			Main.MyCustomer.maxCustomerSize = 7;
-		}
-		if(Main.MyPlayerAtr.Day == 30)
-		{
-			Main.MyCustomer.maxCustomerSize = 8;
-		}
-		if(Main.MyPlayerAtr.Day == 35)
-		{
-			Main.MyCustomer.maxCustomerSize = 9;
-		}
-		if(Main.MyPlayerAtr.Day == 40)
-		{
-			Main.MyCustomer.maxCustomerSize = 10;
-		}
-		
-		if(Main.MyCustomer != null)
-		{
-			if(Main.MyCustomer.customerWalkingSpeed > myCustomerSpeed)
+			if(myCustomerSpeed > maxCustomerSpeed)
 			{
-				if(Main.MyCustomer.customerWalkingSpeed > 0.1f)
-				{
-					Main.MyCustomer.customerWalkingSpeed -= 0.005f;
-				}
-				
-				if(Main.MyCustomerAttribute != null)
-				{
-					if(Main.MyCustomerAttribute.disappearIcon > myDisappearIcon)
-					{
-						Main.MyCustomerAttribute.disappearIcon -= 1;
-					}
-				}
-				
+				AddCustomerSpeed();
 			}
+			if(myCustomerSpeed > 1.0f)
+			{
+				myCustomerSpeed = 1.0f;
+			}
+			else if(myCustomerSpeed < maxCustomerSpeed)
+			{
+				myCustomerSpeed = maxCustomerSpeed;
+			}
+			daysForUpgradeCustomerSpeedCount = 0;
+		}
+		
+		if(daysForUpdateIconCustDisappearCount >= daysForUpdateIconCustDisappear)
+		{
+			AddTimeCustIcon();
+			daysForUpdateIconCustDisappearCount = 0;
+		}
+		
+		if(daysForUpdateCustomerMaxActionCount >= daysForUpdateCustomerMaxAction)
+		{
+			AddMaxNormalCustomerAction();
+			AddMaxVipCustomerAction();
+			AddMaxShortTCustomerAction();
+			AddMaxCasualCustomerAction();
+			Main.MySpawn.daysForUpdateCustomerMaxActionCount = 0;
+		}
+		
+		if(daysForUpdateCustWaitingTimeCount >= daysForUpdateCustWaitingTime)
+		{
+			if(myMinusTime < maxMinusTime)
+			{
+				AddMinusTime();
+			}
+		
+			if(myMinusTime > maxMinusTime)
+			{
+				myMinusTime = maxMinusTime;
+			}
+			else if(myMinusTime < 0.0f)
+			{
+				myMinusTime = 0.0f;
+			}
+			daysForUpdateCustWaitingTimeCount = 0;
 		}
 	}
 	
-	public void Init()
+	private void AddCustomerSpeed()
 	{
-		
-		
+		myCustomerSpeed -= additionalCustomerSpeed;
 	}
 	
+	// ---------------------------------------------------------
+	
+	private void AddNormalCustomerSize()
+	{
+		maxNormalCustomerSize += addNormalCustomer;
+	}
+	
+	private void AddVipCustomerSize()
+	{
+		maxVipCustomerSize += addVipCustomer;
+	}
+	
+	private void AddShortTCustomerSize()
+	{
+		maxShortTCustomerSize += addShortTCustomer;
+	}
+	
+	private void AddCasualCustomerSize()
+	{
+		maxCasualCustomerSize += addCasualCustomer;
+	}
+	
+	// -------------------------------------------------------
+	
+	private void AddMaxNormalCustomerAction()
+	{
+		myNormalAction += addNormalCustomerActionSize;
+	}
+	
+	private void AddMaxVipCustomerAction()
+	{
+		myVIPAction += addVipCustomerActionSize;
+	}
+	
+	private void AddMaxShortTCustomerAction()
+	{
+		myShortTAction += addShortTCustomerActionSize;
+	}
+	
+	private void AddMaxCasualCustomerAction()
+	{
+		myCasualAction += addCasualCustomerActionSize;
+	}
+	
+	// --------------------------------------------------------
+	
+	private void AddTimeCustIcon()
+	{
+		myDisappearIcon -= addTimeForIconCustDisappear;
+	}
+	
+	// --------------------------------------------------------
+	
+	private void AddMinusTime()
+	{
+		myMinusTime += addTimeForCustWaitingTime;
+	}
 }

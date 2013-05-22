@@ -287,13 +287,6 @@ public class ResultScreen : MonoBehaviour
 			MyCA.STRateList = null;
 			MyCA.STEffectList = null;
 			MyCA.DestroyIcon ();
-			Main.MySpawn.casualCount = 0;
-			Main.MySpawn.normalCount = 0;
-			Main.MySpawn.shortTCount = 0;
-			Main.MySpawn.vipCount = 0;
-			
-			//Main.MyCustomer.customerWalkingSpeed = 0.3f;
-			
 		}
 	}
 	
@@ -795,5 +788,22 @@ public class ResultScreen : MonoBehaviour
 		
 		Main.MySpawn.totalCustomer = 0;
 		Main.MySpawn.tempTotalCust = 0;
+		
+		Main.MySpawn.myDisappearIcon = 10.0f;
+		
+		Main.MySpawn.myMinusTime = 0.0f;
+		
+		Main.MySpawn.myCustomerSpeed = 0.3f;
+		
+		Main.MySpawn.daysForUpgradeCustomerSpeedCount = 0;
+		Main.MySpawn.daysForUpgradeCount = 0;
+		Main.MySpawn.daysForUpdateIconCustDisappearCount = 0;
+		Main.MySpawn.daysForUpdateCustWaitingTimeCount = 0;
+		Main.MySpawn.daysForUpdateCustomerMaxActionCount = 0;
+		
+		Main.MySpawn.myNormalAction = 4;
+		Main.MySpawn.myVIPAction = 6;
+		Main.MySpawn.myShortTAction = 4;
+		Main.MySpawn.myCasualAction = 3;
 	}
 }

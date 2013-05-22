@@ -14,9 +14,10 @@ public class CustomerClass : MonoBehaviour {
 	public List<int> customerReferenceID = null; //customer's individual id number
 	public List<int> customerStatus = null; //check if customer request is completed
 	
-	public float customerWalkingSpeed = 0.0f;
+	public float customerWalkingSpeed;
 	
-	public int maxCustomerSize;
+	public int maxWave;
+	private int waveCount;
 	
 	public int randWaveCust; // random customer / wave
 	
@@ -33,9 +34,12 @@ public class CustomerClass : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		maxCustomerSize = 2;
-		minCustRandom = 1;
-		maxCustRandom = 3;
+		minCustRandom = 2;
+		maxCustRandom = 10;
+		
+		maxWave = 2;
+		waveCount = 0;
+		
 		randWaveCust = Random.Range(minCustRandom, maxCustRandom);
 	}
 	public void Reset()
@@ -69,7 +73,7 @@ public class CustomerClass : MonoBehaviour {
 		customerObjReferenceID = new List<int>();
 		customerReferenceID = new List<int>();
 		customerStatus = new List<int>();
-		customerWalkingSpeed = 0.3f;
+		customerWalkingSpeed = Main.MySpawn.myCustomerSpeed;
 				
 		//cashier
 		cashierCustomerArr = new List<GameObject>();
@@ -115,7 +119,7 @@ public class CustomerClass : MonoBehaviour {
 		int Rand = Random.Range(1, 6);
 		
 			//CustomerObject =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/CustomerPrefab" + Rand.ToString()));
-		if(Rand == 1 && Main.MySpawn.normalCount < maxCustomerSize)
+		if(Rand == 1 && Main.MySpawn.normalCount < Main.MySpawn.maxNormalCustomerSize)
 		{
 			CustomerObject = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/CustomerPrefab1"));
 			CustomerObject.name = "Customer"+customerReferenceID.Count;
@@ -130,12 +134,12 @@ public class CustomerClass : MonoBehaviour {
 			Main.MySpawn.normalCount++;
 			Main.MySpawn.myNormalCount++;
 		}
-		else if(Main.MySpawn.normalCount > maxCustomerSize-1)
+		else if(Main.MySpawn.normalCount > Main.MySpawn.maxNormalCustomerSize-1)
 		{
 			Rand = Random.Range(2, 6);
 		}
 		
-		if(Rand == 2 && Main.MySpawn.vipCount < maxCustomerSize)
+		if(Rand == 2 && Main.MySpawn.vipCount < Main.MySpawn.maxVipCustomerSize)
 		{
 			CustomerObject = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/CustomerPrefab2"));
 			CustomerObject.name = "Customer"+customerReferenceID.Count;
@@ -150,12 +154,12 @@ public class CustomerClass : MonoBehaviour {
 			Main.MySpawn.vipCount++;
 			Main.MySpawn.myVipCount++;
 		}
-		else if(Main.MySpawn.vipCount > maxCustomerSize-1)
+		else if(Main.MySpawn.vipCount > Main.MySpawn.maxVipCustomerSize-1)
 		{
 			Rand = Random.Range(1, 6);
 		}
 		
-		if(Rand == 3 && Main.MySpawn.shortTCount < maxCustomerSize)
+		if(Rand == 3 && Main.MySpawn.shortTCount < Main.MySpawn.maxShortTCustomerSize)
 		{
 			CustomerObject = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/CustomerPrefab3"));
 			CustomerObject.name = "Customer"+customerReferenceID.Count;
@@ -170,12 +174,12 @@ public class CustomerClass : MonoBehaviour {
 			Main.MySpawn.shortTCount++;
 			Main.MySpawn.myShortTCount++;
 		}
-		else if(Main.MySpawn.shortTCount > maxCustomerSize-1)
+		else if(Main.MySpawn.shortTCount > Main.MySpawn.maxShortTCustomerSize-1)
 		{
 			Rand = Random.Range(1, 6);
 		}
 		
-		if(Rand == 4 && Main.MySpawn.casualCount < maxCustomerSize)
+		if(Rand == 4 && Main.MySpawn.casualCount < Main.MySpawn.maxCasualCustomerSize)
 		{
 			CustomerObject = (GameObject)Instantiate((GameObject)Resources.Load("Prefabs/CustomerPrefab4"));
 			CustomerObject.name = "Customer"+customerReferenceID.Count;
@@ -190,7 +194,7 @@ public class CustomerClass : MonoBehaviour {
 			Main.MySpawn.casualCount++;
 			Main.MySpawn.myCasualCount++;
 		}
-		else if(Main.MySpawn.casualCount > maxCustomerSize-1)
+		else if(Main.MySpawn.casualCount > Main.MySpawn.maxCasualCustomerSize-1)
 		{
 			Rand = Random.Range(1, 5);
 		}
@@ -444,10 +448,16 @@ public class CustomerClass : MonoBehaviour {
 	void Update()
 	{
 		
-		if(Main.MySpawn.normalCount >= maxCustomerSize && Main.MySpawn.vipCount >= maxCustomerSize && Main.MySpawn.shortTCount >= maxCustomerSize && Main.MySpawn.casualCount >= maxCustomerSize)
+		if(Main.MySpawn.normalCount >= Main.MySpawn.maxNormalCustomerSize && Main.MySpawn.vipCount >= Main.MySpawn.maxVipCustomerSize && Main.MySpawn.shortTCount >= Main.MySpawn.maxShortTCustomerSize && Main.MySpawn.casualCount >= Main.MySpawn.maxCasualCustomerSize)
 		{
 			CancelInvoke("SpawnCustEnterFrame");
 		}	
+		
+		if(waveCount == maxWave)
+		{
+			Debug.LogWarning("Trap Hole!");
+			CancelInvoke("SpawnCustEnterFrame");
+		}
 		
 		if(Main.MySpawn.tempTotalCust >= randWaveCust)
 		{
@@ -464,8 +474,14 @@ public class CustomerClass : MonoBehaviour {
 				if(randWaveCust == 0)
 				{
 					randWaveCust = Random.Range(minCustRandom, maxCustRandom);
+					AddWaveCount(1);
 				}
 			}	
 		}
+	}
+	
+	private void AddWaveCount(int myAdd = 1)
+	{
+		waveCount += myAdd;
 	}
 }

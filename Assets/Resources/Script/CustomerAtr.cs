@@ -11,7 +11,7 @@ public class CustomerAtr : MonoBehaviour
 	private float Satisfaction = 0.0f;
 	private float CurrentWaitingTime = 0.0f;
 	public float WaitingTime = 0.0f;
-	public float minusTime = 0.0f;
+	public float minusTime;
 	
 	private float LikeRate = 0.0f;
 	private int Coin = 0;
@@ -41,12 +41,12 @@ public class CustomerAtr : MonoBehaviour
 	private Vector3 StoredScale;
 	private int ScaleFactor = 1;
 	
-	public float disappearIcon = 0;
+	public float disappearIcon;
 	
-	public int normalAction = 0;
-	public int VIPAction = 0;
-	public int shortTAction = 0;
-	public int casualAction = 0;
+	public int normalAction;
+	public int VIPAction;
+	public int shortTAction;
+	public int casualAction;
 	
 	private void Start()
 	{
@@ -55,10 +55,13 @@ public class CustomerAtr : MonoBehaviour
 	}
 	private void Init()
 	{
-		normalAction = 4;
-		VIPAction = 6;
-		shortTAction = 4;
-		casualAction = 3;
+		minusTime = Main.MySpawn.myMinusTime;
+		normalAction = Main.MySpawn.myNormalAction;
+		VIPAction = Main.MySpawn.myVIPAction;
+		shortTAction = Main.MySpawn.myShortTAction;
+		casualAction = Main.MySpawn.myCasualAction;
+		
+		disappearIcon = Main.MySpawn.myDisappearIcon;
 		
 		TypeList = new List<string>(new string[]{"Normal","VIP","ShortT","Casual"});
 		TypeRate = new List<int>(new int[]{40,10,25,25});
@@ -76,8 +79,6 @@ public class CustomerAtr : MonoBehaviour
 		TipsList.Add (HashObject.Hash("Star",4,"TR",+0.2f));
 		TipsList.Add (HashObject.Hash("Star",5,"TR",+0.4f));
 		TipsList.Add (HashObject.Hash("Star",6,"TR",+0.6f));
-		
-		disappearIcon = 10f;
 		
 		ActionList = new List<string>();
 		
@@ -619,45 +620,4 @@ public class CustomerAtr : MonoBehaviour
 		Destroy (this.gameObject.GetComponent("CustomerAtr"));
 		Main.MyCustomer.destroyCustomer(this.gameObject);
 	}
-	
-	private void Update()
-	{
-		
-		if(Main.MySpawn.myMinusTime > minusTime)
-		{
-			if(minusTime <= 15)
-			{
-				minusTime+=0.5f;
-			}
-			if(disappearIcon > 3.0f)
-			{
-				disappearIcon-=0.2f;
-			}	
-		}
-		
-		if(minusTime >= 5 && minusTime < 10)
-		{
-			normalAction += 5;
-			VIPAction += 7;
-			shortTAction += 5;
-			casualAction += 4;
-		}
-		
-		else if(minusTime >= 10 && minusTime < 15)
-		{
-			normalAction += 6;
-			VIPAction += 8;
-			shortTAction += 6;
-			casualAction += 5;
-		}
-		
-		else if(minusTime >= 15)
-		{
-			normalAction += 7;
-			VIPAction += 9;
-			shortTAction += 7;
-			casualAction += 6;
-		}
-		
-	}	
 }

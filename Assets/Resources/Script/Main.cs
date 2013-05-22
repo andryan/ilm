@@ -123,9 +123,11 @@ public class Main : MonoBehaviour
 		MyHelper = (HelperClass)this.gameObject.AddComponent("HelperClass");
 		MyControl = (Controls)this.gameObject.AddComponent("Controls");
 		MyDragDrop = (DragDrop)this.gameObject.AddComponent("DragDrop");
-		
-		MyComboDetector = (ComboDetector) this.gameObject.AddComponent("ComboDetector");
-		this.gameObject.AddComponent("FeverClass");
+		if(MyComboDetector == null)
+		{
+			MyComboDetector = (ComboDetector) this.gameObject.AddComponent("ComboDetector");
+			this.gameObject.AddComponent("FeverClass");
+		}
 		
 		FeverPoint = 0;
 		

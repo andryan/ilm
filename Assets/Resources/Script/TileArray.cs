@@ -339,7 +339,7 @@ public class TileArray : MonoBehaviour {
 			MyBmp = null;
 		}
 		InvokeRepeating("UpdateUIText", 0f, 0.02f);
-		TotalTime = 1240;
+		TotalTime = 540;
 		InvokeRepeating("UpdateTimeText", 0f, 0.2f);
 		//UpdateUIText();
 	}
