@@ -1,12 +1,15 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Prime31;						// using prime31 plugin ~ nandi
+using Prime31;						 // using prime31 plugin ~ nandi
 
 //@ Author: Kaizer
 
 public class SocialMenu : MonoBehaviour 
 {
+	// starting ping to test internet connection
+	Ping ping = new Ping("8.8.8.8"); 
+	
 	//utakatik
 	private enum States {Idle, MoveUp, MoveDown}
 	private bool _onPress;
@@ -40,6 +43,7 @@ public class SocialMenu : MonoBehaviour
 	private GameObject MyRequestButton = null;
 	private Material MyRequestButtonBmp = null;
 	
+
 //Facebook Prime31 ~ nandi
 #if UNITY_ANDROID
 	
@@ -124,6 +128,19 @@ public class SocialMenu : MonoBehaviour
 		FacebookAndroid.showDialog( "stream.publish", parameters );
 		yield return _postfb = true;
 	}
+	IEnumerator apprequestFB ()
+	{
+		//Facebook.instance.postMessage( "im posting this from Unity: " + Time.deltaTime, completionHandler );
+		var parameters = new Dictionary<string,string>
+		{
+			{ "link", "http://prime31.com" },
+			{ "name", "link name goes here" },
+			{ "picture", "http://prime31.com/assets/images/prime31logo.png" },
+			{ "caption", "the caption for the image is here" }
+		};
+		FacebookAndroid.showDialog( "stream.publish", parameters );
+		yield return _postfb = true;
+	}
 	IEnumerator readFB ()
 	{
 		var isSessionValid = FacebookAndroid.isSessionValid();
@@ -132,6 +149,8 @@ public class SocialMenu : MonoBehaviour
 		Debug.LogWarning( "~~~ permissions: " + permissions.Count.ToString() + " ~~~" );
 		//Facebook.instance.graphRequest( "me/friends?limit=20", HTTPVerb.GET, Friend );
 		Facebook.instance.graphRequest( "139845789541043/scores", HTTPVerb.GET, GamerFriend );
+		//Facebook.instance.graphRequest( "me?fields=id", HTTPVerb.GET, getIdHandler );
+		
 		yield return _readfb = true;
 		Debug.LogWarning( "HELL YEAH " + _readfb.ToString()  );
 	}
@@ -150,25 +169,59 @@ public class SocialMenu : MonoBehaviour
 		yield return _postscore = true;
 	}
 	
+	void getIdHandler( string error, object result )
+	{
+		Debug.LogWarning( " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " );
+		if( error != null )
+			Debug.LogWarning( error.ToString() );	
+		else
+		{
+			Prime31.Utils.logObject( result );
+			Hashtable hash = (Hashtable) result;
+			Main._userIdFB = hash["id"].ToString();
+			Debug.LogWarning( " >>>>>>>>>>> " + hash["id"].ToString() );
+		}
+	}
+	
 	private void StartFB()
 	{
-		Facebook.instance.debugRequests = true;
+		Debug.LogWarning("1 >>>>>>>>>>> " + ping.time .ToString() );
+		float _delay = 10f;
+		while (true)
+		{
+			if (ping.isDone || _delay < 0 )
+			    break;
+			
+			//_delay -= Time.time/10000;
+			_delay -= Time.deltaTime/10000;
+		}
+		Debug.LogWarning("1 >>>>>>>>>>> " + ping.time .ToString() );
 		
-		var isSessionValid = FacebookAndroid.isSessionValid();
-		var permissions = FacebookAndroid.getSessionPermissions();
-		Debug.LogWarning( "~~~ isSessionValid: " + isSessionValid.ToString() + " ~~~" );
-		Debug.LogWarning( "~~~ permissions: " + permissions.Count.ToString() + " ~~~" );
 		
-		//StartCoroutine( reauthpostFB() );
-		//StartCoroutine(postFB());
-		StartCoroutine(readFB());	
+		if (ping.time > 0)
+		{
+			Facebook.instance.debugRequests = true;
+			
+			var isSessionValid = FacebookAndroid.isSessionValid();
+			var permissions = FacebookAndroid.getSessionPermissions();
+			Debug.LogWarning( "~~~ isSessionValid: " + isSessionValid.ToString() + " ~~~" );
+			Debug.LogWarning( "~~~ permissions: " + permissions.Count.ToString() + " ~~~" );
+			
+			//StartCoroutine( reauthpostFB() );
+			//StartCoroutine(postFB());
+			StartCoroutine(readFB());
+		}
+		else
+		{
+			Debug.LogWarning( " your internet is woongky, change your ISP " );				
+		}
 	}
 	
 #else
 	
 	private void StartFB()
 	{
-		Debug.LogWarning( "not Android Platform" );	
+		Debug.LogWarning( "not an Android Platform" );	
 	}
 	
 #endif
@@ -176,7 +229,7 @@ public class SocialMenu : MonoBehaviour
 	public void Init(Main PassParent)
 	{	
 		StartFB();									// staring Prime31 Function
-	
+		
 		Parent = PassParent;
 		MListenerList = new List<string>();
 		BuildScreen ();
@@ -187,8 +240,10 @@ public class SocialMenu : MonoBehaviour
 	//@ Kaizer: VFX List
 	private void Update()
 	{
-		//Debug.Log("VFX timer : " + VFXTimer);
+		Debug.LogWarning(Main._userIdFB);
 		
+		
+		//Debug.Log("VFX timer : " + VFXTimer);
 		if ( Input.anyKey)
 		{
 			Vector2 inputPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
@@ -364,7 +419,12 @@ public class SocialMenu : MonoBehaviour
 		}
 		if (ButtonSelection == "Request")
 		{
-			StartCoroutine(postFB());
+			Debug.LogWarning("1 >>>>>>>>>>> " + ping.time .ToString() );
+			if (ping.time > 0)
+				StartCoroutine(postFB());
+			else
+				Debug.LogWarning( " your internet is woongky, change your ISP " );				
+		
 		}
 	}
 	

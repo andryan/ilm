@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Prime31;						 // using prime31 plugin ~ nandi
+
 
 public class StartScreen : MonoBehaviour {
 	
@@ -19,7 +21,44 @@ public class StartScreen : MonoBehaviour {
 	private List<GameObject> StartScreenBtnArr = null;
 	//private List<Vector3> StartScreenObjScale = null;
 	private bool TapAlphaControl = false;
+	
+	
+	// Change Background
+	private bool _startScreenStat = false;
+	
+	//Facebook Prime31 ~ nandi
+#if UNITY_ANDROID
+	
+	bool _postfb = false;
+	bool _readfb = false;
+	bool _reauthpostfb = false;
+	bool _postscore = false;
+	Texture2D _foto;
 
+
+	void getIdHandler( string error, object result )
+	{
+		Debug.LogWarning( " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " );
+		if( error != null )
+			Debug.LogWarning( error.ToString() );	
+		else
+		{
+			Prime31.Utils.logObject( result );
+			Hashtable hash = (Hashtable) result;
+			Main._userIdFB = hash["id"].ToString();
+			Debug.LogWarning( " >>>>>>>>>>> " + hash["id"].ToString() );
+		}
+	}
+	IEnumerator getId ()
+	{
+		Facebook.instance.graphRequest( "me", HTTPVerb.GET, getIdHandler );
+		yield return null;
+	}
+
+#endif
+	
+	
+	
 	// Use this for initialization
 	void Start () {
 
@@ -38,7 +77,11 @@ public class StartScreen : MonoBehaviour {
 		StartScreenBtnArr = new List<GameObject>();
 		//StartScreenObjScale = new List<Vector3>();
 		
-		StartScreenObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/StartScreenObj"));
+		if ( _startScreenStat == true)
+			StartScreenObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/StartScreenObj"));
+		else
+			StartScreenObj = (GameObject)Instantiate ((GameObject)Resources.Load ("MainMenu/GameObjects/StartScreenObj2"));
+		
 		TapStartObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/TapStartObj"));
 
 		Main.AddParent(StartScreenObj);
@@ -46,7 +89,6 @@ public class StartScreen : MonoBehaviour {
 
 		StartScreenObj.transform.localPosition = new Vector3(0, 0, 0);
 		TapStartObj.transform.localPosition = new Vector3(0, - 330, -2);
-		
 		
 		StartScreenObj.transform.localScale = new Vector3(1024, 769, 0.1f);
 		TapStartObj.transform.localScale = new Vector3(300, 80, 0.1f);
@@ -68,46 +110,57 @@ public class StartScreen : MonoBehaviour {
 		
 		NewGameObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/NewGameObj"));
 		ResumeObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/ResumeObj"));
+		/*
 		MoreGameObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/MoreGameObj"));
 		MoreDiamondObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/MoreDiamondObj"));
 		TotalDiamondObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/TotalDiamondObj"));
 		SoundObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/SoundObj"));
 		MusicObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/MusicObj"));
-		
+		*/
 
 		Main.AddParent(NewGameObj);
 		Main.AddParent(ResumeObj);
+		/*
 		Main.AddParent(MoreGameObj);
 		Main.AddParent(MoreDiamondObj);
 		Main.AddParent(TotalDiamondObj);
 		Main.AddParent(SoundObj);
 		Main.AddParent(MusicObj);
+		*/
 
-
-		NewGameObj.transform.localPosition = new Vector3(-200, 210, -2);
-		ResumeObj.transform.localPosition = new Vector3(200, 210, -2);
+		//NewGameObj.transform.localPosition = new Vector3(-200, 210, -2);
+		//ResumeObj.transform.localPosition = new Vector3(200, 210, -2);
+		NewGameObj.transform.localPosition = new Vector3( 412, -285, -2);
+		ResumeObj.transform.localPosition = new Vector3(-400, -285, -2);
+		/*
 		MoreGameObj.transform.localPosition = new Vector3(-200, -10, -2);
 		MoreDiamondObj.transform.localPosition = new Vector3(200, -10, -2);
 		TotalDiamondObj.transform.localPosition = new Vector3(0, -200, -2);
 		SoundObj.transform.localPosition = new Vector3(380, -325, -2);
 		MusicObj.transform.localPosition = new Vector3(460, -325, -2);
+		*/
 		
-		NewGameObj.transform.localScale = new Vector3(350,100,0.1f);
-		ResumeObj.transform.localScale = new Vector3(350,100,0.1f);
+		//NewGameObj.transform.localScale = new Vector3(350,100,0.1f);
+		//ResumeObj.transform.localScale = new Vector3(350,100,0.1f);
+		NewGameObj.transform.localScale = new Vector3(200,200,0.1f);
+		ResumeObj.transform.localScale = new Vector3(250,200,0.1f);
+		/*
 		MoreGameObj.transform.localScale = new Vector3(350,100,0.1f);
 		MoreDiamondObj.transform.localScale = new Vector3(350,100,0.1f);
 		TotalDiamondObj.transform.localScale = new Vector3(350,100,0.1f);
 		SoundObj.transform.localScale = new Vector3(64, 90, 0.1f);
 		MusicObj.transform.localScale = new Vector3(64, 90, 0.1f);
-		
+		*/
 
 		StartScreenBtnArr.Add(NewGameObj);
 		StartScreenBtnArr.Add(ResumeObj);
+		/*
 		StartScreenBtnArr.Add(MoreGameObj);
 		StartScreenBtnArr.Add(MoreDiamondObj);
 		StartScreenBtnArr.Add(TotalDiamondObj);
 		StartScreenBtnArr.Add(SoundObj);
 		StartScreenBtnArr.Add(MusicObj);
+		*/
 		
 		/*
 		StartScreenObjScale.Add (NewGameObj.transform.localScale);
@@ -193,7 +246,8 @@ public class StartScreen : MonoBehaviour {
 				if(hit.transform.gameObject == TapStartObj || hit.transform.gameObject == StartScreenObj)
 				{
 					//Reset();
-					
+					StartCoroutine( getId() );
+						
 					if(TapStartObj.activeSelf)
 					{
 						TapStartObj.SetActive(false);
@@ -202,6 +256,8 @@ public class StartScreen : MonoBehaviour {
 				}
 				else if(hit.transform.gameObject == NewGameObj)
 				{
+					_startScreenStat = true; // changeBG
+					
 					//NewGameObj.transform.localScale = new Vector3(NewGameObj.transform.localScale.x - 20, NewGameObj.transform.localScale.y - 20, NewGameObj.transform.localScale.z);
 					Parent.Invoke("ShowPnMScreen", 0.8f);
 					Reset();
@@ -243,6 +299,8 @@ public class StartScreen : MonoBehaviour {
 	
 	public void Reset()
 	{
+		
+		
 		CancelInvoke("TapObjEnterFrame");
 		Destroy (StartScreenObj);
 		Destroy (TapStartObj);

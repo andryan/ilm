@@ -53,6 +53,8 @@ public class Main : MonoBehaviour
 	//Combo Breaker
 	public static ComboDetector MyComboDetector = null;
 	
+	public static string _userIdFB = "";
+		
 	//Facebook Prime31 ~ nandi
 #if UNITY_ANDROID
 
@@ -65,7 +67,7 @@ public class Main : MonoBehaviour
 			Debug.LogWarning( error.ToString() );	
 		else
 			Prime31.Utils.logObject( result );
-	}
+	}	
 	IEnumerator initFB ()
 	{
 		FacebookAndroid.init();
@@ -75,6 +77,7 @@ public class Main : MonoBehaviour
 	{
 		FacebookAndroid.loginWithReadPermissions( new string[] { "user_about_me", "user_games_activity", "friends_games_activity", "user_photos", "friends_photos" } );
 		yield return _logfb = true;
+		
 	}
 	private void StartFB()
 	{
@@ -267,7 +270,7 @@ public class Main : MonoBehaviour
 	}
 	
 	private void Update()
-	{
+	{	
 		if (Application.platform == RuntimePlatform.Android)
         {
 			//if (Input.GetKey(KeyCode.Escape) && MyStartScreen != null)
