@@ -57,8 +57,7 @@ public class ResultScreen : MonoBehaviour
 		BuildScreen ();
 		VFX_1 ();
 	}
-	
-	
+
 	public void InitLose(Main PassParent)
 	{
 		Main.MySE.StopBGM();
