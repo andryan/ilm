@@ -130,8 +130,8 @@ public class SocialMenu : MonoBehaviour
 		var permissions = FacebookAndroid.getSessionPermissions();
 		Debug.LogWarning( "~~~ isSessionValid: " + isSessionValid.ToString() + " ~~~" );
 		Debug.LogWarning( "~~~ permissions: " + permissions.Count.ToString() + " ~~~" );
-		Facebook.instance.graphRequest( "me/friends?limit=20", HTTPVerb.GET, Friend );
-		//Facebook.instance.graphRequest( "139845789541043/scores", HTTPVerb.GET, GamerFriend );
+		//Facebook.instance.graphRequest( "me/friends?limit=20", HTTPVerb.GET, Friend );
+		Facebook.instance.graphRequest( "139845789541043/scores", HTTPVerb.GET, GamerFriend );
 		yield return _readfb = true;
 		Debug.LogWarning( "HELL YEAH " + _readfb.ToString()  );
 	}
