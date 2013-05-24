@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Prime31;						// using prime31 plugin ~ nandi
-
 //@ Author: Kaizer & Aaron
 
 public class Main : MonoBehaviour 
@@ -38,6 +36,7 @@ public class Main : MonoBehaviour
 	public static CustomerClass MyCustomer = null;
 	
 	public static SpawnCustomer MySpawn = null;
+	public static ItemConfig MyItemConf = null;
 	
 	public static HelperClass MyHelper = null;
 	public static Controls MyControl = null;
@@ -53,49 +52,9 @@ public class Main : MonoBehaviour
 	//Combo Breaker
 	public static ComboDetector MyComboDetector = null;
 	
-	//Facebook Prime31 ~ nandi
-#if UNITY_ANDROID
-
-	private bool _initfb = false;
-	private bool _logfb = false;
-	
-	void completionHandler( string error, object result )
-	{
-		if( error != null )
-			Debug.LogWarning( error.ToString() );	
-		else
-			Prime31.Utils.logObject( result );
-	}
-	IEnumerator initFB ()
-	{
-		FacebookAndroid.init();
-		yield return _initfb = true;
-	}
-	IEnumerator logFB ()
-	{
-		FacebookAndroid.loginWithReadPermissions( new string[] { "user_about_me", "user_games_activity", "friends_games_activity", "user_photos", "friends_photos" } );
-		yield return _logfb = true;
-	}
-	private void StartFB()
-	{
-		Facebook.instance.debugRequests = true;
-		StartCoroutine(initFB());
-		if (_initfb == true)
-			StartCoroutine(logFB());
-	}
-	
-#else
-	
-	private void StartFB()
-	{
-		Debug.LogWarning( "not Android Platform" );
-	}
-	
-#endif
 	
 	private void Start()
 	{
-		StartFB();		// Starting to initialize then login facebook ~ nandi 
 		Init();
 	}
 	private void Init()
@@ -154,13 +113,20 @@ public class Main : MonoBehaviour
 		MySE.PlayBGM("Game");
 		CameraFade.StartAlphaFade(Color.black, true,2.0f,0f);
 		MyPlayer = (PlayerClass)this.gameObject.AddComponent("PlayerClass");
-		MyTile = (TileArray)this.gameObject.AddComponent("TileArray");
+		if(MyTile == null)
+		{
+			MyTile = (TileArray)this.gameObject.AddComponent("TileArray");
+		}
 		MyModule = (ModuleData)this.gameObject.AddComponent("ModuleData");
 		MyModuleClass = (ModuleClass)this.gameObject.AddComponent("ModuleClass");
 		MyCustomer = (CustomerClass)this.gameObject.AddComponent("CustomerClass");
 		if(MySpawn == null)
 		{
 			MySpawn = (SpawnCustomer)this.gameObject.AddComponent("SpawnCustomer");
+		}
+		if(MyItemConf == null)
+		{
+			MyItemConf = (ItemConfig)this.gameObject.AddComponent("ItemConfig");
 		}
 		MyHelper = (HelperClass)this.gameObject.AddComponent("HelperClass");
 		MyControl = (Controls)this.gameObject.AddComponent("Controls");
@@ -180,7 +146,7 @@ public class Main : MonoBehaviour
 		MyHelper.Init();
 		MyTile.Init();
 		MyTile.GetType().GetField ("Parent").SetValue(MyTile, this);
-		
+		MyItemConf.GetType().GetField("Parent").SetValue(MyItemConf, this);
 		
 	}
 	public void ClearGameScreen()
@@ -233,6 +199,16 @@ public class Main : MonoBehaviour
 			MyDragDrop = null;
 		}
 	}
+	
+	public void DestroyResultCal()
+	{
+		if(MyResultCal != null)
+		{
+			Destroy(MyResultCal);
+			MyResultCal = null;
+		}
+	}
+	
 	public void ShowPnMScreen()
 	{
 		if(MyPnMScreen == null)
@@ -263,7 +239,10 @@ public class Main : MonoBehaviour
 			Destroy (this.gameObject.GetComponent("ResultCal"));
 			MyResultCal = null;
 		}
-		MyResultCal = (ResultCal)this.gameObject.AddComponent("ResultCal");	
+		if(MyResultCal == null)
+		{
+			MyResultCal = (ResultCal)this.gameObject.AddComponent("ResultCal");	
+		}
 	}
 	
 	private void Update()

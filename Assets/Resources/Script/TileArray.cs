@@ -149,12 +149,15 @@ public class TileArray : MonoBehaviour {
 
 	void Update() {
 		//UpdateUIText();
-		if(Main.MyResultCal.RunawayCount >= maxCustOut)
+		if(Main.MyTile != null)
 		{
-			timer -= Time.deltaTime;
-			if(timer <= 0)
+			if(Main.MyResultCal.RunawayCount >= maxCustOut)
 			{
-				isLose = true;
+				timer -= Time.deltaTime;
+				if(timer <= 0)
+				{
+					isLose = true;
+				}
 			}
 		}
 	}

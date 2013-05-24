@@ -11,6 +11,8 @@ public class SpawnCustomer : MonoBehaviour {
 	
 	public float myMinusTime = 0.0f; // penampung pengurangan waktu untuk durasi customer saat menunggu
 	
+	public float maxDisappearIcon = 2.0f;
+	
 	public int vipCount = 0; // jumlah customer yg datang
 	public int shortTCount = 0;
 	public int normalCount = 0;
@@ -35,7 +37,7 @@ public class SpawnCustomer : MonoBehaviour {
 	public int addShortTCustomer = 1;
 	public int addCasualCustomer = 1;
 	
-	public float additionalCustomerSpeed = 0.005f;  // penambahan customer speed
+	public float additionalCustomerSpeed = 0.0025f;  // penambahan customer speed
 	
 	public int maxNormalCustomerSize = 2; // jumlah max customer normal perhari
 	public int maxVipCustomerSize = 2;
@@ -43,12 +45,12 @@ public class SpawnCustomer : MonoBehaviour {
 	public int maxCasualCustomerSize = 2;
 	
 	public float maxCustomerSpeed = 0.1f;
-	public float maxMinusTime = 15.0f;
+	public float maxMinusTime = 19.0f;
 	
 	public int daysForUpdateIconCustDisappear = 1; // hari buat ngubah durasi icon customer
 	public int daysForUpdateIconCustDisappearCount;
 	
-	public float addTimeForIconCustDisappear = 0.1f; // buat ngurangin durasi icon customer yg besar-kecil (impatient)
+	public float addTimeForIconCustDisappear = 0.4f; // buat ngurangin durasi icon customer yg besar-kecil (impatient)
 	
 	public int daysForUpdateCustWaitingTime = 1; // hari buat ngubah waiting time
 	public int daysForUpdateCustWaitingTimeCount;
@@ -68,7 +70,21 @@ public class SpawnCustomer : MonoBehaviour {
 	public int myShortTAction = 4;
 	public int myCasualAction = 3;
 	
-
+	public int myMaxWave = 2;
+	
+	public int daysForUpdateMaxWave = 3;
+	public int daysForUpdateMaxWaveCount;
+	
+	public int addMaxWave = 1;
+	
+	public float reduceDelaySpawn = 0.0f;
+	
+	public int daysForUpdateReduceDelaySpawn = 2;
+	public int daysForUpdateReduceDelaySpawnCount;
+	
+	public float addReduceDelay = 0.1f;
+	
+	public float maxReduceDelay = 2.8f;
 	
 	// Use this for initialization
 	void Start () {
@@ -77,6 +93,8 @@ public class SpawnCustomer : MonoBehaviour {
 		daysForUpdateIconCustDisappearCount = 0;
 		daysForUpdateCustWaitingTimeCount = 0;
 		daysForUpdateCustomerMaxActionCount = 0;
+		daysForUpdateMaxWaveCount = 0;
+		daysForUpdateReduceDelaySpawnCount = 0;
 			
 	}
 	
@@ -94,6 +112,8 @@ public class SpawnCustomer : MonoBehaviour {
 			daysForUpdateCustWaitingTimeCount++;
 			daysForUpdateIconCustDisappearCount++;
 			daysForUpdateCustomerMaxActionCount++;
+			daysForUpdateMaxWaveCount++;
+			daysForUpdateReduceDelaySpawnCount++;
 		}
 
 		if(daysForUpgradeCount >= daysForUpgradeCustomerSize)
@@ -124,7 +144,18 @@ public class SpawnCustomer : MonoBehaviour {
 		
 		if(daysForUpdateIconCustDisappearCount >= daysForUpdateIconCustDisappear)
 		{
-			AddTimeCustIcon();
+			if(myDisappearIcon > maxDisappearIcon)
+			{
+				AddTimeCustIcon();
+			}
+			if(myDisappearIcon > 10.0f)
+			{
+				myDisappearIcon = 10.0f;
+			}
+			if(myDisappearIcon < maxDisappearIcon)
+			{
+				myDisappearIcon = maxDisappearIcon;
+			}
 			daysForUpdateIconCustDisappearCount = 0;
 		}
 		
@@ -153,6 +184,29 @@ public class SpawnCustomer : MonoBehaviour {
 				myMinusTime = 0.0f;
 			}
 			daysForUpdateCustWaitingTimeCount = 0;
+		}
+		
+		if(daysForUpdateMaxWaveCount >= daysForUpdateMaxWave)
+		{
+			AddMaxWave();
+			daysForUpdateMaxWaveCount = 0;
+		}
+		
+		if(daysForUpdateReduceDelaySpawnCount >= daysForUpdateReduceDelaySpawn)
+		{
+			if(reduceDelaySpawn < maxReduceDelay)
+			{
+				AddReduceDelaySpawn();
+			}
+			if(reduceDelaySpawn > maxReduceDelay)
+			{
+				reduceDelaySpawn = maxReduceDelay;
+			}
+			else if(reduceDelaySpawn < 0.0f)
+			{
+				reduceDelaySpawn = 0.0f;
+			}
+			daysForUpdateReduceDelaySpawnCount = 0;
 		}
 	}
 	
@@ -217,5 +271,19 @@ public class SpawnCustomer : MonoBehaviour {
 	private void AddMinusTime()
 	{
 		myMinusTime += addTimeForCustWaitingTime;
+	}
+	
+	// --------------------------------------------------------
+	
+	private void AddMaxWave()
+	{
+		myMaxWave += addMaxWave;
+	}
+	
+	// --------------------------------------------------------
+	
+	private void AddReduceDelaySpawn()
+	{
+		reduceDelaySpawn += addReduceDelay;
 	}
 }

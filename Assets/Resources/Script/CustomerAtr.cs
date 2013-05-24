@@ -9,7 +9,7 @@ public class CustomerAtr : MonoBehaviour
 	public int TypeID;
 	private float TipsRate = 0.0f;
 	private float Satisfaction = 0.0f;
-	private float CurrentWaitingTime = 0.0f;
+	public float CurrentWaitingTime = 0.0f;
 	public float WaitingTime = 0.0f;
 	public float minusTime;
 	
@@ -69,7 +69,7 @@ public class CustomerAtr : MonoBehaviour
 		ActionCount = new List<int>(new int[]{normalAction,VIPAction,shortTAction,casualAction});
 		CoinList = new List<int>(new int[]{50,100,60,40});
 		STList = new List<int>(new int[]{2,2,2,3});
-		WTList = new List<int>(new int[]{30,30,20,40});
+		WTList = new List<int>(new int[]{25,25,20,30});
 		LRList = new List<float>(new float[]{0f,0f,0f,0f});
 		STRateList = new List<int>(new int[]{15,15,15,15,40});
 		STEffectList = new List<float>(new float[]{0.2f,0.4f,0.6f,0.8f,1f});

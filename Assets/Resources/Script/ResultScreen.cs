@@ -732,7 +732,6 @@ public class ResultScreen : MonoBehaviour
 		ClearAllComponent();
 		Main.MyResultCal.UpdatePlayerAtr();
 		Parent.ClearGameScreen();
-		print ("CLEARED GAME SCREEN");
 		Parent.ShowGameScreen();
 		Main.MyPlayerAtr.AddDay (1);
 		//Parent.ShowPnMScreen();
@@ -762,7 +761,6 @@ public class ResultScreen : MonoBehaviour
 		Main.MyResultCal.UpdatePlayerAtr();	
 		Parent.ClearGameScreen();
 		Parent.ClearPnMScreen();
-		print ("CLEARED GAME SCREEN");
 		Parent.ShowStartScreen();
 		Parent = null;
 		Destroy (this.gameObject.GetComponent("ResultScreen"));

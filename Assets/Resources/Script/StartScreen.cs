@@ -209,11 +209,7 @@ public class StartScreen : MonoBehaviour {
 				}
 				else if(hit.transform.gameObject == ResumeObj)
 				{
-					// Instace UI Social Menu if device is android
-					#if UNITY_ANDROID
-						SocialMenu MySocialMenu = (SocialMenu)this.gameObject.AddComponent("SocialMenu");  
-						MySocialMenu.Init(Parent);
-					#endif
+					
 				}
 				else if(hit.transform.gameObject == MoreGameObj)
 				{

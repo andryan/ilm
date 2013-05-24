@@ -16,6 +16,10 @@ public class CustomerClass : MonoBehaviour {
 	
 	public float customerWalkingSpeed;
 	
+	public bool isFull;
+	
+	public int Rand;
+	
 	public int maxWave;
 	private int waveCount;
 	
@@ -24,23 +28,30 @@ public class CustomerClass : MonoBehaviour {
 	public int minCustRandom; // minimum jumlah customer
 	public int maxCustRandom; // maksimum jumlah customer
 	
+	public float delaySpawn;
+	
 	//cashier
 	private int totalCustomerAtCashier = 0;
 	private List<GameObject> cashierCustomerArr = null;
 	private int cashierQueueTileY = 0;
 	private int cashierQueueTileX = 0;
 	
-	private float SpawnSpeed = 0.0f;
+	private float SpawnSpeed;
 	
 	// Use this for initialization
 	void Start () {
+		isFull = false;
 		minCustRandom = 2;
 		maxCustRandom = 10;
-		
-		maxWave = 2;
+		maxWave = Main.MySpawn.myMaxWave;
+		delaySpawn = Main.MySpawn.reduceDelaySpawn;
 		waveCount = 0;
 		
-		randWaveCust = Random.Range(minCustRandom, maxCustRandom);
+		randWaveCust = Random.Range(minCustRandom + 10, maxCustRandom + 10);
+		
+		SpawnSpeed = 9 - (Main.MyPlayerAtr.ReturnHotelRank() + delaySpawn);
+		InvokeRepeating("SpawnCustEnterFrame",0.1f,SpawnSpeed);
+		
 	}
 	public void Reset()
 	{
@@ -80,19 +91,29 @@ public class CustomerClass : MonoBehaviour {
 		cashierQueueTileY = 9;
 		cashierQueueTileX = 2;
 			
-		SpawnSpeed = 9 - 1.17f*Main.MyPlayerAtr.ReturnHotelRank();
 		
-		//if(isSpawn == true)	
-		//{
-			InvokeRepeating("SpawnCustEnterFrame",0.1f,SpawnSpeed);
-		
-		//}
-		//if(Main.MySpawn.isSpawn == true){
-		//	SpawnCustEnterFrame();
-		//}	
 	}
 	
 	private void SpawnCustEnterFrame()
+	{
+		List<Hashtable> ModuleClassArr = Main.MyModuleClass.GetModuleClassArrByType("nQ");
+		List<int> QueueUpIntList = Main.MyPlayerAtr.ReturnQueueUpLevelFull();
+		
+		for(int i = 0; i<QueueUpIntList.Count; i++)
+		{
+			if(QueueUpIntList[i] != 0)
+			{
+				print ("Name: "+(string)ModuleClassArr[i]["Name"]);
+				if((int)ModuleClassArr[i]["Occupy"] == 0)
+				{
+					spawnCustomer();
+					break;
+				}
+			}
+		}	
+	}
+	
+	private void SpawnNewCustEnterFrame()
 	{
 		List<Hashtable> ModuleClassArr = Main.MyModuleClass.GetModuleClassArrByType("nQ");
 		List<int> QueueUpIntList = Main.MyPlayerAtr.ReturnQueueUpLevelFull();
@@ -116,7 +137,7 @@ public class CustomerClass : MonoBehaviour {
 		GameObject CustomerObject;
 		
 		
-		int Rand = Random.Range(1, 6);
+		InvokeRepeating("MyRandom", 1.001f, 0.00002f);
 		
 			//CustomerObject =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/CustomerPrefab" + Rand.ToString()));
 		if(Rand == 1 && Main.MySpawn.normalCount < Main.MySpawn.maxNormalCustomerSize)
@@ -136,7 +157,7 @@ public class CustomerClass : MonoBehaviour {
 		}
 		else if(Main.MySpawn.normalCount > Main.MySpawn.maxNormalCustomerSize-1)
 		{
-			Rand = Random.Range(2, 6);
+			InvokeRepeating("MyRandom", 0.001f, 0.00002f);
 		}
 		
 		if(Rand == 2 && Main.MySpawn.vipCount < Main.MySpawn.maxVipCustomerSize)
@@ -156,7 +177,7 @@ public class CustomerClass : MonoBehaviour {
 		}
 		else if(Main.MySpawn.vipCount > Main.MySpawn.maxVipCustomerSize-1)
 		{
-			Rand = Random.Range(1, 6);
+			InvokeRepeating("MyRandom", 0.001f, 0.00002f);
 		}
 		
 		if(Rand == 3 && Main.MySpawn.shortTCount < Main.MySpawn.maxShortTCustomerSize)
@@ -176,7 +197,7 @@ public class CustomerClass : MonoBehaviour {
 		}
 		else if(Main.MySpawn.shortTCount > Main.MySpawn.maxShortTCustomerSize-1)
 		{
-			Rand = Random.Range(1, 6);
+			InvokeRepeating("MyRandom", 0.001f, 0.00002f);
 		}
 		
 		if(Rand == 4 && Main.MySpawn.casualCount < Main.MySpawn.maxCasualCustomerSize)
@@ -196,7 +217,7 @@ public class CustomerClass : MonoBehaviour {
 		}
 		else if(Main.MySpawn.casualCount > Main.MySpawn.maxCasualCustomerSize-1)
 		{
-			Rand = Random.Range(1, 5);
+			InvokeRepeating("MyRandom", 0.001f, 0.00002f);
 		}
 		
 			
@@ -314,13 +335,27 @@ public class CustomerClass : MonoBehaviour {
 	//cashier functions
 	public void moveCustomerToCashier(GameObject CustomerObject)
 	{
-		Main.MyTile.findPosition(CustomerObject, customerWalkingSpeed, cashierQueueTileY-cashierCustomerArr.Count, cashierQueueTileX);
-		//SetCustomerStatus(
-		cashierCustomerArr.Add (CustomerObject);
-		Main.MyModuleClass.SetOccupy("nC", 0 , "+");
+		if(cashierCustomerArr.Count < 3)
+		{
+			isFull = false;
+			Main.MyTile.findPosition(CustomerObject, customerWalkingSpeed, cashierQueueTileY-cashierCustomerArr.Count, cashierQueueTileX);
+			//SetCustomerStatus(
+			cashierCustomerArr.Add (CustomerObject);
+			Main.MyModuleClass.SetOccupy("nC", 0 , "+");
 		
 		CustomerBehaviour MyCB = (CustomerBehaviour)CustomerObject.GetComponent("CustomerBehaviour");
 		MyCB.ActionType = "Cashier";
+		}
+		else if(cashierCustomerArr.Count >=3)
+		{
+			isFull = true;
+			Debug.LogWarning("Poll");
+			//Main.MyTile.findPosition(CustomerObject, customerWalkingSpeed, cashierQueueTileY-5, cashierQueueTileX+2);
+		//	Main.MyCustomerAttribute.CurrentWaitingTime = 0;
+			//SetCustomerStatus(
+			
+		}
+		
 	}
 	
 	public void removeCustomerFromList()
@@ -455,7 +490,6 @@ public class CustomerClass : MonoBehaviour {
 		
 		if(waveCount == maxWave)
 		{
-			Debug.LogWarning("Trap Hole!");
 			CancelInvoke("SpawnCustEnterFrame");
 		}
 		
@@ -483,5 +517,10 @@ public class CustomerClass : MonoBehaviour {
 	private void AddWaveCount(int myAdd = 1)
 	{
 		waveCount += myAdd;
+	}
+	
+	private void MyRandom()
+	{
+		Rand = Random.Range(1, 6);
 	}
 }

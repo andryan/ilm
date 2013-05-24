@@ -87,15 +87,15 @@ public class PlayerAtr : MonoBehaviour
 			LiftCount = 0;
 			CashierCount = 0;
 			
-			QueueUpLevel = new List<int>(new int[]{1,1,1,0,0});
-			FoodLevel = new List<int>(new int[]{1,1,0,0});
-			TDisplayLevel = new List<int>(new int[]{1,1,0,0});
-			BarLevel = new List<int>(new int[]{1,1,0,0});
-			ExtraDeco = 1;
+			QueueUpLevel = new List<int>(new int[]{1,1,1,1,1});
+			FoodLevel = new List<int>(new int[]{1,1,1,1});
+			TDisplayLevel = new List<int>(new int[]{1,1,1,1});
+			BarLevel = new List<int>(new int[]{1,1,1,1});
+			ExtraDeco = 4;
 			DecoList = new List<int>();
 			Theme = 1;
 			ThemeList = new List<int>();
-			CashierLevel = 1;
+			CashierLevel = 4;
 			Helper = new List<int>(new int[]{0,0,0,0,0,0,0});
 			HelperDura = new List<int>(new int[]{0,0,0,0,0,0,0});
 			HelperLevel = new List<int>(new int[]{0,0,0,0,0,0,0});

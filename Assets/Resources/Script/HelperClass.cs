@@ -162,6 +162,7 @@ public class HelperClass : MonoBehaviour {
 			{
 				CustomerAtr MyCA = (CustomerAtr)tempCustomerObj.GetComponent("CustomerAtr");
 				MyCA.Serving();
+				Debug.LogWarning("Testing");
 			}
 				
 			Main.MyTile.findPosition(helperObj, MyHB.HelperWalkingSpeed, moduleY, moduleX);
