@@ -53,8 +53,11 @@ public class Main : MonoBehaviour
 	//Combo Breaker
 	public static ComboDetector MyComboDetector = null;
 	
+	public static string _appidFB = "139845789541043";
 	public static string _userIdFB = "";
-		
+	public static string _highscoreFB;	
+	public static int _dayResult;
+	
 	//Facebook Prime31 ~ nandi
 #if UNITY_ANDROID
 

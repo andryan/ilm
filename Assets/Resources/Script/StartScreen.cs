@@ -46,7 +46,8 @@ public class StartScreen : MonoBehaviour {
 			Prime31.Utils.logObject( result );
 			Hashtable hash = (Hashtable) result;
 			Main._userIdFB = hash["id"].ToString();
-			Debug.LogWarning( " >>>>>>>>>>> " + hash["id"].ToString() );
+			Debug.LogWarning( "1 >>>>>>>>>>> " + hash["id"].ToString() );
+			Debug.LogWarning( "2 >>>>>>>>>>> " + Main._userIdFB );
 		}
 	}
 	IEnumerator getId ()
@@ -54,7 +55,47 @@ public class StartScreen : MonoBehaviour {
 		Facebook.instance.graphRequest( "me", HTTPVerb.GET, getIdHandler );
 		yield return null;
 	}
-
+	
+	void getScore ( string error, object result )
+	{
+		if( error != null )
+		{
+			Debug.LogError( error );	
+		}
+		else
+		{
+			Prime31.Utils.logObject( result );
+			Hashtable hash = (Hashtable) result;
+			ArrayList list = (ArrayList) hash["data"];
+			
+			for (int i=0; i<list.Count; i++)
+			{
+				Hashtable morehash = (Hashtable) list[i];
+				Hashtable apphash = (Hashtable) morehash["application"];
+			
+				if ( Main._appidFB == apphash["id"].ToString() )
+				{
+					//Debug.LogWarning( "1 }}}}}}}}}}} " + Main._appidFB );
+					//Debug.LogWarning( "2 }}}}}}}}}}} " + apphash["id"].ToString() );
+					//Debug.LogWarning( "1 wkwkwkwk "  + morehash["score"] + " -- " + morehash["score"].GetType());
+					
+					Main._highscoreFB = morehash["score"].ToString();
+				
+					//Debug.LogWarning( "2 wkwkwkwk "  + morehash["score"]);
+					//Debug.LogWarning( "1 }}}}}}}}}}} " + morehash["score"].ToString() );
+					//Debug.LogWarning( "2 }}}}}}}}}}} " + Main._highscoreFB );
+				}
+				
+			}	
+		}
+	}
+	IEnumerator gettingScore()
+	{
+		Facebook.instance.graphRequest( "me/scores", HTTPVerb.GET, getScore );
+		yield break;
+	}
+	
+	
 #endif
 	
 	
@@ -247,7 +288,8 @@ public class StartScreen : MonoBehaviour {
 				{
 					//Reset();
 					StartCoroutine( getId() );
-						
+					StartCoroutine( gettingScore() );	
+					
 					if(TapStartObj.activeSelf)
 					{
 						TapStartObj.SetActive(false);
