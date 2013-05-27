@@ -17,3 +17,15 @@ Library/*
 Temp
 *.pidb
 Build
+
+Assets/Resources/MainMenu.meta
+
+*.meta
+
+Assets/Resources/MainMenu/GameObjects.meta
+
+*.meta
+
+*.prefab
+
+*.prefab
