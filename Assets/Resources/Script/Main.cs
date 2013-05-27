@@ -52,6 +52,54 @@ public class Main : MonoBehaviour
 	//Combo Breaker
 	public static ComboDetector MyComboDetector = null;
 	
+<<<<<<< HEAD
+=======
+	public static string _appidFB = "139845789541043";
+	public static string _userIdFB = "";
+	public static string _highscoreFB;	
+	public static int _dayResult;
+	
+	//Facebook Prime31 ~ nandi
+#if UNITY_ANDROID
+
+	private bool _initfb = false;
+	private bool _logfb = false;
+	
+	void completionHandler( string error, object result )
+	{
+		if( error != null )
+			Debug.LogWarning( error.ToString() );	
+		else
+			Prime31.Utils.logObject( result );
+	}	
+	IEnumerator initFB ()
+	{
+		FacebookAndroid.init();
+		yield return _initfb = true;
+	}
+	IEnumerator logFB ()
+	{
+		FacebookAndroid.loginWithReadPermissions( new string[] { "user_about_me", "user_games_activity", "friends_games_activity", "user_photos", "friends_photos" } );
+		yield return _logfb = true;
+		
+	}
+	private void StartFB()
+	{
+		Facebook.instance.debugRequests = true;
+		StartCoroutine(initFB());
+		if (_initfb == true)
+			StartCoroutine(logFB());
+	}
+	
+#else
+	
+	private void StartFB()
+	{
+		Debug.LogWarning( "not Android Platform" );
+	}
+	
+#endif
+>>>>>>> c744135c7e18aadfd5981eb43b05dd7d6e7b55f0
 	
 	private void Start()
 	{
