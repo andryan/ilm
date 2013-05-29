@@ -118,7 +118,6 @@ public class StartScreen : MonoBehaviour {
 		else
 			StartScreenObj = (GameObject)Instantiate ((GameObject)Resources.Load ("MainMenu/GameObjects/StartScreenObj2"));
 		
-		//StartScreenObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/StartScreenObj"));
 		TapStartObj = (GameObject)Instantiate ((GameObject)Resources.Load ("GameObjects/TapStartObj"));
 
 		Main.AddParent(StartScreenObj);
@@ -298,6 +297,12 @@ public class StartScreen : MonoBehaviour {
 				}
 				else if(hit.transform.gameObject == ResumeObj)
 				{
+					var isSessionValid = FacebookAndroid.isSessionValid();
+					var permissions = FacebookAndroid.getSessionPermissions();
+					Debug.LogWarning( "~~~ isSessionValid: " + isSessionValid.ToString() + " ~~~" );
+					Debug.LogWarning( "~~~ permissions: " + permissions.Count.ToString() + " ~~~" );
+				
+					
 					// Instace UI Social Menu if device is android
 					#if UNITY_ANDROID
 						SocialMenu MySocialMenu = (SocialMenu)this.gameObject.AddComponent("SocialMenu");  

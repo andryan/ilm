@@ -42,10 +42,6 @@ public class SocialMenu : MonoBehaviour
 		
 	private GameObject MyRequestButton = null;
 	private Material MyRequestButtonBmp = null;
-	
-	private GameObject MyScoreButton = null;
-	private Material MyScoreButtonBmp = null;
-	
 
 //Facebook Prime31 ~ nandi
 #if UNITY_ANDROID
@@ -94,47 +90,8 @@ public class SocialMenu : MonoBehaviour
 				string _score = _gamerHash["score"].ToString();
 				StartCoroutine( downloadImg(_id , _name , _score, i, totalData) );
 			}
-		}		
-	}
-	void Friend( string error, object result)
-	{
-		if( error != null )
-		{
-			Debug.LogError(error);
-			for (int i=0; i < 50;i++)
-			{
-				string _name = "123456789012345678901234567890";
-				string _id = "1558775678";
-				_foto = null;
-				AllFriendsInvite.Show(_foto, _id,_name, i, 50);
-			}
-		}
-		else
-		{
-			Prime31.Utils.logObject( result );
-			Hashtable hash = (Hashtable) result;
-			ArrayList _thisData = (ArrayList) hash["data"];
-			
-			int totalData = _thisData.Count;
-			for (int i=0; i < totalData;i++)
-			{
-				Hashtable _gamername = (Hashtable) _thisData[i];
-				string _id = _gamername["id"].ToString();
-				string _name = _gamername["name"].ToString();
-				string _score = (i+1).ToString();
-				Texture2D _fotox = null;
-				AllFriendsInvite.Show(_fotox, _id, _name, i, totalData);
-			}
 		}
 	}
-	IEnumerator downloadImg(string id, string name, string score, int queue, int totData) 
-	{
-		string _url = "https://graph.facebook.com/" + id.ToString() + "/picture";
-		WWW www = new WWW(_url);								
-		yield return www;
-		_foto = (Texture2D) www.texture;
-		AllFriendlist.Show(_foto, id, name, score, queue, totData);
-    }
 	IEnumerator postFB (string id)
 	{
 		//string id = "1558775678";
@@ -150,28 +107,29 @@ public class SocialMenu : MonoBehaviour
 		FacebookAndroid.showDialog( "feed", parameters );
 		yield return _postfb = true;
 	}
+	IEnumerator downloadImg(string id, string name, string score, int queue, int totData) 
+	{
+		string _url = "https://graph.facebook.com/" + id.ToString() + "/picture";
+		WWW www = new WWW(_url);								
+		yield return www;
+		_foto = (Texture2D) www.texture;
+		AllFriendlist.Show(_foto, id, name, score, queue, totData);
+    }
 	IEnumerator apprequestFB ()
 	{
 		var parameters = new Dictionary<string,string>
 		{
-			{ "to" , "" },
-			{ "link", "http://prime31.com" },
-			{ "name", "link name goes here" },
-			{ "picture", "http://prime31.com/assets/images/prime31logo.png" },
-			{ "caption", "the caption for the image is here" }
+			{ "title", "I Love Monster"},
+			{ "message", "My Great Request"},
+			{ "new_style_message", "true"}
 		};
-		FacebookAndroid.showDialog( "apprequest", parameters );
+		FacebookAndroid.showDialog( "apprequests", parameters );
 		yield return _postfb = true;
 	}
 	IEnumerator getAllPlayerFB ()
 	{
 		Facebook.instance.graphRequest( "139845789541043/scores", HTTPVerb.GET, GamerFriend );
-		yield return _readfb1 = true;
-	}
-	IEnumerator getAllFriendFB ()
-	{
-		Facebook.instance.graphRequest( "me/friends", HTTPVerb.GET, Friend );
-		yield return _readfb2 = true;
+		yield return _readfb1 = true;	
 	}
 	IEnumerator reauthpostFB ()
 	{
@@ -187,21 +145,6 @@ public class SocialMenu : MonoBehaviour
 		Facebook.instance.graphRequest( "me/scores", HTTPVerb.POST, parameters, completionHandler);
 		yield return _postscore = true;
 	}
-	
-	void getIdHandler( string error, object result )
-	{
-		Debug.LogWarning( " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " );
-		if( error != null )
-			Debug.LogWarning( error.ToString() );	
-		else
-		{
-			Prime31.Utils.logObject( result );
-			Hashtable hash = (Hashtable) result;
-			Main._userIdFB = hash["id"].ToString();
-			Debug.LogWarning( " >>>>>>>>>>> " + hash["id"].ToString() );
-		}
-	}
-	
 	private void StartFB()
 	{
 		Debug.LogWarning("1 >>>>>>>>>>> " + ping.time .ToString() );
@@ -211,7 +154,6 @@ public class SocialMenu : MonoBehaviour
 			if (ping.isDone || _delay < 0 )
 			    break;
 			
-			//_delay -= Time.time/10000;
 			_delay -= Time.deltaTime/10000;
 		}
 		Debug.LogWarning("1 >>>>>>>>>>> " + ping.time .ToString() );
@@ -226,7 +168,6 @@ public class SocialMenu : MonoBehaviour
 			Debug.LogWarning( "~~~ isSessionValid: " + isSessionValid.ToString() + " ~~~" );
 			Debug.LogWarning( "~~~ permissions: " + permissions.Count.ToString() + " ~~~" );
 			
-			StartCoroutine(getAllFriendFB());
 			StartCoroutine(getAllPlayerFB());
 		}
 		else
@@ -246,7 +187,7 @@ public class SocialMenu : MonoBehaviour
 	
 	public void Init(Main PassParent)
 	{	
-		//LoadingScreen.Show();
+		LoadingScreen.Show();
 		StartFB();									// staring Prime31 Function
 		
 		Parent = PassParent;
@@ -256,9 +197,15 @@ public class SocialMenu : MonoBehaviour
 	}
 	
 	
+	private void OnGUI()
+	{
+		LoadingScreen.AnimateChar();		
+	}
+	
 	//@ Kaizer: VFX List
 	private void Update()
 	{
+		
 		//Debug.Log("VFX timer : " + VFXTimer);
 		if ( Input.anyKey)
 		{
@@ -274,10 +221,7 @@ public class SocialMenu : MonoBehaviour
 					string hisId = AllFriendlist.SendLive(hit.transform.gameObject.name);
 					if (hisId != null && hisId.Length > 0)
 						StartCoroutine(postFB(hisId));
-					string herId = AllFriendsInvite.SendInvite(hit.transform.gameObject.name);
-					if (herId != null && herId.Length > 0)
-						StartCoroutine(postFB(herId));
-					
+
 					if(MListenerList != null)
 					{
 						bool Check = false;
@@ -317,10 +261,6 @@ public class SocialMenu : MonoBehaviour
 		{
 			AllFriendlist.Move(_gap);
 		}
-		if (_readfb2 == true )
-		{
-			AllFriendsInvite.Move(_gap);
-		}
 	}
 	private void VFX_1()
 	{
@@ -350,8 +290,6 @@ public class SocialMenu : MonoBehaviour
 			MyReturnButton.renderer.enabled = true;
 			iTween.FadeTo (MyRequestButton,iTween.Hash("alpha",1f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
 			MyRequestButton.renderer.enabled = true;
-			iTween.FadeTo (MyScoreButton,iTween.Hash("alpha",1f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
-			MyScoreButton.renderer.enabled = true;
 		}
 		if(VFXTimer == 50)
 		{
@@ -380,7 +318,6 @@ public class SocialMenu : MonoBehaviour
 			//iTween.ScaleTo (MyTopPanel,iTween.Hash("x",0.000001f,"z",0.000001,"time",0.3f, "easetype",iTween.EaseType.easeOutCubic));
 			iTween.FadeTo (MyReturnButton,iTween.Hash("alpha",0f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
 			iTween.FadeTo (MyRequestButton,iTween.Hash("alpha",0f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
-			iTween.FadeTo (MyScoreButton,iTween.Hash("alpha",0f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
 		}
 		if(VFXTimer == 25)
 		{
@@ -406,13 +343,6 @@ public class SocialMenu : MonoBehaviour
 				if(!MListenerList.Contains(MyRequestButton.name))	
 				{
 					MListenerList.Add (MyRequestButton.name);
-				}	
-			}
-			if(MyScoreButton != null)
-			{
-				if(!MListenerList.Contains(MyScoreButton.name))	
-				{
-					MListenerList.Add (MyScoreButton.name);
 				}	
 			}
 			if(MyInfoPanelGO != null)
@@ -450,8 +380,11 @@ public class SocialMenu : MonoBehaviour
 		if (ButtonSelection == "Invite")
 		{
 			_onPress = false;
-			AllFriendsInvite.SwitchOut();
-			AllFriendlist.SwitchIn();
+			//AllFriendsInvite.SwitchOut();
+			//AllFriendlist.SwitchIn();
+			
+			StartCoroutine(apprequestFB());
+			
 		}
 		if (ButtonSelection == "Score")
 		{
@@ -564,19 +497,6 @@ public class SocialMenu : MonoBehaviour
 			//iTween.FadeTo (MyRequestButton,iTween.Hash("alpha",0f,"time",0f, "easetype",iTween.EaseType.linear));
 			MyRequestButtonBmp = (Material)Resources.Load ("SocialMenu/Materials/Invite");
 			MyRequestButton.renderer.material = MyRequestButtonBmp;
-			
-			MyScoreButton = GameObject.CreatePrimitive(PrimitiveType.Plane);
-			Main.AddParent(MyScoreButton);
-			MyScoreButton.name = "Score";
-			MyScoreButton.transform.localPosition = new Vector3( 410, 352,-61);
-			MyScoreButton.transform.localScale = new Vector3(20, 1, 20);
-			MyScoreButton.transform.Rotate (90, -180, 0);
-			MyScoreButton.renderer.enabled = true;
-			//MyScoreButton.renderer.enabled = false;
-			//iTween.FadeTo (MyRequestButton,iTween.Hash("alpha",0f,"time",0f, "easetype",iTween.EaseType.linear));
-			MyScoreButtonBmp = (Material)Resources.Load ("SocialMenu/Materials/Score");
-			MyScoreButton.renderer.material = MyScoreButtonBmp;
-			
 		}
 	}	
 	private void ClearInfoPanelNext()
@@ -592,12 +512,6 @@ public class SocialMenu : MonoBehaviour
 			MyRequestButtonBmp = null;
 			Destroy (MyRequestButton);
 			MyRequestButton = null;
-		}
-		if(MyScoreButton != null)
-		{
-			MyScoreButtonBmp = null;
-			Destroy (MyScoreButton);
-			MyScoreButton = null;
 		}
 	}
 	private void ClearInfoPanelPictureBar()

@@ -20,6 +20,7 @@ public class AllFriendlist : MonoBehaviour {
 	private static int _lastPosition;
 	private static int _totalData;
 	public static int _progress;
+	public static int _endprogress;
 	
 	private static string zero;
 	private static string last;
@@ -253,6 +254,9 @@ public class AllFriendlist : MonoBehaviour {
 			last = _name;
 		}
 		friendReferenceID.Add(friendReferenceID.Count);
+		
+		if ( friendReferenceID.Count >= totalData)
+			LoadingScreen.clearAll();	
 	}
 	
 	private void Start()
