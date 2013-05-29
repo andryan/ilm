@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Prime31;						// using prime31 plugin ~ nandi
-
 //@ Author: Kaizer
 
 public class ResultScreen : MonoBehaviour 
@@ -49,60 +47,6 @@ public class ResultScreen : MonoBehaviour
 	
 	private GameObject GameOverText = null;
 	private GameObject GameOverTextShadow = null;
-	
-	//Facebook Prime31 ~ nandi
-#if UNITY_ANDROID
-	
-	void deleteScore ( string error, object result)
-	{
-		Debug.LogWarning( error );	
-	}
-	void postScore ( string error, object result )
-	{
-		Debug.LogWarning( error );
-	}
-	void getScore ( string error, object result )
-	{
-		if( error != null )
-		{
-			Debug.LogError( error );	
-		}
-		else
-		{
-			Prime31.Utils.logObject( result );
-			Hashtable hash = (Hashtable) result;
-			ArrayList list = (ArrayList) hash["data"];
-			Hashtable morehash = (Hashtable) list[0];
-			Debug.LogWarning( " }}}}}}}}}}} " + morehash["score"].ToString() );
-		}
-	}
-	
-	IEnumerator deletingScore()
-	{
-		var parameters = new Dictionary<string,object>
-		{
-			{ "method", "delete" }
-		};
-		Facebook.instance.graphRequest( "me/scores", HTTPVerb.POST, parameters, deleteScore);
-		yield break;
-	}
-	IEnumerator postingScore()
-	{
-		var parameters = new Dictionary<string,object>
-		{
-			{ "score", "7777" }
-		};
-		Facebook.instance.graphRequest( "me/scores", HTTPVerb.POST, parameters, postScore);
-		yield break;
-	}
-	IEnumerator gettingScore()
-	{
-		Facebook.instance.graphRequest( "me/scores", HTTPVerb.GET, getScore );
-		yield break;
-	}
-	
-#endif
-	
 	
 	public void Init(Main PassParent)
 	{
@@ -350,14 +294,14 @@ public class ResultScreen : MonoBehaviour
 		((TextMesh)EarningText.GetComponent("TextMesh")).text = "Today's Record";
 		((TextMesh)STText.GetComponent("TextMesh")).text = "Satisfaction";
 		
-		((TextMesh)CoinText.GetComponent("TextMesh")).text = "Income: "    + Main.MyResultCal.ReturnCoin();
-		((TextMesh)LikeText.GetComponent("TextMesh")).text = "Like: "      + Main.MyResultCal.ReturnLike ();
-		((TextMesh)RunawayText.GetComponent("TextMesh")).text = "Runaway: "+ Main.MyResultCal.ReturnRunawayCount();
+		((TextMesh)CoinText.GetComponent("TextMesh")).text = "Income: "+Main.MyResultCal.ReturnCoin();
+		((TextMesh)LikeText.GetComponent("TextMesh")).text = "Like: "+Main.MyResultCal.ReturnLike ();
+		((TextMesh)RunawayText.GetComponent("TextMesh")).text = "Runaway: "+Main.MyResultCal.ReturnRunawayCount();
 		
-		((TextMesh)ST3StarText.GetComponent("TextMesh")).text = "3 Stars: "+ Main.MyResultCal.ReturnCountOf3Star();
-		((TextMesh)ST4StarText.GetComponent("TextMesh")).text = "4 Stars: "+ Main.MyResultCal.ReturnCountOf4Star();
-		((TextMesh)ST5StarText.GetComponent("TextMesh")).text = "5 Stars: "+ Main.MyResultCal.ReturnCountOf5Star();
-		((TextMesh)ST6StarText.GetComponent("TextMesh")).text = "6 Stars: "+ Main.MyResultCal.ReturnCountOf6Star();
+		((TextMesh)ST3StarText.GetComponent("TextMesh")).text = "3 Stars: "+Main.MyResultCal.ReturnCountOf3Star();
+		((TextMesh)ST4StarText.GetComponent("TextMesh")).text = "4 Stars: "+Main.MyResultCal.ReturnCountOf4Star();
+		((TextMesh)ST5StarText.GetComponent("TextMesh")).text = "5 Stars: "+Main.MyResultCal.ReturnCountOf5Star();
+		((TextMesh)ST6StarText.GetComponent("TextMesh")).text = "6 Stars: "+Main.MyResultCal.ReturnCountOf6Star();
 	}
 	
 	private void UpdateLoseText()
