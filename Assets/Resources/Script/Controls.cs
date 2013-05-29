@@ -52,13 +52,13 @@ public class Controls : MonoBehaviour {
 			
 			if(isPlayerComplete)
 			{
-				
 				if (Physics.Raycast (ray, out hit)) 
 				{
 					for(int i=0;i<Main.MyCustomer.customerList.Count;i++)
 					{
 						if(hit.transform.gameObject.name == Main.MyCustomer.customerList[i].name)
 						{
+							
 							Hashtable moduleDataHash = Main.MyModule.GetModuleDataHash(Main.MyCustomer.customerList[i]);
 							Hashtable moduleClassHash = Main.MyModuleClass.GetModuleClassHash(Main.MyCustomer.customerList[i]);
 							
@@ -136,11 +136,38 @@ public class Controls : MonoBehaviour {
 	
 		
 	}
-
+	
+	public void activateFever()
+	{
+		if((string)moduleData["Name"] != null)
+		{
+			objectData["speed"] = Main.MyPlayer.PlayerWalkingSpeed;
+			Main.MyHelper.GetModuleInfo((int)moduleData["secondaryY"],(int)moduleData["secondaryX"]);
+			//init pathfinding
+			Main.MyTile.findPosition((GameObject)objectData["tweenObject"], (float)objectData["speed"],(int)moduleData["secondaryY"], (int)moduleData["secondaryX"]);
+			//init player waiting time
+			playerWaitTime = Main.MyPlayer.GetWaitingTime();
+			
+			float customerWaitTime = playerWaitTime;
+			
+			print("tempCustomerObj"+tempCustomerObj);
+			print("customerWaitTime"+customerWaitTime);
+			print ("PLAYERCLASS");
+			//Main.MyCustomer.SetCustomerWaitingTime(tempCustomerObj,customerWaitTime,completeType);
+			tempCustomerObj = null; 
+		}
+	}
+	
+	private Hashtable objectData;
+	private Hashtable moduleData;
+	private int completeType;
+	
+	
 	void activateMovement(object objectValue, object moduleValue, int completeType)
 	{
-		Hashtable objectData = (Hashtable)objectValue;
-		Hashtable moduleData = (Hashtable)moduleValue;
+		objectData = (Hashtable)objectValue;
+		moduleData = (Hashtable)moduleValue;
+		this.completeType = completeType;
 		
 		//make sure targeted tile existed in ModuleData's array
 		if((string)moduleData["Name"] != null)

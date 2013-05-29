@@ -48,22 +48,42 @@ public class ResultScreen : MonoBehaviour
 	private GameObject GameOverText = null;
 	private GameObject GameOverTextShadow = null;
 	
+	private List<string> listOfNewlyAchievedAchievment; 
+	
 	public void Init(Main PassParent)
 	{
 		Main.MySE.StopBGM ();
 		Main.MySE.PlaySFX("Clear");
 		Parent = PassParent;
 		MListenerList = new List<string>();
+		updateToServer();
 		BuildScreen ();
 		VFX_1 ();
 	}
-
+	
+	public void updateToServer()
+	{
+		Hashtable resultDetail = new Hashtable();
+		resultDetail.Add("Income", Main.MyResultCal.ReturnCoin());
+		resultDetail.Add("Like", Main.MyResultCal.ReturnLike());
+		resultDetail.Add("Runaway", Main.MyResultCal.ReturnRunawayCount());
+		
+		resultDetail.Add("3 Stars", Main.MyResultCal.ReturnCountOf3Star());
+		resultDetail.Add("4 Stars", Main.MyResultCal.ReturnCountOf4Star());
+		resultDetail.Add("5 Stars", Main.MyResultCal.ReturnCountOf5Star());
+		resultDetail.Add("6 Stars", Main.MyResultCal.ReturnCountOf6Star());
+		
+		//this.listOfNewlyAchievedAchievment = 	Main.myServices.submitDailyResult(resultDetail);
+	}
+	
+	
 	public void InitLose(Main PassParent)
 	{
 		Main.MySE.StopBGM();
 		Main.MySE.PlaySFX("Clear");
 		Parent = PassParent;
 		MListenerList = new List<string>();
+		updateToServer();
 		BuildLoseScreen();
 		VFX_2 ();
 	}
@@ -359,7 +379,6 @@ public class ResultScreen : MonoBehaviour
 			MyInfoPanelGO.renderer.material = MyInfoPanelBmp;
 		}
 	}
-	
 	private void BuildInfoPanelPictureBar()
 	{
 		if(MyInfoPanelPictureBarGO == null)
@@ -396,7 +415,6 @@ public class ResultScreen : MonoBehaviour
 			MyInfoPanelPotraitGO.renderer.enabled = false;
 		}
 	}
-	
 	private void BuildInfoPanelNext()
 	{
 		if(MyInfoPanelNextGO == null)
@@ -715,6 +733,11 @@ public class ResultScreen : MonoBehaviour
 		StopVFX_2();
 	}
 	
+	private void ClearLoseVFX()
+	{
+		
+	}
+	
 	private void ClearAllListener()
 	{
 		//RemoveMUpOnButtons();
@@ -731,7 +754,6 @@ public class ResultScreen : MonoBehaviour
 		ClearAllComponent();
 		Main.MyResultCal.UpdatePlayerAtr();
 		Parent.ClearGameScreen();
-		print ("CLEARED GAME SCREEN");
 		Parent.ShowGameScreen();
 		Main.MyPlayerAtr.AddDay (1);
 		//Parent.ShowPnMScreen();
@@ -799,10 +821,19 @@ public class ResultScreen : MonoBehaviour
 		Main.MySpawn.daysForUpdateIconCustDisappearCount = 0;
 		Main.MySpawn.daysForUpdateCustWaitingTimeCount = 0;
 		Main.MySpawn.daysForUpdateCustomerMaxActionCount = 0;
+		Main.MySpawn.daysForUpdateMaxWaveCount = 0;
 		
 		Main.MySpawn.myNormalAction = 4;
 		Main.MySpawn.myVIPAction = 6;
 		Main.MySpawn.myShortTAction = 4;
 		Main.MySpawn.myCasualAction = 3;
+		
+		Main.MySpawn.maxNormalCustomerSize = 2;
+		Main.MySpawn.maxVipCustomerSize = 2;
+		Main.MySpawn.maxShortTCustomerSize = 2;
+		Main.MySpawn.maxCasualCustomerSize = 2;
+		
+		Main.MySpawn.myMaxWave = 2;
+		Main.MySpawn.reduceDelaySpawn = 0;
 	}
 }

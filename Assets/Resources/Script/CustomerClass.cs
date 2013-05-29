@@ -6,8 +6,6 @@ using System.Collections.Generic;
 //this class this to be change to using hashtags instead of many listArrays and convert the data into customer behaviour class instead of for looping to control
 public class CustomerClass : MonoBehaviour {
 	
-	//GameObject CustomerObject;
-	
 	public List<GameObject> customerList = null; //customer's game objects
 	public List<GameObject> customerObjReference = null; //customer's targeted gameobject
 	public List<int> customerObjReferenceID = null; //customer's targeted object id
@@ -16,9 +14,9 @@ public class CustomerClass : MonoBehaviour {
 	
 	public float customerWalkingSpeed;
 	
-	public bool isFull;
-	
 	public int Rand;
+	
+	private int Id;
 	
 	public int maxWave;
 	private int waveCount;
@@ -30,9 +28,11 @@ public class CustomerClass : MonoBehaviour {
 	
 	public float delaySpawn;
 	
+	private GameObject myGO;
+	
 	//cashier
 	private int totalCustomerAtCashier = 0;
-	private List<GameObject> cashierCustomerArr = null;
+	public List<GameObject> cashierCustomerArr = null;
 	private int cashierQueueTileY = 0;
 	private int cashierQueueTileX = 0;
 	
@@ -40,14 +40,14 @@ public class CustomerClass : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		isFull = false;
-		minCustRandom = 2;
-		maxCustRandom = 10;
+		minCustRandom = 10;
+		maxCustRandom = 15;
 		maxWave = Main.MySpawn.myMaxWave;
 		delaySpawn = Main.MySpawn.reduceDelaySpawn;
 		waveCount = 0;
 		
-		randWaveCust = Random.Range(minCustRandom + 10, maxCustRandom + 10);
+		//randWaveCust = Random.Range(minCustRandom, maxCustRandom);
+		RandomCustomer();
 		
 		SpawnSpeed = 9 - (Main.MyPlayerAtr.ReturnHotelRank() + delaySpawn);
 		InvokeRepeating("SpawnCustEnterFrame",0.1f,SpawnSpeed);
@@ -78,7 +78,6 @@ public class CustomerClass : MonoBehaviour {
 	
 	public void Init()
 	{
-		//Main.MySpawn.Init();
 		customerList = new List<GameObject>();
 		customerObjReference = new List<GameObject>();
 		customerObjReferenceID = new List<int>();
@@ -136,8 +135,7 @@ public class CustomerClass : MonoBehaviour {
 	{
 		GameObject CustomerObject;
 		
-		
-		InvokeRepeating("MyRandom", 1.001f, 0.00002f);
+		InvokeRepeating("MyRandom", 0.001f, 0.1f);
 		
 			//CustomerObject =  (GameObject)Instantiate ((GameObject)Resources.Load ("Prefabs/CustomerPrefab" + Rand.ToString()));
 		if(Rand == 1 && Main.MySpawn.normalCount < Main.MySpawn.maxNormalCustomerSize)
@@ -157,7 +155,7 @@ public class CustomerClass : MonoBehaviour {
 		}
 		else if(Main.MySpawn.normalCount > Main.MySpawn.maxNormalCustomerSize-1)
 		{
-			InvokeRepeating("MyRandom", 0.001f, 0.00002f);
+			Rand = Random.Range(1, 5);
 		}
 		
 		if(Rand == 2 && Main.MySpawn.vipCount < Main.MySpawn.maxVipCustomerSize)
@@ -177,7 +175,7 @@ public class CustomerClass : MonoBehaviour {
 		}
 		else if(Main.MySpawn.vipCount > Main.MySpawn.maxVipCustomerSize-1)
 		{
-			InvokeRepeating("MyRandom", 0.001f, 0.00002f);
+			Rand = Random.Range (1, 5);
 		}
 		
 		if(Rand == 3 && Main.MySpawn.shortTCount < Main.MySpawn.maxShortTCustomerSize)
@@ -197,7 +195,7 @@ public class CustomerClass : MonoBehaviour {
 		}
 		else if(Main.MySpawn.shortTCount > Main.MySpawn.maxShortTCustomerSize-1)
 		{
-			InvokeRepeating("MyRandom", 0.001f, 0.00002f);
+			Rand = Random.Range(1, 5);
 		}
 		
 		if(Rand == 4 && Main.MySpawn.casualCount < Main.MySpawn.maxCasualCustomerSize)
@@ -217,7 +215,7 @@ public class CustomerClass : MonoBehaviour {
 		}
 		else if(Main.MySpawn.casualCount > Main.MySpawn.maxCasualCustomerSize-1)
 		{
-			InvokeRepeating("MyRandom", 0.001f, 0.00002f);
+			Rand = Random.Range(1, 4);
 		}
 		
 			
@@ -335,32 +333,28 @@ public class CustomerClass : MonoBehaviour {
 	//cashier functions
 	public void moveCustomerToCashier(GameObject CustomerObject)
 	{
-		if(cashierCustomerArr.Count < 3)
+		if(cashierCustomerArr.Count <= 6)
 		{
-			isFull = false;
 			Main.MyTile.findPosition(CustomerObject, customerWalkingSpeed, cashierQueueTileY-cashierCustomerArr.Count, cashierQueueTileX);
 			//SetCustomerStatus(
 			cashierCustomerArr.Add (CustomerObject);
-			Main.MyModuleClass.SetOccupy("nC", 0 , "+");
+			Main.MyModuleClass.SetOccupy("nC", 0 , "+", CustomerObject.name);
 		
-		CustomerBehaviour MyCB = (CustomerBehaviour)CustomerObject.GetComponent("CustomerBehaviour");
-		MyCB.ActionType = "Cashier";
+			CustomerBehaviour MyCB = (CustomerBehaviour)CustomerObject.GetComponent("CustomerBehaviour");
+			MyCB.ActionType = "Cashier";
 		}
-		else if(cashierCustomerArr.Count >=3)
+		
+		else
 		{
-			isFull = true;
-			Debug.LogWarning("Poll");
-			//Main.MyTile.findPosition(CustomerObject, customerWalkingSpeed, cashierQueueTileY-5, cashierQueueTileX+2);
-		//	Main.MyCustomerAttribute.CurrentWaitingTime = 0;
-			//SetCustomerStatus(
-			
+			CashierFull(CustomerObject);
+			CustomerBehaviour MyCB = (CustomerBehaviour)CustomerObject.GetComponent("CustomerBehaviour");
+			MyCB.ActionType = "Leave";	
 		}
 		
 	}
 	
 	public void removeCustomerFromList()
-	{
-		
+	{	
 		cashierCustomerArr.RemoveAt (0);
 		refreshCustomerCashierQueue();
 	}
@@ -396,13 +390,22 @@ public class CustomerClass : MonoBehaviour {
 		switch(MyCB.ActionType)
 		{
 			case "Queue":
-				customerList[customerId].transform.localPosition = new Vector3(customerObjReference[customerId].transform.localPosition.x, customerObjReference[customerId].transform.localPosition.y, customerObjReference[customerId].transform.localPosition.z - 1);
+				customerList[customerId].transform.localPosition = new Vector3(customerObjReference[customerId].transform.localPosition.x, customerObjReference[customerId].transform.localPosition.y, 0);
 				refreshCustomerCashierQueue();
 				MyCA.StartQueueUp(Main.MyStatCheck.GetQueueUpStatByLevel(Main.MyPlayerAtr.ReturnQueueUpLevel(customerObjReferenceID[customerId])));
 			break;
 			case "Cashier":
 				MyCA.AssignStation("nC",Main.MyStatCheck.GetCashierStatByLevel(Main.MyPlayerAtr.ReturnCashierLevel()));
 			break;
+			case "Leave":
+				MyCA.ActionList[0] = "nL";
+				MyCA.LeaveStation("nL", Main.MyStatCheck.GetLeaveStat());
+				
+				//MyCA.ActionList.RemoveAt(0);
+				//runAway(this.gameObject);
+				Debug.LogWarning("adasd");
+			break;
+				
 		}
 		
 	}
@@ -422,7 +425,10 @@ public class CustomerClass : MonoBehaviour {
 				{
 					Vector3 tilePos = convertPosToTile(customerList[i]);
 					Hashtable moduleDataHash = Main.MyModule.GetDataByPrimaryPos((int)tilePos.y, (int)tilePos.x);
-					Main.MyModuleClass.SetOccupy((string)moduleDataHash["Type"], (int)moduleDataHash["ID"], "-"); 
+					if(MyCA.ReturnRequest() != "nL")
+					{
+						Main.MyModuleClass.SetOccupy((string)moduleDataHash["Type"], (int)moduleDataHash["ID"], "-", runawayCustomerObj.name); 
+					}
 				} else {
 					print ("REMOVING CUSTOMER FROM LIST");
 					
@@ -486,11 +492,13 @@ public class CustomerClass : MonoBehaviour {
 		if(Main.MySpawn.normalCount >= Main.MySpawn.maxNormalCustomerSize && Main.MySpawn.vipCount >= Main.MySpawn.maxVipCustomerSize && Main.MySpawn.shortTCount >= Main.MySpawn.maxShortTCustomerSize && Main.MySpawn.casualCount >= Main.MySpawn.maxCasualCustomerSize)
 		{
 			CancelInvoke("SpawnCustEnterFrame");
+			CancelInvoke("MyRandom");
 		}	
 		
 		if(waveCount == maxWave)
 		{
 			CancelInvoke("SpawnCustEnterFrame");
+			CancelInvoke("MyRandom");
 		}
 		
 		if(Main.MySpawn.tempTotalCust >= randWaveCust)
@@ -507,7 +515,7 @@ public class CustomerClass : MonoBehaviour {
 				InvokeRepeating("SpawnCustEnterFrame",0.1f,SpawnSpeed);
 				if(randWaveCust == 0)
 				{
-					randWaveCust = Random.Range(minCustRandom, maxCustRandom);
+					RandomCustomer();
 					AddWaveCount(1);
 				}
 			}	
@@ -522,5 +530,13 @@ public class CustomerClass : MonoBehaviour {
 	private void MyRandom()
 	{
 		Rand = Random.Range(1, 6);
+	}
+	private void RandomCustomer()
+	{
+		randWaveCust = Random.Range(minCustRandom, maxCustRandom);
+	}
+	private void CashierFull(GameObject CustomerObject)
+	{
+		Main.MyTile.findPosition(CustomerObject, customerWalkingSpeed, cashierQueueTileY-3, cashierQueueTileX+1);
 	}
 }

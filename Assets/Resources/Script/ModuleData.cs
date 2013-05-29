@@ -25,9 +25,9 @@ public class ModuleData : MonoBehaviour {
 	private void generateArea()
 	{
 		ModuleArea = new List<Hashtable>();
-		ModuleArea.Add(HashObject.Hash("AreaType", "nTD", "y1", 6, "x1", 15, "y2", 9, "x2", 19)); 
-		ModuleArea.Add(HashObject.Hash("AreaType", "nF", "y1", 7, "x1", 8, "y2", 11, "x2", 12)); 
-		ModuleArea.Add(HashObject.Hash("AreaType", "nB", "y1", 10, "x1", 8, "y2", 12, "x2", 12));
+		ModuleArea.Add(HashObject.Hash("AreaType", "nTD", "y1", 5, "x1", 15, "y2", 9, "x2", 19)); 
+		ModuleArea.Add(HashObject.Hash("AreaType", "nF", "y1", 6, "x1", 8, "y2", 10, "x2", 12)); 
+		ModuleArea.Add(HashObject.Hash("AreaType", "nB", "y1", 9, "x1", 8, "y2", 12, "x2", 12));
 	}
 
 	private void ModuleDataArr()

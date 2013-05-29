@@ -305,7 +305,7 @@ public class ModuleClass : MonoBehaviour {
 	}
 
 	
-	public void SetOccupy( string moduleType, int nodeId, string occupyType)
+	public void SetOccupy( string moduleType, int nodeId, string occupyType, string customerName)
 	{
 		Hashtable MyHash = new Hashtable();
 		for(int i=0;i<ModuleClassArray.Count;i++)
@@ -323,6 +323,7 @@ public class ModuleClass : MonoBehaviour {
 							if((int)ModuleClassArray[i]["Occupy"]== 0)
 							{
 								ModuleClassArray[i]["Occupy"] = 1;
+								ModuleClassArray[i]["customerID"] = customerName;
 							//print ("OREDI TURN TO OCCUPY");
 								//ModuleClassArray[i]["customerID"] = customerId;
 							} 

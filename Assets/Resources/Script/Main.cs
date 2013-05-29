@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Prime31;
+
 //@ Author: Kaizer & Aaron
 
 public class Main : MonoBehaviour 
@@ -10,7 +12,10 @@ public class Main : MonoBehaviour
 		GameObject world = GameObject.Find("World");	
 		go.transform.parent = world.transform;
 	}
-
+	
+	
+	public static RestfulServices myServices = null;
+	
 	//Fever gauge
 	public static float FeverPoint = 0;
 	
@@ -52,26 +57,21 @@ public class Main : MonoBehaviour
 	//Combo Breaker
 	public static ComboDetector MyComboDetector = null;
 	
-<<<<<<< HEAD
-=======
+	//Life limit
+	public static int myLifeLimit;
+	
+	//Facebook
 	public static string _appidFB = "139845789541043";
 	public static string _userIdFB = "";
-	public static string _highscoreFB;	
+	public static long _highscoreFB;	
 	public static int _dayResult;
 	
 	//Facebook Prime31 ~ nandi
-#if UNITY_ANDROID
+	#if UNITY_ANDROID
 
 	private bool _initfb = false;
 	private bool _logfb = false;
 	
-	void completionHandler( string error, object result )
-	{
-		if( error != null )
-			Debug.LogWarning( error.ToString() );	
-		else
-			Prime31.Utils.logObject( result );
-	}	
 	IEnumerator initFB ()
 	{
 		FacebookAndroid.init();
@@ -91,23 +91,41 @@ public class Main : MonoBehaviour
 			StartCoroutine(logFB());
 	}
 	
-#else
+	#else
 	
 	private void StartFB()
 	{
 		Debug.LogWarning( "not Android Platform" );
 	}
 	
-#endif
->>>>>>> c744135c7e18aadfd5981eb43b05dd7d6e7b55f0
+	#endif
+	
+	
+	
+	private void ConnectToServer()
+	{
+		myServices = (RestfulServices) GameObject.Find("Server").GetComponent("RestfulServices");
+		
+		//Connect to server 
+		//myServices.connectToServer(Main._userIdFB);
+		
+		//Get Life limit
+		//Main.myLifeLimit = myServices.getDailyLimit();
+	}
+	
 	
 	private void Start()
 	{
+		StartFB();
 		Init();
 	}
+	
 	private void Init()
 	{
-		randomTheme = Random.Range(1,4);	
+		//TODO : Connect to Server
+		//this.ConnectToServer();
+
+		randomTheme = Random.Range(1,4);
 	
 		Res.AdjustCameraSize(this.gameObject);
 		Res.AdjustWorldSize(GameObject.Find("World"));
@@ -155,8 +173,9 @@ public class Main : MonoBehaviour
 	public void ShowGameScreen()
 	{
 	
+		//Main.myServices.updateDailyLimit(Main.myLifeLimit);
+		
 		ClearStartScreen();
-
 		StartResultCal();
 		MySE.PlayBGM("Game");
 		CameraFade.StartAlphaFade(Color.black, true,2.0f,0f);
@@ -264,6 +283,9 @@ public class Main : MonoBehaviour
 			ClearStartScreen();
 			ClearGameScreen();	
 			
+			//To do Update user detail
+			//Hashtable Attribtue = Main.myServices.getPlayerAttribute();
+			//Main.MyPlayerAtr.LoadGame(Attribute);
 			MySE.PlayBGM("PnM");
 			CameraFade.StartAlphaFade(Color.black, true,1.0f,0f);
 			MyPnMScreen = (PnMScreen)this.gameObject.AddComponent("PnMScreen");

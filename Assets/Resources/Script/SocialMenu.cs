@@ -43,12 +43,16 @@ public class SocialMenu : MonoBehaviour
 	private GameObject MyRequestButton = null;
 	private Material MyRequestButtonBmp = null;
 	
+	private GameObject MyScoreButton = null;
+	private Material MyScoreButtonBmp = null;
+	
 
 //Facebook Prime31 ~ nandi
 #if UNITY_ANDROID
 	
 	bool _postfb = false;
-	bool _readfb = false;
+	bool _readfb1 = false;
+	bool _readfb2 = false;
 	bool _reauthpostfb = false;
 	bool _postscore = false;
 	Texture2D _foto;
@@ -65,6 +69,14 @@ public class SocialMenu : MonoBehaviour
 		if( error != null )
 		{
 			Debug.LogError(error);	
+			for (int i=0; i < 50;i++)
+			{
+				string _name = "123456789012345678901234567890";
+				string _score = "6Day - 32000Gold";
+				string _id = "1558775678";
+				_foto = null;
+				AllFriendlist.Show(_foto, _id, _name, _score, i, 50);
+			}
 		}
 		else
 		{
@@ -88,7 +100,14 @@ public class SocialMenu : MonoBehaviour
 	{
 		if( error != null )
 		{
-			Debug.LogError(error);	
+			Debug.LogError(error);
+			for (int i=0; i < 50;i++)
+			{
+				string _name = "123456789012345678901234567890";
+				string _id = "1558775678";
+				_foto = null;
+				AllFriendsInvite.Show(_foto, _id,_name, i, 50);
+			}
 		}
 		else
 		{
@@ -103,9 +122,10 @@ public class SocialMenu : MonoBehaviour
 				string _id = _gamername["id"].ToString();
 				string _name = _gamername["name"].ToString();
 				string _score = (i+1).ToString();
-				StartCoroutine( downloadImg(_id , _name , _score, i, totalData) );
+				Texture2D _fotox = null;
+				AllFriendsInvite.Show(_fotox, _id, _name, i, totalData);
 			}
-		}		
+		}
 	}
 	IEnumerator downloadImg(string id, string name, string score, int queue, int totData) 
 	{
@@ -113,46 +133,45 @@ public class SocialMenu : MonoBehaviour
 		WWW www = new WWW(_url);								
 		yield return www;
 		_foto = (Texture2D) www.texture;
-		AllFriendlist.Show(_foto, name, score, queue, totData);
+		AllFriendlist.Show(_foto, id, name, score, queue, totData);
     }
-	IEnumerator postFB ()
+	IEnumerator postFB (string id)
 	{
-		//Facebook.instance.postMessage( "im posting this from Unity: " + Time.deltaTime, completionHandler );
+		//string id = "1558775678";
 		var parameters = new Dictionary<string,string>
 		{
+			{ "to" , id },
 			{ "link", "http://prime31.com" },
 			{ "name", "link name goes here" },
 			{ "picture", "http://prime31.com/assets/images/prime31logo.png" },
 			{ "caption", "the caption for the image is here" }
 		};
-		FacebookAndroid.showDialog( "stream.publish", parameters );
+		//FacebookAndroid.showDialog( "stream.publish", parameters );
+		FacebookAndroid.showDialog( "feed", parameters );
 		yield return _postfb = true;
 	}
 	IEnumerator apprequestFB ()
 	{
-		//Facebook.instance.postMessage( "im posting this from Unity: " + Time.deltaTime, completionHandler );
 		var parameters = new Dictionary<string,string>
 		{
+			{ "to" , "" },
 			{ "link", "http://prime31.com" },
 			{ "name", "link name goes here" },
 			{ "picture", "http://prime31.com/assets/images/prime31logo.png" },
 			{ "caption", "the caption for the image is here" }
 		};
-		FacebookAndroid.showDialog( "stream.publish", parameters );
+		FacebookAndroid.showDialog( "apprequest", parameters );
 		yield return _postfb = true;
 	}
-	IEnumerator readFB ()
+	IEnumerator getAllPlayerFB ()
 	{
-		var isSessionValid = FacebookAndroid.isSessionValid();
-		var permissions = FacebookAndroid.getSessionPermissions();
-		Debug.LogWarning( "~~~ isSessionValid: " + isSessionValid.ToString() + " ~~~" );
-		Debug.LogWarning( "~~~ permissions: " + permissions.Count.ToString() + " ~~~" );
-		//Facebook.instance.graphRequest( "me/friends?limit=20", HTTPVerb.GET, Friend );
 		Facebook.instance.graphRequest( "139845789541043/scores", HTTPVerb.GET, GamerFriend );
-		//Facebook.instance.graphRequest( "me?fields=id", HTTPVerb.GET, getIdHandler );
-		
-		yield return _readfb = true;
-		Debug.LogWarning( "HELL YEAH " + _readfb.ToString()  );
+		yield return _readfb1 = true;
+	}
+	IEnumerator getAllFriendFB ()
+	{
+		Facebook.instance.graphRequest( "me/friends", HTTPVerb.GET, Friend );
+		yield return _readfb2 = true;
 	}
 	IEnumerator reauthpostFB ()
 	{
@@ -207,9 +226,8 @@ public class SocialMenu : MonoBehaviour
 			Debug.LogWarning( "~~~ isSessionValid: " + isSessionValid.ToString() + " ~~~" );
 			Debug.LogWarning( "~~~ permissions: " + permissions.Count.ToString() + " ~~~" );
 			
-			//StartCoroutine( reauthpostFB() );
-			//StartCoroutine(postFB());
-			StartCoroutine(readFB());
+			StartCoroutine(getAllFriendFB());
+			StartCoroutine(getAllPlayerFB());
 		}
 		else
 		{
@@ -228,6 +246,7 @@ public class SocialMenu : MonoBehaviour
 	
 	public void Init(Main PassParent)
 	{	
+		//LoadingScreen.Show();
 		StartFB();									// staring Prime31 Function
 		
 		Parent = PassParent;
@@ -240,9 +259,6 @@ public class SocialMenu : MonoBehaviour
 	//@ Kaizer: VFX List
 	private void Update()
 	{
-		Debug.LogWarning(Main._userIdFB);
-		
-		
 		//Debug.Log("VFX timer : " + VFXTimer);
 		if ( Input.anyKey)
 		{
@@ -254,6 +270,13 @@ public class SocialMenu : MonoBehaviour
 				if(Physics.Raycast(ray, out hit))
 				{
 					Debug.LogWarning(hit.transform.gameObject.name);
+					
+					string hisId = AllFriendlist.SendLive(hit.transform.gameObject.name);
+					if (hisId != null && hisId.Length > 0)
+						StartCoroutine(postFB(hisId));
+					string herId = AllFriendsInvite.SendInvite(hit.transform.gameObject.name);
+					if (herId != null && herId.Length > 0)
+						StartCoroutine(postFB(herId));
 					
 					if(MListenerList != null)
 					{
@@ -288,11 +311,15 @@ public class SocialMenu : MonoBehaviour
 	}
 	private void Scroll( Vector2 _newPosition)
 	{
-		if (_readfb == true)
+		float _gap = _newPosition.y - _onPressPosition.y;
+		_onPressPosition.y = _newPosition.y;
+		if (_readfb1 == true )
 		{
-			float _gap = _newPosition.y - _onPressPosition.y;
-			_onPressPosition.y = _newPosition.y;
 			AllFriendlist.Move(_gap);
+		}
+		if (_readfb2 == true )
+		{
+			AllFriendsInvite.Move(_gap);
 		}
 	}
 	private void VFX_1()
@@ -316,7 +343,6 @@ public class SocialMenu : MonoBehaviour
 			//iTween.ScaleTo (MyInfoPanelGO,iTween.Hash("x",(Res.DefaultWidth()/Main.SizeFactor),"z",(Res.DefaultHeight()/Main.SizeFactor),"time",0.3f, "easetype",iTween.EaseType.easeOutCubic));
 			//iTween.ScaleTo (MyInfoPanelGO,iTween.Hash("x",(800/Main.SizeFactor),"z",(Res.DefaultHeight()/Main.SizeFactor),"time",0.3f, "easetype",iTween.EaseType.easeOutCubic));
 			//iTween.ScaleTo (MyTopPanel,iTween.Hash("x",(800/Main.SizeFactor),"z",(Res.DefaultHeight()/Main.SizeFactor),"time",0.3f, "easetype",iTween.EaseType.easeOutCubic));
-
 		}
 		if(VFXTimer == 40)
 		{
@@ -324,6 +350,8 @@ public class SocialMenu : MonoBehaviour
 			MyReturnButton.renderer.enabled = true;
 			iTween.FadeTo (MyRequestButton,iTween.Hash("alpha",1f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
 			MyRequestButton.renderer.enabled = true;
+			iTween.FadeTo (MyScoreButton,iTween.Hash("alpha",1f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
+			MyScoreButton.renderer.enabled = true;
 		}
 		if(VFXTimer == 50)
 		{
@@ -352,6 +380,7 @@ public class SocialMenu : MonoBehaviour
 			//iTween.ScaleTo (MyTopPanel,iTween.Hash("x",0.000001f,"z",0.000001,"time",0.3f, "easetype",iTween.EaseType.easeOutCubic));
 			iTween.FadeTo (MyReturnButton,iTween.Hash("alpha",0f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
 			iTween.FadeTo (MyRequestButton,iTween.Hash("alpha",0f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
+			iTween.FadeTo (MyScoreButton,iTween.Hash("alpha",0f,"time",0.2f, "easetype",iTween.EaseType.easeOutCubic));
 		}
 		if(VFXTimer == 25)
 		{
@@ -377,6 +406,13 @@ public class SocialMenu : MonoBehaviour
 				if(!MListenerList.Contains(MyRequestButton.name))	
 				{
 					MListenerList.Add (MyRequestButton.name);
+				}	
+			}
+			if(MyScoreButton != null)
+			{
+				if(!MListenerList.Contains(MyScoreButton.name))	
+				{
+					MListenerList.Add (MyScoreButton.name);
 				}	
 			}
 			if(MyInfoPanelGO != null)
@@ -411,20 +447,24 @@ public class SocialMenu : MonoBehaviour
 		{
 			_onPress = true;
 		}
+		if (ButtonSelection == "Invite")
+		{
+			_onPress = false;
+			AllFriendsInvite.SwitchOut();
+			AllFriendlist.SwitchIn();
+		}
+		if (ButtonSelection == "Score")
+		{
+			_onPress = false;
+			AllFriendlist.SwitchOut();
+			AllFriendsInvite.SwitchIn();
+		}
 		if (ButtonSelection == "Return")
 		{
 			AllFriendlist.ClearAll();
+			AllFriendsInvite.ClearAll();
 			Main.MySE.PlaySFX("Select");
 			EndVFX();
-		}
-		if (ButtonSelection == "Request")
-		{
-			Debug.LogWarning("1 >>>>>>>>>>> " + ping.time .ToString() );
-			if (ping.time > 0)
-				StartCoroutine(postFB());
-			else
-				Debug.LogWarning( " your internet is woongky, change your ISP " );				
-		
 		}
 	}
 	
@@ -448,7 +488,7 @@ public class SocialMenu : MonoBehaviour
 			MyInfoPanelBG.transform.Rotate (90, -180, 0);
 			MyInfoPanelBG.renderer.enabled = false;
 			iTween.FadeTo (MyInfoPanelBG,iTween.Hash("alpha",0f,"time",0f, "easetype",iTween.EaseType.linear));
-			MyInfoPanelBG.renderer.material = (Material)Resources.Load ("PlanAndManage/Materials/InfoPanel");
+			MyInfoPanelBG.renderer.material = (Material)Resources.Load ("SocialMenu/Materials/BGPanel");
 			MyInfoPanelBG.renderer.material.color = Color.black;
 		}
 	}
@@ -459,17 +499,17 @@ public class SocialMenu : MonoBehaviour
 			MyInfoPanelGO = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyInfoPanelGO);
 			MyInfoPanelGO.name = "InfoPanelGO";
-			MyInfoPanelGO.transform.localPosition = new Vector3(-111,0,-48);
-			MyInfoPanelGO.transform.localScale = new Vector3(80, 1, 90);
+			MyInfoPanelGO.transform.localPosition = new Vector3(0,0,-48);
+			MyInfoPanelGO.transform.localScale = new Vector3(Res.DefaultWidth()/Main.SizeFactor, 1, Res.DefaultHeight()/Main.SizeFactor);
 			MyInfoPanelGO.transform.Rotate (90,-180,0);
-			MyInfoPanelBmp = (Material)Resources.Load ("PlanAndManage/Materials/InfoPanel");
+			MyInfoPanelBmp = (Material)Resources.Load ("SocialMenu/Materials/BGPanel");
 			MyInfoPanelGO.renderer.material = MyInfoPanelBmp;
 			
 			MyTopPanel = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyTopPanel);
 			MyTopPanel.name = "MyTopPanel";
-			MyTopPanel.transform.localPosition = new Vector3(-111,335,-54);
-			MyTopPanel.transform.localScale = new Vector3(80, 1, 10);
+			MyTopPanel.transform.localPosition = new Vector3(0,362,-60);
+			MyTopPanel.transform.localScale = new Vector3(Res.DefaultWidth()/Main.SizeFactor, 1, 5);
 			MyTopPanel.transform.Rotate (90,-180,0);
 			MyTopPanelBmp = (Material)Resources.Load ("SocialMenu/Materials/TopPanel");
 			MyTopPanel.renderer.material = MyTopPanelBmp;
@@ -477,10 +517,10 @@ public class SocialMenu : MonoBehaviour
 			MyBottomPanel = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyBottomPanel);
 			MyBottomPanel.name = "MyBottomPanel";
-			MyBottomPanel.transform.localPosition = new Vector3(-111,-362,-54);
-			MyBottomPanel.transform.localScale = new Vector3(80, 1, 5);
+			MyBottomPanel.transform.localPosition = new Vector3(0,-287,-60);
+			MyBottomPanel.transform.localScale = new Vector3(Res.DefaultWidth()/Main.SizeFactor, 1, 20);
 			MyBottomPanel.transform.Rotate (90,-180,0);
-			MyBottomPanelBmp = (Material)Resources.Load ("SocialMenu/Materials/TopPanel"); // should be bottom
+			MyBottomPanelBmp = (Material)Resources.Load ("SocialMenu/Materials/BottomPanel"); // should be bottom
 			MyBottomPanel.renderer.material = MyBottomPanelBmp;
 		}		
 		BuildScrollPanel();
@@ -490,7 +530,7 @@ public class SocialMenu : MonoBehaviour
 		MyScrollPanel = GameObject.CreatePrimitive(PrimitiveType.Plane);
 		Main.AddParent(MyScrollPanel);
 		MyScrollPanel.name = "MyScrollPanel";
-		MyScrollPanel.transform.localPosition = new Vector3(-111,0,-52);
+		MyScrollPanel.transform.localPosition = new Vector3(-111,0,-53);
 		MyScrollPanel.transform.localScale = new Vector3(80, 1, 90);
 		MyScrollPanel.transform.Rotate (90,-180,0);
 		MyScrollPanelBmp = (Material)Resources.Load ("SocialMenu/Materials/BGLight");
@@ -504,8 +544,8 @@ public class SocialMenu : MonoBehaviour
 			MyReturnButton = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyReturnButton);
 			MyReturnButton.name = "Return";
-			MyReturnButton.transform.localPosition = new Vector3( 450, 325,-50);
-			MyReturnButton.transform.localScale = new Vector3(10, 1, 10);
+			MyReturnButton.transform.localPosition = new Vector3( -422, -275,-61);
+			MyReturnButton.transform.localScale = new Vector3(25, 1, 25);
 			MyReturnButton.transform.Rotate (90, -180, 0);
 			MyReturnButton.renderer.enabled = true;
 			//MyReturnButton.renderer.enabled = false;
@@ -515,15 +555,28 @@ public class SocialMenu : MonoBehaviour
 			
 			MyRequestButton = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			Main.AddParent(MyRequestButton);
-			MyRequestButton.name = "Request";
-			MyRequestButton.transform.localPosition = new Vector3( 450, 0,-50);
-			MyRequestButton.transform.localScale = new Vector3(10, 1, 10);
+			MyRequestButton.name = "Invite";
+			MyRequestButton.transform.localPosition = new Vector3( 400, 30,-61);
+			MyRequestButton.transform.localScale = new Vector3(20, 1, 20);
 			MyRequestButton.transform.Rotate (90, -180, 0);
 			MyRequestButton.renderer.enabled = true;
 			//MyRequestButton.renderer.enabled = false;
 			//iTween.FadeTo (MyRequestButton,iTween.Hash("alpha",0f,"time",0f, "easetype",iTween.EaseType.linear));
-			MyRequestButtonBmp = (Material)Resources.Load ("SocialMenu/Materials/SendInvite");
+			MyRequestButtonBmp = (Material)Resources.Load ("SocialMenu/Materials/Invite");
 			MyRequestButton.renderer.material = MyRequestButtonBmp;
+			
+			MyScoreButton = GameObject.CreatePrimitive(PrimitiveType.Plane);
+			Main.AddParent(MyScoreButton);
+			MyScoreButton.name = "Score";
+			MyScoreButton.transform.localPosition = new Vector3( 410, 352,-61);
+			MyScoreButton.transform.localScale = new Vector3(20, 1, 20);
+			MyScoreButton.transform.Rotate (90, -180, 0);
+			MyScoreButton.renderer.enabled = true;
+			//MyScoreButton.renderer.enabled = false;
+			//iTween.FadeTo (MyRequestButton,iTween.Hash("alpha",0f,"time",0f, "easetype",iTween.EaseType.linear));
+			MyScoreButtonBmp = (Material)Resources.Load ("SocialMenu/Materials/Score");
+			MyScoreButton.renderer.material = MyScoreButtonBmp;
+			
 		}
 	}	
 	private void ClearInfoPanelNext()
@@ -539,6 +592,12 @@ public class SocialMenu : MonoBehaviour
 			MyRequestButtonBmp = null;
 			Destroy (MyRequestButton);
 			MyRequestButton = null;
+		}
+		if(MyScoreButton != null)
+		{
+			MyScoreButtonBmp = null;
+			Destroy (MyScoreButton);
+			MyScoreButton = null;
 		}
 	}
 	private void ClearInfoPanelPictureBar()

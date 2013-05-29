@@ -141,6 +141,9 @@ public class PnMScreen : MonoBehaviour
 		TabMListenerList = new List<string>();
 		TabList = new List<string>(new string[]{"Employee","Tool"});
 		TabSelection = TabList[0];
+		
+		//Main.myLifeLimit = Main.myServices.getDailyLimit();
+				
 		BuildScreen();
 		VFX_1();
 	}
@@ -200,7 +203,15 @@ public class PnMScreen : MonoBehaviour
 					{
 						if(TabSelection == "NextIcon")
 						{
-							ReadyToClear();
+							/*
+							Main.myLifeLimit = Main.myServices.getDailyLimit();
+							if(Main.myLifeLimit <= 0)
+							{
+								//Give notice message
+							}
+							else
+							*/
+								ReadyToClear();
 						}
 						else
 						{
@@ -1766,4 +1777,5 @@ public class PnMScreen : MonoBehaviour
 		print ("SHOW GAME SCREEN");
 		Parent = null;
 	}
+		
 }

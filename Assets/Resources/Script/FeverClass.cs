@@ -35,6 +35,11 @@ public class FeverClass : MonoBehaviour
 			
 			Main.MyPlayer.PlayerWalkingSpeed = 0;
 			Main.MyPlayer.PlayerActionSpeed = 1f;
+			
+			Main.MyControl.activateFever();
+			Main.MyHelper.ActivateFever();
+			
+			
 			startTime = DateTime.Now;
 			updateSceneDelegate = FeverRunning;
 		}
@@ -48,6 +53,9 @@ public class FeverClass : MonoBehaviour
 		{
 			Main.MyPlayer.PlayerActionSpeed = this.defaultAS;
 			Main.MyPlayer.PlayerWalkingSpeed = this.defaultMS;
+			
+			Main.MyHelper.DeactivateFever();
+			
 			updateSceneDelegate = DetectingFever;
 			Main.FeverPoint = 0;
 		}

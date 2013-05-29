@@ -244,6 +244,9 @@ public class ConfirmationScreen : MonoBehaviour
 	}
 	private void SelectConfirm()
 	{
+		
+		//TODO : adding microtransaction update after confirmation
+		Hashtable microUpdate = new Hashtable();
 		CostCalculation();
 		switch(Type)
 		{
@@ -317,8 +320,14 @@ public class ConfirmationScreen : MonoBehaviour
 				Main.MyPlayerAtr.EquipExtraDeco(Level+1);
 			}break;
 		}
+	/*	if(!Main.myServices.microTransactionUpdate(microUpdate))
+		{
+			Debug.LogError("show error message");
+		}
+	*/
 		Parent.UpdatePnM();
 	}
+	
 	private void UpdatePotrait()
 	{
 		if(MyInfoPanelPotraitGO != null)

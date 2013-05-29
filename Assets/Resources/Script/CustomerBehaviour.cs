@@ -130,7 +130,7 @@ public class CustomerBehaviour : MonoBehaviour {
 					CustomerBehaviour MyCB = (CustomerBehaviour)this.gameObject.GetComponent("CustomerBehaviour");
 					MyCB.CustomerStatus = 1;
 					Main.MyModuleClass.SetHelperStatus((string)currentHash["Name"], 0);
-					Main.MyModuleClass.SetOccupy((string)currentHash["Type"],(int)currentHash["ID"], "+");
+					Main.MyModuleClass.SetOccupy((string)currentHash["Type"],(int)currentHash["ID"], "+", this.gameObject.name);
 					switch(MyCA.ReturnRequest())
 					{
 						case "nF":MyCA.AssignStation((string)currentHash["Type"],Main.MyStatCheck.GetFoodStatByLevel(Main.MyPlayerAtr.ReturnFoodLevel((int)currentHash["ID"])));;break;
@@ -172,7 +172,7 @@ public class CustomerBehaviour : MonoBehaviour {
 		int tileY = Mathf.Abs((int)tempY);
 		int tileX = Mathf.Abs((int)tempX);
 					
-		Vector3 tilePos = new Vector3(tileX, tileY, 0);
+		Vector3 tilePos = new Vector3(tileX, tileY, tempZ);
 		return tilePos;
 	}
 }

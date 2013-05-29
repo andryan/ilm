@@ -15,6 +15,7 @@ public class ItemConfig : MonoBehaviour {
 	
 	}
 	
+	
 	private void OnGUI()
 	{	
 		if(GUI.Button(new Rect(0, 0, 100, 25), "Skip 1 Day"))
@@ -114,4 +115,5 @@ public class ItemConfig : MonoBehaviour {
 		Main.MySpawn.totalCustomer = 0;
 		Main.MySpawn.tempTotalCust = 0;
 	}
+	
 }

@@ -142,13 +142,44 @@ public class HelperClass : MonoBehaviour {
 		tempUnservedPosition = null;
 	}
 	
-	private void ActivateMovement(GameObject helperObj, int moduleY, int moduleX)
+	
+	public void ActivateFever()
+	{
+		for(int i = 0; i < helperList.Count; i++)
+		{
+			this.ActivateFever(helperList[i]);
+		}
+	}
+	
+	public void DeactivateFever()
+	{
+		for(int i = 0; i < helperList.Count; i++)
+		{
+			HelperBehaviour MyHB = (HelperBehaviour)helperList[i].GetComponent("HelperBehaviour");
+			MyHB.HelperActionSpeed = MyHB.DefaultHelperActionSpeed;
+			MyHB.HelperWalkingSpeed = MyHB.DefaultHelperWalkingSpeed;
+			// (helperList[i]);
+		}
+	}
+	
+	private void ActivateFever(GameObject helperObj)
 	{
 		HelperBehaviour MyHB = (HelperBehaviour)helperObj.GetComponent("HelperBehaviour");
 		
-		if(MyHB.OnComplete == true)
+		MyHB.DefaultHelperActionSpeed = MyHB.HelperActionSpeed;
+		MyHB.DefaultHelperWalkingSpeed = MyHB.HelperWalkingSpeed;
+		
+		MyHB.HelperWalkingSpeed = 0f;
+		MyHB.HelperActionSpeed = 1f;
+			
+		if(!MyHB.OnComplete)
 		{
-			MyHB.OnComplete  = false; //set current helper to be in use
+			MyHB.HelperWalkingSpeed = 0f;
+			MyHB.HelperActionSpeed = 1f;
+			
+			int moduleX = MyHB.targetX;
+			int moduleY = MyHB.targetY;
+			
 			GetModuleInfo(moduleY, moduleX); // set current module helper status to 1
 			
 			Vector3 CurrentCustomerTilePost = Main.MyModule.GetPrimaryBySecondaryPost(moduleX, moduleY); //get primary tile position where the customer is situated
@@ -162,7 +193,40 @@ public class HelperClass : MonoBehaviour {
 			{
 				CustomerAtr MyCA = (CustomerAtr)tempCustomerObj.GetComponent("CustomerAtr");
 				MyCA.Serving();
-				Debug.LogWarning("Testing");
+			}
+				
+			Main.MyTile.findPosition(helperObj, MyHB.HelperWalkingSpeed, moduleY, moduleX);
+			float CustomerWaitingTime = MyHB.GetWaitingTime();
+			print ("WAITING TIME : "+CustomerWaitingTime);
+			print ("HELPERM CLASS");
+			Main.MyCustomer.SetCustomerWaitingTime(CurrentCustomerObj,CustomerWaitingTime, 0);//init customer waiting time which disable customer dragging
+			
+		}
+	}
+	
+	private void ActivateMovement(GameObject helperObj, int moduleY, int moduleX)
+	{
+		HelperBehaviour MyHB = (HelperBehaviour)helperObj.GetComponent("HelperBehaviour");
+		
+		if(MyHB.OnComplete == true)
+		{
+			MyHB.OnComplete  = false; //set current helper to be in use
+			MyHB.targetX = moduleX;
+			MyHB.targetY = moduleY;
+			
+			GetModuleInfo(moduleY, moduleX); // set current module helper status to 1
+			
+			Vector3 CurrentCustomerTilePost = Main.MyModule.GetPrimaryBySecondaryPost(moduleX, moduleY); //get primary tile position where the customer is situated
+			Vector3 CurrentCustomerPost = convertTileToPos(CurrentCustomerTilePost); //convert primary tile position to coordinates
+			
+			GameObject CurrentCustomerObj = Main.MyCustomer.GetCustomerObjByPos(CurrentCustomerPost); //get current customer gameobject thru coordinates
+			
+			
+			GameObject tempCustomerObj = Main.MyCustomer.GetCustomerObjByPos(CurrentCustomerPost);
+			if(tempCustomerObj != null)
+			{
+				CustomerAtr MyCA = (CustomerAtr)tempCustomerObj.GetComponent("CustomerAtr");
+				MyCA.Serving();
 			}
 				
 			Main.MyTile.findPosition(helperObj, MyHB.HelperWalkingSpeed, moduleY, moduleX);
@@ -252,9 +316,25 @@ public class HelperClass : MonoBehaviour {
 		{
 			if((string)ModuleClassArr[i]["Type"] != "nQ" && (string)ModuleClassArr[i]["Type"] != "nC")
 			{
+					
+				//Bug Found : Helper serve customer even customer not in the right station
+				//Fixed : 21 May 2013 sakti
+				
 				if((int)ModuleClassArr[i]["Helper"] == 0 && (int)ModuleClassArr[i]["Occupy"] == 1) //check for if module is occupied and not served by any helper
 				{
-					TotalUnservedCustomerArr.Add(ModuleClassArr[i]);
+					for(int j=0;j<Main.MyCustomer.customerList.Count;j++)
+					{
+						
+						if(ModuleClassArr[i]["customerID"].ToString() == Main.MyCustomer.customerList[j].name)
+						{
+							Hashtable moduleDataHash = Main.MyModule.GetModuleDataHash(Main.MyCustomer.customerList[j]);
+							GameObject tempCustomerObj = Main.MyCustomer.customerList[j];
+							CustomerAtr MyCA = (CustomerAtr)tempCustomerObj.GetComponent("CustomerAtr");
+							if((string)moduleDataHash["Type"] == MyCA.ReturnRequest()) //make sure that
+								TotalUnservedCustomerArr.Add(ModuleClassArr[i]);
+							break;
+						}
+					}
 				}
 			}
 		}

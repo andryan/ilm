@@ -19,6 +19,8 @@ public class StatCheck : MonoBehaviour
 	private List<Hashtable> ThemeList = null;
 	private List<Hashtable> HelperLevelList = null;
 	
+	private List<Hashtable> LeaveList = null;
+	
 	private void Start()
 	{
 		Init();
@@ -59,6 +61,9 @@ public class StatCheck : MonoBehaviour
 		CashierList.Add (HashObject.Hash ("WaitingTime", 0.2f, "LikeRate", 0f));
 		CashierList.Add (HashObject.Hash ("WaitingTime", 0.25f, "LikeRate", 0.05f));
 		CashierList.Add (HashObject.Hash ("WaitingTime", 0.3f, "LikeRate", 0.1f));
+		
+		LeaveList = new List<Hashtable>();
+		LeaveList.Add (HashObject.Hash ("LeaveWaitingTime", 1f));
 		
 		HelperList = new List<Hashtable>();
 		HelperList.Add (HashObject.Hash ("ID", 1, "Name", "Helper1", "MovementSpeed", HelperMSPDList, "ActionSpeed", HelperASPDList));
@@ -165,6 +170,14 @@ public class StatCheck : MonoBehaviour
 		}
 		return MyHash;
 	}
+	
+	public Hashtable GetLeaveStat()
+	{
+		Hashtable MyHash = new Hashtable();
+		MyHash = (Hashtable)LeaveList[0].Clone();
+		return MyHash;
+	}
+	
 	public Hashtable GetBarStatByLevel(int Level)
 	{
 		Hashtable MyHash = new Hashtable();

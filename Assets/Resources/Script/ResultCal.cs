@@ -165,10 +165,7 @@ public class ResultCal : MonoBehaviour
 	//@ Kaizer: Clearance
 	public void Clear()
 	{
-		if(Main.MyResultCal != null)
-		{
-			Destroy (this.gameObject.GetComponent ("ResultCal"));
-			Main.MyResultCal = null;
-		}
+		Destroy (this.gameObject.GetComponent ("ResultCal"));
+		Main.MyResultCal = null;
 	}
 }

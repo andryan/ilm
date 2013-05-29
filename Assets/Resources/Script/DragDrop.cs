@@ -68,11 +68,13 @@ public class DragDrop : MonoBehaviour {
 			if((string)referenceHash["Type"] == MyCA.ReturnRequest() && (int)ModuleClassHash["Occupy"] == 0)
 			{
 				CancelInvoke("OnMouseDown");
+				if(referenceObject == null)
+					return;
 				Vector3 temp = referenceObject.transform.localPosition;
 				dragObject.transform.localPosition = new Vector3(temp.x, temp.y, 0);
 				Main.MySE.PlaySFX("ReadToPay");
-				Main.MyModuleClass.SetOccupy((string)prevReferenceHash["Type"], (int)prevReferenceHash["ID"], "-"); //set previous occupied module back to empty
-				Main.MyModuleClass.SetOccupy((string)referenceHash["Type"], (int)referenceHash["ID"], "+"); //set current occupied module to occupied
+				Main.MyModuleClass.SetOccupy((string)prevReferenceHash["Type"], (int)prevReferenceHash["ID"], "-", dragObject.name); //set previous occupied module back to empty
+				Main.MyModuleClass.SetOccupy((string)referenceHash["Type"], (int)referenceHash["ID"], "+", dragObject.name); //set current occupied module to occupied
 				//print ("Y"+(int)referenceHash["primaryY"]);
 				//print ("X"+(int)referenceHash["primaryX"]);
 				switch(MyCA.ReturnRequest())
@@ -146,7 +148,8 @@ public class DragDrop : MonoBehaviour {
 				Main.MyHelper.InitHelper();
 			}
         }
-        if (dragObject) {
+        if (dragObject) 
+		{
             dragObject.transform.position = new Vector3(ray.origin.x+offSet.x, ray.origin.y+offSet.y, 0);     // Only move the object on a 2D plane.
         }
     }

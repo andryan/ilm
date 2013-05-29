@@ -13,11 +13,16 @@ public class HelperBehaviour : MonoBehaviour {
 	public bool OnComplete = true;
 	private float CurrentHelperWaitingTime = 0.0f;
 	
+	//fever
+	public int targetX, targetY;
+	public float DefaultHelperWalkingSpeed;
+	public float DefaultHelperActionSpeed;
+	
 	//animation
 	private Vector3 prevHelperPost = new Vector3(0,0,0);
 	private SpriteAnimator sAnim = null;
 	private Transform SpriteAnimObj = null;
-	public bool Serving = false;
+	public bool Serving = false;	
 	void Start () {
 		Init ();
 	}

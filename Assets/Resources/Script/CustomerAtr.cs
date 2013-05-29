@@ -13,6 +13,8 @@ public class CustomerAtr : MonoBehaviour
 	public float WaitingTime = 0.0f;
 	public float minusTime;
 	
+	public float LeaveWaitingTime = 0.0f;
+	
 	private float LikeRate = 0.0f;
 	private int Coin = 0;
 	public List<string> ActionList = null;
@@ -96,7 +98,7 @@ public class CustomerAtr : MonoBehaviour
 			Main.MyCustomer.runAway(this.gameObject);
 			Main.MyComboDetector.ComboBreak();
 			Runaway ();
-			CancelInvoke("EnterFrame");	
+			CancelInvoke("EnterFrame");		
 		}
 	}
 	
@@ -120,6 +122,7 @@ public class CustomerAtr : MonoBehaviour
 			}
 			else if (a == ActionCount[TypeID]-1)
 			{
+				
 				ActionList.Add ("nC");	
 			}
 			else
@@ -145,13 +148,25 @@ public class CustomerAtr : MonoBehaviour
 	}
 	public void GetWaitingTime(float StationWT = 0f)
 	{
-		WaitingTime = (int)((float)WTList[TypeID]*(1+Main.MyPlayerAtr.ReturnGlobalWT ()+StationWT) - minusTime);
+		if(CurrentStation == "nL")
+		{
+			LeaveWaitingTime = 1f;
+			CurrentWaitingTime = LeaveWaitingTime;
+			TemStationWT = StationWT;
+			InvokeRepeating ("EnterFrame",0f,1f);
+			Debug.Log ("WaitingTime "+WaitingTime);
+		}
+		else
+		{
+			WaitingTime = (int)((float)WTList[TypeID]*(1+Main.MyPlayerAtr.ReturnGlobalWT ()+StationWT) - minusTime);
 		
-		CurrentWaitingTime = WaitingTime;
-		TemStationWT = StationWT;
-		InvokeRepeating ("EnterFrame",0f,1f);
-		Debug.Log ("WaitingTime "+WaitingTime);
+			CurrentWaitingTime = WaitingTime;
+			TemStationWT = StationWT;
+			InvokeRepeating ("EnterFrame",0f,1f);
+			Debug.Log ("WaitingTime "+WaitingTime);
+		}
 	}
+	
 	private void GetCurStationWT()
 	{
 		WaitingTime = (int)((float)WTList[TypeID]*(1+Main.MyPlayerAtr.ReturnGlobalWT ()+TemStationWT) - minusTime);
@@ -217,6 +232,19 @@ public class CustomerAtr : MonoBehaviour
 		}
 		SpawnIcon (ActionList[0]);
 	}
+	
+	public void LeaveStation(string Station, Hashtable Effect)
+	{
+		CurrentStation = "nL";
+		SpawnIcon ("nL",HashObject.Hash ("Post", new Vector3(140,-345,this.gameObject.transform.localPosition.z)));	
+		Hashtable TemHash = (Hashtable)Effect.Clone ();
+		
+		if(TemHash.ContainsKey("LeaveWaitingTime"))
+		{
+			GetWaitingTime((float)TemHash["LeaveWaitingTime"]);				
+		}
+	}
+	
 	public void Runaway()
 	{
 		Main.MyResultCal.AddRunawayCount(1);	
@@ -260,21 +288,20 @@ public class CustomerAtr : MonoBehaviour
 				{
 					//SpawnIcon ("nC");	
 					SpawnIcon ("nC",HashObject.Hash ("Post", new Vector3(140,-345,this.gameObject.transform.localPosition.z)));
-				}
+				}	
 				else
 				{
 					SpawnIcon ("Serve");	
-				}
-				
+				}		
 			}
 			else
 			{
 				Runaway ();
 			}	
-		}
-		
-		
+		}	
 	}
+
+	
 	public void AddCoin(int Add = 0)
 	{
 		int TemCoin = 0;
@@ -371,21 +398,20 @@ public class CustomerAtr : MonoBehaviour
 					GetCurStationWT();	
 					SpawnIcon (ActionList[0]);
 				}
-				else
+				else if(ActionList[0] == "nC")
 				{
 					Main.MyCustomer.moveCustomerToCashier(this.gameObject);
 					CustomerBehaviour MyCB = (CustomerBehaviour)this.gameObject.transform.gameObject.GetComponent("CustomerBehaviour");
-					Main.MyModuleClass.SetOccupy((string)MyCB.CustomerPrevData["Type"], (int)MyCB.CustomerPrevData["ID"], "-");
+					Main.MyModuleClass.SetOccupy((string)MyCB.CustomerPrevData["Type"], (int)MyCB.CustomerPrevData["ID"], "-", this.gameObject.name);
 					MyCB.CustomerStatus = 0;
 					Main.MyModuleClass.SetHelperStatus((string)MyCB.CustomerPrevData["Name"], 0);
 					//SpawnIcon(ActionList[0],HashObject.Hash ("Post", new Vector3(140,-345,this.gameObject.transform.position.z)) );
-				}	
+				}
 			}
 			else
 			{
 				Main.MyCustomer.runAway(this.gameObject);
 			}
-			
 			
 		}
 		else
