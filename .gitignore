@@ -18,14 +18,5 @@ Temp
 *.pidb
 Build
 
-Assets/Resources/MainMenu.meta
+*.gitignore
 
-*.meta
-
-Assets/Resources/MainMenu/GameObjects.meta
-
-*.meta
-
-*.prefab
-
-*.prefab
